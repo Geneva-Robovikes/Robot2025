@@ -4,6 +4,11 @@
 
 package frc.robot.subsystems;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -12,6 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -22,6 +28,8 @@ public class SwerveSubsystem extends SubsystemBase {
   private final SwerveModule backRight = new SwerveModule(4, 6, false, true, 5, "Back Right");
   private final SwerveModule backLeft = new SwerveModule(7, 9, false, true, 8, "Back Left");
   private final SwerveModule frontLeft = new SwerveModule(10, 12, false, true, 11, "Back Right");
+  
+  private final ADIS16448_IMU gyro = new ADIS16448_IMU();
 
   private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(Constants.ModuleConstants.kDriveKinematics, getRotation2d(), 
     new SwerveModulePosition[] {
@@ -34,17 +42,42 @@ public class SwerveSubsystem extends SubsystemBase {
     new Pose2d(0, 0, new Rotation2d())
   );
   
-  private ADIS16448_IMU gyro = new ADIS16448_IMU();
 
   public SwerveSubsystem() {
-    /* Give the gyro time to initialize, then zero it. */
-    new Thread(() -> {
-      try {
-        Thread.sleep(1000);
-      } catch (Exception e) {}
+    /* AUTO */
+    RobotConfig config;
+    
+    try{
+      config = RobotConfig.fromGUISettings();
 
-      zeroHeading();
-    });
+      // Configure AutoBuilder last
+      AutoBuilder.configure(
+        this::getPose, // Robot pose supplier
+        this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+        this::getRobotChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+          (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+              new PIDConstants(0, 0.0, 0.0), // Translation PID constants
+              new PIDConstants(0.45, 0.0, 0.0) // Rotation PID constants
+            ),
+            config, // The robot configuration
+            () -> {
+            // Boolean supplier that controls when the path will be mirrored for the red alliance
+          // This will flip the path being followed to the red side of the field.
+          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+          var alliance = DriverStation.getAlliance();
+          if (alliance.isPresent()) {
+            return alliance.get() == DriverStation.Alliance.Red;
+          }
+          return false;
+        },
+        this // Reference to this subsystem to set requirements
+      );
+    } catch (Exception e) {
+      // Handle exception as needed
+      e.printStackTrace();
+    }
   }
 
   public void zeroHeading() {

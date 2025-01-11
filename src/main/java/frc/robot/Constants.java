@@ -33,7 +33,6 @@ public final class Constants {
     public static final double kMaxAccelMetersPerSecond = 6.0;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
 
-    /* TODO: Remeasure */
     public static final double kDistanceBetweenWheels = Units.inchesToMeters(18.5);
 
     /* Locations of swerve modules in relation to the robots center. */

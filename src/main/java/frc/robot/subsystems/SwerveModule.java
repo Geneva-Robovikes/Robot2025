@@ -39,8 +39,6 @@ public class SwerveModule {
         resetEncoders();
     }
 
-    /* TODO: Units */
-
     /* Returns the position of the drive motor in meters. */
     public double getDrivePosition() { 
         return driveMotor.getPosition().getValueAsDouble()  / Constants.ModuleConstants.kDriveMotorGearRatio * Math.PI * Constants.ModuleConstants.kWheelDiameterMeters;
