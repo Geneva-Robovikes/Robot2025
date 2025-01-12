@@ -7,7 +7,9 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 
 import frc.robot.commands.SwerveJoystickCommand;
+import frc.robot.commands.VisionAlignmentCommand;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
@@ -30,6 +32,10 @@ public class RobotContainer {
       
   /* Subsystems */
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
+  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
+
+  /* Commands */
+  private final VisionAlignmentCommand visionAlignmentCommand = new VisionAlignmentCommand(visionSubsystem);
 
   /* Auto */
   private final SendableChooser<Command> autoChooser;
@@ -40,6 +46,7 @@ public class RobotContainer {
     autoChooser = AutoBuilder.buildAutoChooser();
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
+
     // Configure the trigger bindings
     configureBindings();
   }
@@ -54,7 +61,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
+    m_driverController.a().onTrue(visionAlignmentCommand);
   }
 
   /**
