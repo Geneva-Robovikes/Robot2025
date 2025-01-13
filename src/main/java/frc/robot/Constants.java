@@ -47,4 +47,8 @@ public final class Constants {
       new Translation2d(kDistanceBetweenWheels/2, -kDistanceBetweenWheels/2)); //back right
     
   }
+
+  public static class VisionConstants {
+    public static final String kCameraName = "photonvision";
+  }
 }

@@ -4,14 +4,25 @@
 
 package frc.robot.subsystems;
 
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class VisionSubsystem extends SubsystemBase {
-  /** Creates a new VisionSubsystem. */
-  public VisionSubsystem() {}
+  private PhotonCamera camera;
+
+  public VisionSubsystem() {
+    camera = new PhotonCamera(Constants.VisionConstants.kCameraName);
+  }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+  public void periodic() {}
+
+  public void getTargets() {
+    var result = camera.getAllUnreadResults();
+
+    PhotonPipelineResult target = result.get(0);
   }
 }
