@@ -4,25 +4,33 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
 import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class VisionSubsystem extends SubsystemBase {
-  private PhotonCamera camera;
+  private final PhotonCamera camera = new PhotonCamera(Constants.VisionConstants.kCameraName);
 
-  public VisionSubsystem() {
-    camera = new PhotonCamera(Constants.VisionConstants.kCameraName);
-  }
+  public VisionSubsystem() {}
 
   @Override
   public void periodic() {}
 
-  public void getTargets() {
-    var result = camera.getAllUnreadResults();
+  /* Returns an "optional" PhotonTrackedTarget. Basically, if there is no target, it returns null. */
+  public Optional<PhotonTrackedTarget> getTarget() {
+    var result = camera.getLatestResult();
+    boolean hasTargets = result.hasTargets();
 
-    PhotonPipelineResult target = result.get(0);
+    if (hasTargets) {
+      PhotonTrackedTarget target = result.getBestTarget();
+
+      return Optional.of(target);
+    }
+
+    return Optional.empty();
   }
 }

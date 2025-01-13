@@ -50,5 +50,7 @@ public final class Constants {
 
   public static class VisionConstants {
     public static final String kCameraName = "photonvision";
+
+    public static final int[] kReefAprilTags = {17, 18, 19, 20, 21, 22};
   }
 }

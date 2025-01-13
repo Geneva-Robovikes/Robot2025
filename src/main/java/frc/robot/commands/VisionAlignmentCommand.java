@@ -1,6 +1,12 @@
 package frc.robot.commands;
 
+import java.util.Optional;
+
+import org.photonvision.targeting.PhotonTrackedTarget;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class VisionAlignmentCommand extends Command {
@@ -19,7 +25,28 @@ public class VisionAlignmentCommand extends Command {
 
 
   @Override
-  public void execute() {}
+  public void execute() {
+    Optional<PhotonTrackedTarget> optTarget = subsystem.getTarget();
+
+    double targetYaw = 0.0;
+    int targetID;
+
+    if (optTarget.isPresent()) {
+      PhotonTrackedTarget target = optTarget.get();
+
+      for(int x = 0; x < Constants.VisionConstants.kReefAprilTags.length; x++) {
+        if (target.getFiducialId() == Constants.VisionConstants.kReefAprilTags[x]) {
+          targetYaw = target.getYaw();
+          targetID = target.getFiducialId();
+          
+          SmartDashboard.putBoolean("Target?", true);
+          SmartDashboard.putNumber("Vision Target ID", targetID);
+        }
+      }
+    }
+
+    SmartDashboard.putBoolean("Target?", false);
+  }
 
 
   @Override
