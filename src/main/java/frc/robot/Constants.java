@@ -37,7 +37,7 @@ public final class Constants {
 
     //TODO: Calibrate drive PID
     public static final double kTurnPIDkValue = 0.45;
-    public static final double kDrivePIDkValue = 0;
+    public static final double kDrivePIDkValue = 0.31;
 
     /* Locations of swerve modules in relation to the robots center. */
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
