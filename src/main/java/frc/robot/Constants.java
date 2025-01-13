@@ -35,6 +35,10 @@ public final class Constants {
 
     public static final double kDistanceBetweenWheels = Units.inchesToMeters(18.5);
 
+    //TODO: Calibrate drive PID
+    public static final double kTurnPIDkValue = 0.45;
+    public static final double kDrivePIDkValue = 0;
+
     /* Locations of swerve modules in relation to the robots center. */
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
       new Translation2d(-kDistanceBetweenWheels/2, kDistanceBetweenWheels/2), //front left
@@ -42,5 +46,11 @@ public final class Constants {
       new Translation2d(kDistanceBetweenWheels/2, kDistanceBetweenWheels/2), //back left
       new Translation2d(kDistanceBetweenWheels/2, -kDistanceBetweenWheels/2)); //back right
     
+  }
+
+  public static class VisionConstants {
+    public static final String kCameraName = "photonvision";
+
+    public static final int[] kReefAprilTags = {17, 18, 19, 20, 21, 22};
   }
 }
