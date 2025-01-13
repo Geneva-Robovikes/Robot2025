@@ -28,7 +28,6 @@ public class VisionAlignmentCommand extends Command {
   public void execute() {
     Optional<PhotonTrackedTarget> optTarget = subsystem.getTarget();
 
-    double targetYaw = 0.0;
     int targetID;
 
     if (optTarget.isPresent()) {
@@ -36,7 +35,6 @@ public class VisionAlignmentCommand extends Command {
 
       for(int x = 0; x < Constants.VisionConstants.kReefAprilTags.length; x++) {
         if (target.getFiducialId() == Constants.VisionConstants.kReefAprilTags[x]) {
-          targetYaw = target.getYaw();
           targetID = target.getFiducialId();
           
           SmartDashboard.putBoolean("Target?", true);
