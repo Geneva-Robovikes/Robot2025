@@ -53,7 +53,10 @@ public final class Constants {
     public static final int[] kReefAprilTags = {17, 18, 19, 20, 21, 22};
 
     /* TODO: Measure specific values */
-    public static final double kLoadingOffset = 0.1;
-    public static final double kReefOffset = 0.1;
+    public static final double kLoadingYawOffset = 0.1;
+    public static final double kReefYawOffset = 0.1;
+
+    public static final double kReefDistanceOffset = 1;
+    public static final double kLoadingDistanceOffset = 1;
   }
 }

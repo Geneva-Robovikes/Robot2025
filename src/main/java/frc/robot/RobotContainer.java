@@ -61,7 +61,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.a().onTrue(visionAlignmentCommand);
+    m_driverController.a().whileTrue(visionAlignmentCommand);
   }
 
   /**
