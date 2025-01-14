@@ -35,7 +35,6 @@ public final class Constants {
 
     public static final double kDistanceBetweenWheels = Units.inchesToMeters(18.5);
 
-    //TODO: Calibrate drive PID
     public static final double kTurnPIDkValue = 0.45;
     public static final double kDrivePIDkValue = 0.31;
 
@@ -49,8 +48,12 @@ public final class Constants {
   }
 
   public static class VisionConstants {
-    public static final String kCameraName = "photonvision";
+    public static final String kCameraName = "cam1";
 
     public static final int[] kReefAprilTags = {17, 18, 19, 20, 21, 22};
+
+    /* TODO: Measure specific values */
+    public static final double kLoadingOffset = 0.1;
+    public static final double kReefOffset = 0.1;
   }
 }

@@ -18,7 +18,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -84,19 +83,12 @@ public class SwerveSubsystem extends SubsystemBase {
     gyro.reset();
   }
 
-  public double getHeading() {
-    /* I have no clue. */
-    return Math.IEEEremainder(gyro.getAngle(), 360);
-  }
-
   public Rotation2d getRotation2d() {
     return new Rotation2d(-gyro.getGyroAngleZ() / 57.295779513);
   }
 
   @Override
-  public void periodic() {
-    SmartDashboard.putNumber("Robot Heading", getHeading());
-  }
+  public void periodic() {}
 
   public void stopModules() {
     frontLeft.stop();

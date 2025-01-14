@@ -40,11 +40,6 @@ public class SwerveModule {
         resetEncoders();
     }
 
-    /* Returns the position of the drive motor in meters. */
-    public double getDrivePosition() { 
-        return driveMotor.getPosition().getValueAsDouble()  / Constants.ModuleConstants.kDriveMotorGearRatio * Math.PI * Constants.ModuleConstants.kWheelDiameterMeters;
-    }
-
     /* Returns the position of the turning motor in radians. */
     public double getTurningPosition() {
         return turnMotor.getPosition().getValueAsDouble() / Constants.ModuleConstants.kFalconEncoderResolution * 2 * Math.PI;
@@ -53,11 +48,6 @@ public class SwerveModule {
     /* Returns the drive velocity in meters per second. */
     public double getDriveVelocity() {
         return driveMotor.getRotorVelocity().getValueAsDouble()  / Constants.ModuleConstants.kDriveMotorGearRatio * Math.PI * Constants.ModuleConstants.kWheelDiameterMeters; 
-    }
-
-    /* Returns the turning velocity in radians per second. */
-    public double getTurningVelocity() {
-        return turnMotor.getRotorVelocity().getValueAsDouble() * 2 * Math.PI;
     }
 
     /* Returns the position of the CANcoder in radians. */

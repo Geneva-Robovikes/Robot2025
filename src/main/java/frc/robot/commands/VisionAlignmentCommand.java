@@ -12,12 +12,13 @@ import frc.robot.subsystems.VisionSubsystem;
 public class VisionAlignmentCommand extends Command {
 
   private final VisionSubsystem subsystem;
-  
+
+  private boolean toggle;
 
   public VisionAlignmentCommand(VisionSubsystem s) {
-   subsystem = s;
-
-   addRequirements(subsystem);
+    subsystem = s;
+    toggle = false;
+    addRequirements(subsystem);
   }
 
   @Override
@@ -33,17 +34,23 @@ public class VisionAlignmentCommand extends Command {
     if (optTarget.isPresent()) {
       PhotonTrackedTarget target = optTarget.get();
 
+      targetID = target.getFiducialId();
+
       for(int x = 0; x < Constants.VisionConstants.kReefAprilTags.length; x++) {
-        if (target.getFiducialId() == Constants.VisionConstants.kReefAprilTags[x]) {
-          targetID = target.getFiducialId();
-          
+        if(targetID == Constants.VisionConstants.kReefAprilTags[x]) {
           SmartDashboard.putBoolean("Target?", true);
           SmartDashboard.putNumber("Vision Target ID", targetID);
+          SmartDashboard.putNumber("Yaw", target.getYaw());
+
+          /* TODO: Write code that aligns the april tag to a certain offset (in yaw) */
         }
       }
     }
+    else {
+      SmartDashboard.putBoolean("Target?", false);
+    }
 
-    SmartDashboard.putBoolean("Target?", false);
+    toggle = true;
   }
 
 
@@ -53,6 +60,6 @@ public class VisionAlignmentCommand extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return toggle;
   }
 }
