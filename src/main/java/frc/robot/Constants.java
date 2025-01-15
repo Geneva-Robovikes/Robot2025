@@ -39,6 +39,7 @@ public final class Constants {
     public static final double kDrivePIDkValue = 0.31;
 
     /* Locations of swerve modules in relation to the robots center. */
+    /* TODO: Redo this so the front of the robot defaults to the roborio */
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
       new Translation2d(-kDistanceBetweenWheels/2, kDistanceBetweenWheels/2), //front left
       new Translation2d(-kDistanceBetweenWheels/2, -kDistanceBetweenWheels/2), //front right
@@ -58,5 +59,7 @@ public final class Constants {
 
     public static final double kReefDistanceOffset = 1;
     public static final double kLoadingDistanceOffset = 1;
+
+    public static final double kMaxVisionAlignmentSpeed = 0.5;
   }
 }

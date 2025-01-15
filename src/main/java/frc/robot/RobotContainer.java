@@ -35,7 +35,7 @@ public class RobotContainer {
   private final VisionSubsystem visionSubsystem = new VisionSubsystem();
 
   /* Commands */
-  private final VisionAlignmentCommand visionAlignmentCommand = new VisionAlignmentCommand(visionSubsystem);
+  private final VisionAlignmentCommand visionAlignmentCommand = new VisionAlignmentCommand(visionSubsystem, swerveSubsystem);
 
   /* Auto */
   private final SendableChooser<Command> autoChooser;
