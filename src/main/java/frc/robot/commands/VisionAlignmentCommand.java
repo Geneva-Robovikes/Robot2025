@@ -41,12 +41,12 @@ public class VisionAlignmentCommand extends Command {
 
       for(int x = 0; x < Constants.VisionConstants.kReefAprilTags.length; x++) {
         if(targetID == Constants.VisionConstants.kReefAprilTags[x]) {
-          if (target.getYaw() >= Constants.VisionConstants.kReefYawOffset) {
+          if (target.getYaw() > Constants.VisionConstants.kReefYawOffset) {
             chassisSpeeds = new ChassisSpeeds(0, Constants.VisionConstants.kMaxVisionAlignmentSpeed, 0);
             moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
 
             swerveSubsystem.setModuleStates(moduleStates);
-          } else if (target.getYaw() <= Constants.VisionConstants.kReefYawOffset) {
+          } else if (target.getYaw() < Constants.VisionConstants.kReefYawOffset) {
             chassisSpeeds = new ChassisSpeeds(0, -Constants.VisionConstants.kMaxVisionAlignmentSpeed, 0);
             moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
 
