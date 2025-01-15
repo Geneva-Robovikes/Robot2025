@@ -52,6 +52,18 @@ public class VisionAlignmentCommand extends Command {
 
             swerveSubsystem.setModuleStates(moduleStates);
           }
+
+          if (target.getSkew() > Constants.VisionConstants.kReefDistanceOffset) {
+            chassisSpeeds = new ChassisSpeeds(Constants.VisionConstants.kMaxVisionAlignmentSpeed, 0, 0);
+            moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+
+            swerveSubsystem.setModuleStates(moduleStates);
+          } else if (target.getSkew() < Constants.VisionConstants.kReefDistanceOffset) {
+            chassisSpeeds = new ChassisSpeeds(-Constants.VisionConstants.kMaxVisionAlignmentSpeed, 0, 0);
+            moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+
+            swerveSubsystem.setModuleStates(moduleStates);
+          }
         }
       }
     }
