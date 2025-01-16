@@ -3,11 +3,13 @@ package frc.robot.commands;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -22,7 +24,7 @@ public class VisionAlignmentCommand extends Command {
   public VisionAlignmentCommand(VisionSubsystem s, SwerveSubsystem ss) {
     subsystem = s;
     swerveSubsystem = ss;
-    controller = new PIDController(Constants.ModuleConstants.kDrivePIDkValue, 0, 0);
+    controller = new PIDController(.1, 0, 0);
 
     addRequirements(subsystem);
   }
@@ -39,6 +41,8 @@ public class VisionAlignmentCommand extends Command {
     ChassisSpeeds chassisSpeeds;
     SwerveModuleState[] moduleStates;
 
+    double targetRange;
+
     if (optTarget.isPresent()) {
       PhotonTrackedTarget target = optTarget.get();
 
@@ -46,7 +50,13 @@ public class VisionAlignmentCommand extends Command {
       contains = IntStream.of(Constants.VisionConstants.kReefAprilTags).anyMatch(x -> x == targetID);
 
       if(contains) {
-        chassisSpeeds = new ChassisSpeeds(0, (Constants.VisionConstants.kMaxVisionAlignmentSpeed * controller.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw())), 0);
+        targetRange = PhotonUtils.calculateDistanceToTargetMeters(
+          Constants.VisionConstants.kCameraHeight, // Measured with a tape measure, or in CAD.
+          Constants.VisionConstants.kReefAprilTagHeight, // From 2024 game manual for ID 7
+          Units.degreesToRadians(-30.0), // Measured with a protractor, or in CAD.
+          Units.degreesToRadians(target.getPitch()));
+        
+        chassisSpeeds = new ChassisSpeeds((Constants.VisionConstants.kMaxVisionDistAlignmentSpeed * controller.calculate(Constants.VisionConstants.kReefDistanceOffset, targetRange)), -(Constants.VisionConstants.kMaxVisionAlignmentSpeed * controller.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw())), 0);
         moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
 
         swerveSubsystem.setModuleStates(moduleStates);

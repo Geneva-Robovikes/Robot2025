@@ -57,9 +57,14 @@ public final class Constants {
     public static final double kLoadingYawOffset = 0.1;
     public static final double kReefYawOffset = 0.1;
 
-    public static final double kReefDistanceOffset = 1;
+    public static final double kReefDistanceOffset = -0.8;
     public static final double kLoadingDistanceOffset = 1;
 
     public static final double kMaxVisionAlignmentSpeed = 0.5;
+    public static final double kMaxVisionDistAlignmentSpeed = 15.5;
+    public static final double kMaxVisionRotationSpeed = Math.PI/2;
+
+    public static final double kCameraHeight = Units.inchesToMeters(4.5);
+    public static final double kReefAprilTagHeight = Units.inchesToMeters(17.6);
   }
 }
