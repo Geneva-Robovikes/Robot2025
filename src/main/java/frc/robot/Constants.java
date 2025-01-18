@@ -29,9 +29,9 @@ public final class Constants {
     public static final double kFalconEncoderResolution = 2048;
 
     /* These are the only variables that change the max speed and acceleration! */
-    public static final double kMaxSpeedMetersPerSecond = 6.0;
+    public static final double kMaxSpeedMetersPerSecond = 7.0;
     public static final double kMaxAccelMetersPerSecond = 6.0;
-    public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
+    public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI * 2;
 
     public static final double kDistanceBetweenWheels = Units.inchesToMeters(18.5);
 
@@ -41,10 +41,10 @@ public final class Constants {
     /* Locations of swerve modules in relation to the robots center. */
     /* TODO: Redo this so the front of the robot defaults to the roborio */
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-      new Translation2d(-kDistanceBetweenWheels/2, kDistanceBetweenWheels/2), //front left
-      new Translation2d(-kDistanceBetweenWheels/2, -kDistanceBetweenWheels/2), //front right
-      new Translation2d(kDistanceBetweenWheels/2, kDistanceBetweenWheels/2), //back left
-      new Translation2d(kDistanceBetweenWheels/2, -kDistanceBetweenWheels/2)); //back right
+      new Translation2d(kDistanceBetweenWheels/2, kDistanceBetweenWheels/2), //front left
+      new Translation2d(kDistanceBetweenWheels/2, -kDistanceBetweenWheels/2), //front right
+      new Translation2d(-kDistanceBetweenWheels/2, kDistanceBetweenWheels/2), //back left
+      new Translation2d(-kDistanceBetweenWheels/2, -kDistanceBetweenWheels/2)); //back right
     
   }
 
@@ -61,7 +61,7 @@ public final class Constants {
     public static final double kLoadingDistanceOffset = 1;
 
     public static final double kMaxVisionAlignmentSpeed = 0.5;
-    public static final double kMaxVisionDistAlignmentSpeed = 15.5;
+    public static final double kMaxVisionDistAlignmentSpeed = 3;
     public static final double kMaxVisionRotationSpeed = Math.PI/2;
 
     public static final double kCameraHeight = Units.inchesToMeters(4.5);

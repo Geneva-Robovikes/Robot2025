@@ -18,15 +18,16 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class SwerveSubsystem extends SubsystemBase {
   /* Initialize swerve modules */
-  private final SwerveModule frontRight = new SwerveModule(1, 3, false, true, 2, "Front Right");
-  private final SwerveModule backRight = new SwerveModule(4, 6, false, true, 5, "Back Right");
-  private final SwerveModule backLeft = new SwerveModule(7, 9, false, true, 8, "Back Left");
-  private final SwerveModule frontLeft = new SwerveModule(10, 12, false, true, 11, "Back Right");
+  private final SwerveModule frontLeft = new SwerveModule(1, 3, false, true, 2, "Front Right");
+  private final SwerveModule backLeft = new SwerveModule(4, 6, false, true, 5, "Back Right");
+  private final SwerveModule backRight = new SwerveModule(7, 9, false, true, 8, "Back Left");
+  private final SwerveModule frontRight = new SwerveModule(10, 12, false, true, 11, "Back Right");
   
   private final ADIS16448_IMU gyro = new ADIS16448_IMU();
 
@@ -88,7 +89,9 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    SmartDashboard.putNumber("Gyro", -gyro.getGyroAngleZ() / 57.295779513);
+  }
 
   public void stopModules() {
     frontLeft.stop();

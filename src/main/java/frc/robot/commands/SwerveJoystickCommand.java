@@ -52,7 +52,7 @@ public class SwerveJoystickCommand extends Command {
     }
 
     /* Set the speeds of the swerve module */
-    ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, -ySpeed, turningSpeed, swerveSubsystem.getRotation2d());
+    ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, -ySpeed, -turningSpeed, swerveSubsystem.getRotation2d());
     SwerveModuleState[] moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
 
     swerveSubsystem.setModuleStates(moduleStates);
