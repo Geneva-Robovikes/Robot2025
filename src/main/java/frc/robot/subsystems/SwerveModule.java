@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -32,6 +33,9 @@ public class SwerveModule {
 
         driveMotor.setInverted(driveReversed);
         turnMotor.setInverted(turningReversed);
+
+        driveMotor.setNeutralMode(NeutralModeValue.Brake);
+        turnMotor.setNeutralMode(NeutralModeValue.Brake);
 
         turningPidController = new PIDController(Constants.ModuleConstants.kTurnPIDkValue, 0, 0);
 

@@ -11,24 +11,29 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
-public class VisionAlignmentCommand extends Command {
+public class AutoVisionCommand extends Command {
 
   private final VisionSubsystem subsystem;
   private final SwerveSubsystem swerveSubsystem;
   private final PIDController controller;
 
+  private final Timer timer;
+
   private boolean stop;
 
-  public VisionAlignmentCommand(VisionSubsystem s, SwerveSubsystem ss) {
+  public AutoVisionCommand(VisionSubsystem s, SwerveSubsystem ss) {
     subsystem = s;
     swerveSubsystem = ss;
     controller = new PIDController(.1, 0, 0);
+
+    timer = new Timer();
 
     stop = false;
 
@@ -36,7 +41,9 @@ public class VisionAlignmentCommand extends Command {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    timer.start();
+  }
 
   @Override
   public void execute() {
@@ -64,6 +71,11 @@ public class VisionAlignmentCommand extends Command {
 
         SmartDashboard.putNumber("Range", targetRange);
         SmartDashboard.putNumber("Yaw", target.getYaw());
+
+        if(timer.hasElapsed(2)) {
+          System.out.println("done");
+          stop = true;
+        }
         
         chassisSpeeds = new ChassisSpeeds((Constants.VisionConstants.kMaxVisionDistAlignmentSpeed * MathUtil.clamp(controller.calculate((Constants.VisionConstants.kReefDistanceOffset * 10), (targetRange*10)), -1, 1)), -(Constants.VisionConstants.kMaxVisionAlignmentSpeed * controller.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw())), 0);
         moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
@@ -80,7 +92,6 @@ public class VisionAlignmentCommand extends Command {
 
   @Override
   public boolean isFinished() {
-    
     return stop;
   }
 }

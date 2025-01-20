@@ -31,7 +31,8 @@ public class SwerveSubsystem extends SubsystemBase {
   
   private final ADIS16448_IMU gyro = new ADIS16448_IMU();
 
-  private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(Constants.ModuleConstants.kDriveKinematics, getRotation2d(), 
+  private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(
+    Constants.ModuleConstants.kDriveKinematics, getRotation2d(), 
     new SwerveModulePosition[] {
       frontLeft.getPosition(),
       frontRight.getPosition(),
@@ -44,6 +45,8 @@ public class SwerveSubsystem extends SubsystemBase {
   
 
   public SwerveSubsystem() {
+    gyro.calibrate();
+
     /* AUTO */
     RobotConfig config;
     
@@ -57,8 +60,8 @@ public class SwerveSubsystem extends SubsystemBase {
         this::getRobotChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
           (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-              new PIDConstants(Constants.ModuleConstants.kDrivePIDkValue, 0.0, 0.0), // Translation PID constants
-              new PIDConstants(Constants.ModuleConstants.kTurnPIDkValue, 0.0, 0.0) // Rotation PID constants
+              new PIDConstants(.15, 0.0, 0), // Translation PID constants
+              new PIDConstants(3, 0.0, 0.0) // Rotation PID constants
             ),
             config, // The robot configuration
             () -> {

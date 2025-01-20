@@ -43,6 +43,7 @@ public class SwerveJoystickCommand extends Command {
     /* Applies drive easing function */
     xSpeed = ease.drive(xSpeed);
     ySpeed = ease.drive(ySpeed);
+    turningSpeed = ease.drive(ease.drive(turningSpeed));
 
     /* Apply a deadzone so that the motors dont get damaged by turning too slow */
     xSpeed = Math.abs(xSpeed) > Constants.OperatorConstants.controllerDeadzone ? xSpeed : 0.0;
