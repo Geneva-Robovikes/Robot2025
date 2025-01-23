@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
+        "x": 3.0,
         "y": 7.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0,
+        "x": 4.000000000000002,
         "y": 7.0
       },
       "isLocked": false,
@@ -16,32 +16,48 @@
     },
     {
       "anchor": {
-        "x": 6.0,
-        "y": 7.0
+        "x": 6.3534836065573765,
+        "y": 6.776178278688524
       },
       "prevControl": {
-        "x": 5.0,
-        "y": 7.0
+        "x": 5.3534836065573765,
+        "y": 6.776178278688524
       },
       "nextControl": {
-        "x": 7.0,
-        "y": 7.0
+        "x": 7.3534836065573765,
+        "y": 6.776178278688524
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.0,
+        "x": 6.389446721311475,
+        "y": 4.726280737704917
+      },
+      "prevControl": {
+        "x": 7.500916897987219,
+        "y": 4.944216066464866
+      },
+      "nextControl": {
+        "x": 2.109836065573771,
+        "y": 3.8871413934426218
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.6423155737704918,
         "y": 7.0
       },
       "prevControl": {
-        "x": 3.34425,
-        "y": 6.99875
+        "x": 2.755917008196721,
+        "y": 6.60140881147541
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "AdvancedVisionWaypoint"
     }
   ],
   "rotationTargets": [],

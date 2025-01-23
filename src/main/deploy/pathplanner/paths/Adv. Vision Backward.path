@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
+        "x": 1.6423155737704918,
         "y": 7.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0,
+        "x": 2.6423155737704915,
         "y": 7.0
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "AdvancedVisionWaypoint"
     },
     {
       "anchor": {
-        "x": 6.0,
+        "x": 3.512397540983606,
         "y": 7.0
       },
       "prevControl": {
-        "x": 5.0,
+        "x": 2.512397540983606,
         "y": 7.0
-      },
-      "nextControl": {
-        "x": 7.0,
-        "y": 7.0
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.0,
-        "y": 7.0
-      },
-      "prevControl": {
-        "x": 3.34425,
-        "y": 6.99875
       },
       "nextControl": null,
       "isLocked": false,

@@ -54,6 +54,10 @@ public class SwerveModule {
         return driveMotor.getRotorVelocity().getValueAsDouble()  / Constants.ModuleConstants.kDriveMotorGearRatio * Math.PI * Constants.ModuleConstants.kWheelDiameterMeters; 
     }
 
+    public double getDrivePosition() {
+        return driveMotor.getRotorPosition().getValueAsDouble()  / Constants.ModuleConstants.kDriveMotorGearRatio * Math.PI * Constants.ModuleConstants.kWheelDiameterMeters; 
+    }
+
     /* Returns the position of the CANcoder in radians. */
     public double getAbsoluteEncoderRad() {
         return absoluteEncoder.getPosition().getValueAsDouble() * 2 * Math.PI;
@@ -96,7 +100,7 @@ public class SwerveModule {
 
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-            getDriveVelocity(),
+            getDrivePosition(),
             new Rotation2d(getAbsoluteEncoderRad())
         );
     }

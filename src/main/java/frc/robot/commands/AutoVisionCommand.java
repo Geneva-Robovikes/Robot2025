@@ -27,11 +27,12 @@ public class AutoVisionCommand extends Command {
   private final Timer timer;
 
   private boolean stop;
+  private boolean startTimer;
 
   public AutoVisionCommand(VisionSubsystem s, SwerveSubsystem ss) {
     subsystem = s;
     swerveSubsystem = ss;
-    controller = new PIDController(.1, 0, 0);
+    controller = new PIDController(.12, 0, 0);
 
     timer = new Timer();
 
@@ -42,7 +43,7 @@ public class AutoVisionCommand extends Command {
 
   @Override
   public void initialize() {
-    timer.start();
+    startTimer = true;
   }
 
   @Override
@@ -50,7 +51,9 @@ public class AutoVisionCommand extends Command {
     Optional<PhotonTrackedTarget> optTarget = subsystem.getTarget();
 
     int targetID;
+
     boolean contains;
+
     ChassisSpeeds chassisSpeeds;
     SwerveModuleState[] moduleStates;
 
@@ -69,18 +72,17 @@ public class AutoVisionCommand extends Command {
           Units.degreesToRadians(-30.0), // Measured with a protractor, or in CAD.
           Units.degreesToRadians(target.getPitch()));
 
-        SmartDashboard.putNumber("Range", targetRange);
-        SmartDashboard.putNumber("Yaw", target.getYaw());
-
-        if(timer.hasElapsed(2)) {
-          System.out.println("done");
-          stop = true;
-        }
+        SmartDashboard.putNumber("Yaw Error", target.getYaw() - Constants.VisionConstants.kReefYawOffset);
         
         chassisSpeeds = new ChassisSpeeds((Constants.VisionConstants.kMaxVisionDistAlignmentSpeed * MathUtil.clamp(controller.calculate((Constants.VisionConstants.kReefDistanceOffset * 10), (targetRange*10)), -1, 1)), -(Constants.VisionConstants.kMaxVisionAlignmentSpeed * controller.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw())), 0);
         moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
 
         swerveSubsystem.setModuleStates(moduleStates);
+
+
+        if (target.getYaw() - Constants.VisionConstants.kReefYawOffset < 0.2) {
+          stop = true;
+        }
       }
     }
   }
