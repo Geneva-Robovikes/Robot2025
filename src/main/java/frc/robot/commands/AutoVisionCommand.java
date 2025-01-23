@@ -11,7 +11,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -24,17 +23,12 @@ public class AutoVisionCommand extends Command {
   private final SwerveSubsystem swerveSubsystem;
   private final PIDController controller;
 
-  private final Timer timer;
-
   private boolean stop;
-  private boolean startTimer;
 
   public AutoVisionCommand(VisionSubsystem s, SwerveSubsystem ss) {
     subsystem = s;
     swerveSubsystem = ss;
     controller = new PIDController(.12, 0, 0);
-
-    timer = new Timer();
 
     stop = false;
 
@@ -43,7 +37,6 @@ public class AutoVisionCommand extends Command {
 
   @Override
   public void initialize() {
-    startTimer = true;
   }
 
   @Override
