@@ -29,6 +29,7 @@ public class SwerveSubsystem extends SubsystemBase {
   private final SwerveModule backLeft = new SwerveModule(4, 6, false, true, 5, "Back Right");
   private final SwerveModule backRight = new SwerveModule(7, 9, false, true, 8, "Back Left");
   private final SwerveModule frontRight = new SwerveModule(10, 12, false, true, 11, "Back Right");
+  private final OdometrySubsystem visionOdometry = new OdometrySubsystem();
   
   private final ADIS16448_IMU gyro = new ADIS16448_IMU();
 
@@ -104,6 +105,8 @@ public class SwerveSubsystem extends SubsystemBase {
       frontLeft.getPosition(), frontRight.getPosition(),
       backLeft.getPosition(), backRight.getPosition()
     });
+    
+    visionOdometry.updateVisionOdometry();
 
     field.setRobotPose(odometry.getPoseMeters());
   }

@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
@@ -52,6 +55,7 @@ public final class Constants {
     public static final String kCameraOne = "cam1";
     public static final String kCameraTwo = "cam2";
     public static final String kCameraThree = "cam3";
+    public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0, 0, 0));
 
     public static final int[] kReefAprilTags = {11, 17, 18, 19, 20, 21, 22};
 
