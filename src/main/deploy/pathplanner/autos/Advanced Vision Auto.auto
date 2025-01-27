@@ -11,12 +11,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "visionAlignment"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Adv. Vision Backward"

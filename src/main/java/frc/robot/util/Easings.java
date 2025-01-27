@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.util;
 
 public class Easings {
     public final double joystick(double input) {

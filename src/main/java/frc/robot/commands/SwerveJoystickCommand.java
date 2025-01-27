@@ -6,8 +6,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
-import frc.robot.Easings;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.util.Easings;
 
 public class SwerveJoystickCommand extends Command {
   private final SwerveSubsystem swerveSubsystem;
@@ -41,9 +41,9 @@ public class SwerveJoystickCommand extends Command {
     double turningSpeed = controller.getRightX();
 
     /* Applies drive easing function */
-    xSpeed = ease.joystick(xSpeed);
-    ySpeed = ease.joystick(ySpeed);
-    turningSpeed = ease.joystick(ease.joystick(turningSpeed));
+    xSpeed = ease.joystick(xSpeed, 4.05);
+    ySpeed = ease.joystick(ySpeed, 4.05);
+    turningSpeed = ease.joystick(ease.joystick(turningSpeed, 7));
 
     /* Apply a deadzone so that the motors dont get damaged by turning too slow */
     xSpeed = Math.abs(xSpeed) > Constants.OperatorConstants.controllerDeadzone ? xSpeed : 0.0;

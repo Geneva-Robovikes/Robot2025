@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -30,6 +31,8 @@ public class SwerveSubsystem extends SubsystemBase {
   private final SwerveModule frontRight = new SwerveModule(10, 12, false, true, 11, "Back Right");
   
   private final ADIS16448_IMU gyro = new ADIS16448_IMU();
+
+  private final Field2d field = new Field2d();
 
   private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(
     Constants.ModuleConstants.kDriveKinematics, getRotation2d(), 
@@ -45,6 +48,8 @@ public class SwerveSubsystem extends SubsystemBase {
   
 
   public SwerveSubsystem() {
+    SmartDashboard.putData("Field", field);
+
     gyro.calibrate();
 
     /* AUTO */
@@ -60,7 +65,7 @@ public class SwerveSubsystem extends SubsystemBase {
           (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
             //3k for position, .15 for velociry
-              new PIDConstants(.15, 0, 0), // Translation PID constants
+              new PIDConstants(3, 2.7, 0), // Translation PID constants
               new PIDConstants(3, 0.0, 0.0) // Rotation PID constants
             ),
             config, // The robot configuration
@@ -99,6 +104,8 @@ public class SwerveSubsystem extends SubsystemBase {
       frontLeft.getPosition(), frontRight.getPosition(),
       backLeft.getPosition(), backRight.getPosition()
     });
+
+    field.setRobotPose(odometry.getPoseMeters());
   }
 
   public void stopModules() {

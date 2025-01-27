@@ -49,19 +49,21 @@ public final class Constants {
   }
 
   public static class VisionConstants {
-    public static final String kCameraName = "cam1";
+    public static final String kCameraOne = "cam1";
+    public static final String kCameraTwo = "cam2";
+    public static final String kCameraThree = "cam3";
 
     public static final int[] kReefAprilTags = {11, 17, 18, 19, 20, 21, 22};
 
     /* TODO: Measure specific values */
     public static final double kLoadingYawOffset = 0.1;
-    public static final double kReefYawOffset = 0.1;
+    public static final double kReefYawOffset = 0.2;
 
-    public static final double kReefDistanceOffset = -.47;
+    public static final double kReefDistanceOffset = .47;
     public static final double kLoadingDistanceOffset = 1;
 
-    public static final double kMaxVisionAlignmentSpeed = 0.5;
-    public static final double kMaxVisionDistAlignmentSpeed = 3;
+    public static final double kMaxVisionAlignmentSpeed = 6;
+    public static final double kMaxVisionDistAlignmentSpeed = 6;
     public static final double kMaxVisionRotationSpeed = Math.PI/2;
 
     public static final double kCameraHeight = Units.inchesToMeters(4.5);
