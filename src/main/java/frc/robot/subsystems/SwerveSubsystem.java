@@ -24,15 +24,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class SwerveSubsystem extends SubsystemBase {
+  /* Get the vision subsystem for odometry purposes. */
+  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  
   /* Initialize swerve modules */
   private final SwerveModule frontLeft = new SwerveModule(1, 3, false, true, 2, "Front Right");
   private final SwerveModule backLeft = new SwerveModule(4, 6, false, true, 5, "Back Right");
   private final SwerveModule backRight = new SwerveModule(7, 9, false, true, 8, "Back Left");
   private final SwerveModule frontRight = new SwerveModule(10, 12, false, true, 11, "Back Right");
-  private final OdometrySubsystem visionOdometry = new OdometrySubsystem();
   
   private final ADIS16448_IMU gyro = new ADIS16448_IMU();
 
+  /* Visial field representation */
   private final Field2d field = new Field2d();
 
   private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(
@@ -46,7 +49,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
     new Pose2d(0, 0, new Rotation2d())
   );
-  
 
   public SwerveSubsystem() {
     SmartDashboard.putData("Field", field);
@@ -105,10 +107,14 @@ public class SwerveSubsystem extends SubsystemBase {
       frontLeft.getPosition(), frontRight.getPosition(),
       backLeft.getPosition(), backRight.getPosition()
     });
-    
-    visionOdometry.updateVisionOdometry();
 
-    field.setRobotPose(odometry.getPoseMeters());
+    /* If we have a pose estimation, visually update the pose of the robot on the Elastic field widget.
+     * Eventually this will be extended for use in auto/vision alignment, but for now we will keek it 
+     * confined to the widget for testing purposes.
+     */
+    if (visionSubsystem.getEstimatedPose().isPresent()) {
+      field.setRobotPose(visionSubsystem.getEstimatedPose().get());
+    }
   }
 
   public void stopModules() {
@@ -143,7 +149,9 @@ public class SwerveSubsystem extends SubsystemBase {
     return states;
   }
 
-  /* Get the position of the robot */
+  /* Get the position of the robot 
+   * TODO: Incorperate the vision estimated odometry!
+  */
   private Pose2d getPose() {
     return odometry.getPoseMeters();
   }
