@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.AutoStopCommand;
 import frc.robot.commands.SwerveJoystickCommand;
 import frc.robot.commands.VisionAlignmentCommand;
 import frc.robot.commands.AutoVisionCommand;
@@ -39,7 +38,6 @@ public class RobotContainer {
   /* Commands */
   private final VisionAlignmentCommand visionAlignmentCommand = new VisionAlignmentCommand(visionSubsystem, swerveSubsystem);
   private final AutoVisionCommand visionAutoCommand = new AutoVisionCommand(visionSubsystem, swerveSubsystem);
-  private final AutoStopCommand stopCommand = new AutoStopCommand(swerveSubsystem);
 
   /* Auto */
   private final SendableChooser<Command> autoChooser;
@@ -48,8 +46,6 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     NamedCommands.registerCommand("visionAlignment", visionAutoCommand);
-    NamedCommands.registerCommand("stop", stopCommand);
-
     
     autoChooser = AutoBuilder.buildAutoChooser();
 

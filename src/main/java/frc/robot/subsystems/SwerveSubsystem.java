@@ -9,13 +9,15 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -38,17 +40,18 @@ public class SwerveSubsystem extends SubsystemBase {
   /* Visial field representation */
   private final Field2d field = new Field2d();
 
-  private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(
+  private final SwerveDrivePoseEstimator swervePoseEstimator = new SwerveDrivePoseEstimator(
     Constants.ModuleConstants.kDriveKinematics, getRotation2d(), 
     new SwerveModulePosition[] {
       frontLeft.getPosition(),
       frontRight.getPosition(),
       backLeft.getPosition(), 
       backRight.getPosition()
-    }, 
+    }, new Pose2d(0, 0, new Rotation2d()), 
 
-    new Pose2d(0, 0, new Rotation2d())
-  );
+    /* TODO: Put these in constants */
+    VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
+    VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
 
   public SwerveSubsystem() {
     SmartDashboard.putData("Field", field);
@@ -103,7 +106,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Gyro", -gyro.getGyroAngleZ() / 57.295779513);
 
-    odometry.update(getRotation2d(), new SwerveModulePosition[] {
+    swervePoseEstimator.update(getRotation2d(), new SwerveModulePosition[] {
       frontLeft.getPosition(), frontRight.getPosition(),
       backLeft.getPosition(), backRight.getPosition()
     });
@@ -115,8 +118,12 @@ public class SwerveSubsystem extends SubsystemBase {
      *  https://docs.wpilib.org/en/stable/docs/software/advanced-controls/state-space/state-space-pose-estimators.html
      *  Quick link for further reference, read the addVisionMeasurement snippet on that page.
      */
-    if (visionSubsystem.getEstimatedPose().isPresent()) {
-      field.setRobotPose(visionSubsystem.getEstimatedPose().get());
+    for (int x = 0; x < visionSubsystem.getEstimatedPose(swervePoseEstimator.getEstimatedPosition()).size(); x++) {
+      if (visionSubsystem.getEstimatedPose(swervePoseEstimator.getEstimatedPosition()).get(x).isPresent()) {
+        Pose2d estimatedVisionPose = visionSubsystem.getEstimatedPose(swervePoseEstimator.getEstimatedPosition()).get(x).get();
+
+        field.setRobotPose(estimatedVisionPose);
+      }
     }
   }
 
@@ -156,12 +163,12 @@ public class SwerveSubsystem extends SubsystemBase {
    * TODO: Incorperate the vision estimated odometry!
   */
   private Pose2d getPose() {
-    return odometry.getPoseMeters();
+    return swervePoseEstimator.getEstimatedPosition();
   }
 
   /* Set the position of the robot */
   private void resetPose(Pose2d pose) {
-    odometry.resetPosition(getRotation2d(), 
+    swervePoseEstimator.resetPosition(getRotation2d(), 
       new SwerveModulePosition[] {
         frontLeft.getPosition(),
         frontRight.getPosition(),
