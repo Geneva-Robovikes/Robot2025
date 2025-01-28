@@ -51,9 +51,9 @@ public class VisionSubsystem extends SubsystemBase {
     cameraTwoPosition = new Transform3d(new Translation3d(0, 0.0, 0), new Rotation3d(0,0,0));
     cameraThreePosition = new Transform3d(new Translation3d(0, 0.0, 0), new Rotation3d(0,0,0));
 
-    photonPoseEstimatorCameraOne = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, cameraOnePosition);
-    photonPoseEstimatorCameraTwo = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, cameraTwoPosition);
-    photonPoseEstimatorCameraThree = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, cameraThreePosition);
+    photonPoseEstimatorCameraOne = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY, cameraOnePosition);
+    photonPoseEstimatorCameraTwo = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY, cameraTwoPosition);
+    photonPoseEstimatorCameraThree = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY, cameraThreePosition);
   }
 
   @Override
@@ -77,11 +77,7 @@ public class VisionSubsystem extends SubsystemBase {
    * 
    * I do admit that this is a bit ridiculous.
   */
-  public List<Optional<Pose2d>> getEstimatedPose(Pose2d prevEstimatedRobotPose) {
-    photonPoseEstimatorCameraOne.setReferencePose(prevEstimatedRobotPose);
-    photonPoseEstimatorCameraTwo.setReferencePose(prevEstimatedRobotPose);
-    photonPoseEstimatorCameraThree.setReferencePose(prevEstimatedRobotPose);
-
+  public List<Optional<Pose2d>> getEstimatedPose() {
     List<Optional<Pose2d>> estimatedPoses = new ArrayList<Optional<Pose2d>>();
 
     Optional<EstimatedRobotPose> photonEstimatedPoseCamOne = photonPoseEstimatorCameraOne.update(cameraOne.getLatestResult());
