@@ -63,4 +63,23 @@ public class VisionSubsystem extends SubsystemBase {
 
     return Optional.empty();
   }
+
+  /* Returns an optional estimated pose; used for telling where the robot is on the field based on what the cameras see. */
+  public Optional<Pose2d> getEstimatedPose() {
+    Optional<EstimatedRobotPose> photonEstimatedPose = photonEstimator.update(cameraOne.getLatestResult());
+
+    var result = cameraOne.getLatestResult();
+    boolean hasTargets = result.hasTargets();
+
+    if (hasTargets) {
+      if (photonEstimatedPose.isPresent()){
+        Pose3d estimatedPose3d = photonEstimatedPose.get().estimatedPose;
+        Pose2d finalEstimaedBotPose = estimatedPose3d.toPose2d();
+
+        return Optional.of(finalEstimaedBotPose);
+      }
+    }
+
+    return Optional.empty();
+  }
 }
