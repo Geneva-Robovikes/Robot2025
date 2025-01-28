@@ -111,6 +111,9 @@ public class SwerveSubsystem extends SubsystemBase {
     /* If we have a pose estimation, visually update the pose of the robot on the Elastic field widget.
      * Eventually this will be extended for use in auto/vision alignment, but for now we will keek it 
      * confined to the widget for testing purposes.
+     *
+     *  https://docs.wpilib.org/en/stable/docs/software/advanced-controls/state-space/state-space-pose-estimators.html
+     *  Quick link for further reference, read the addVisionMeasurement snippet on that page.
      */
     if (visionSubsystem.getEstimatedPose().isPresent()) {
       field.setRobotPose(visionSubsystem.getEstimatedPose().get());
