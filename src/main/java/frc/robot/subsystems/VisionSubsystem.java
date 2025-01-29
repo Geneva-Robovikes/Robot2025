@@ -73,12 +73,11 @@ public class VisionSubsystem extends SubsystemBase {
     return Optional.empty();
   }
 
-  /* Returns an optional estimated pose; used for telling where the robot is on the field based on what the cameras see. 
-   * 
-   * I do admit that this is a bit ridiculous.
-  */
+  /* Returns an optional estimated pose; used for telling where the robot is on the field based on what the cameras see. */
   public List<Optional<EstimatedRobotPose>> getEstimatedPose() {
     List<Optional<EstimatedRobotPose>> estimatedPoses = new ArrayList<Optional<EstimatedRobotPose>>();
+
+    estimatedPoses.add(Optional.empty()); //To ensure the list always has at least one value in it
 
     Optional<EstimatedRobotPose> photonEstimatedPoseCamOne = photonPoseEstimatorCameraOne.update(cameraOne.getLatestResult());
     Optional<EstimatedRobotPose> photonEstimatedPoseCamTwo = photonPoseEstimatorCameraTwo.update(cameraTwo.getLatestResult());
@@ -94,38 +93,20 @@ public class VisionSubsystem extends SubsystemBase {
 
     if (camOneHasTargets) {
       if (photonEstimatedPoseCamOne.isPresent()){
-        EstimatedRobotPose estimatedPose = photonEstimatedPoseCamOne.get();
-
-        estimatedPoses.add(Optional.of(estimatedPose));
-      } else {
-        estimatedPoses.add(Optional.empty());
+        estimatedPoses.add(photonEstimatedPoseCamOne);
       }
-    } else {
-      estimatedPoses.add(Optional.empty());
     }
 
     if (camTwoHasTargets) {
       if (photonEstimatedPoseCamTwo.isPresent()){
-        EstimatedRobotPose estimatedPose = photonEstimatedPoseCamTwo.get();
-
-        estimatedPoses.add(Optional.of(estimatedPose));
-      } else {
-        estimatedPoses.add(Optional.empty());
+        estimatedPoses.add(photonEstimatedPoseCamTwo);
       }
-    } else {
-      estimatedPoses.add(Optional.empty());
     }
 
     if (camThreeHasTargets) {
       if (photonEstimatedPoseCamThree.isPresent()){
-        EstimatedRobotPose estimatedPose = photonEstimatedPoseCamThree.get();
-
-        estimatedPoses.add(Optional.of(estimatedPose));
-      } else {
-        estimatedPoses.add(Optional.empty());
+        estimatedPoses.add(photonEstimatedPoseCamThree);
       }
-    } else {
-      estimatedPoses.add(Optional.empty());
     }
 
     return estimatedPoses;

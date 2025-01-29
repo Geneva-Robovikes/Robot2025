@@ -11,7 +11,6 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,7 +18,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -51,9 +49,8 @@ public class SwerveSubsystem extends SubsystemBase {
       backRight.getPosition()
     }, new Pose2d(0, 0, new Rotation2d()), 
 
-    /* TODO: Put these in constants */
-    VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
-    VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
+    Constants.ModuleConstants.kStateStdDev,
+    Constants.ModuleConstants.kVisionStdDev);
 
   public SwerveSubsystem() {
     SmartDashboard.putData("Field", field);

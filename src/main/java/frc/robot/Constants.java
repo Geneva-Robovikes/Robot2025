@@ -4,11 +4,11 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -42,20 +42,25 @@ public final class Constants {
     public static final double kDrivePIDkValue = 0.31;
 
     /* Locations of swerve modules in relation to the robots center. */
-    /* TODO: Redo this so the front of the robot defaults to the roborio */
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
       new Translation2d(kDistanceBetweenWheels/2, kDistanceBetweenWheels/2), //front left
       new Translation2d(kDistanceBetweenWheels/2, -kDistanceBetweenWheels/2), //front right
       new Translation2d(-kDistanceBetweenWheels/2, kDistanceBetweenWheels/2), //back left
       new Translation2d(-kDistanceBetweenWheels/2, -kDistanceBetweenWheels/2)); //back right
-    
+
+
+    /* Standard deviations used in the SwerveDrivePoseEstimator, the higher n1 and n2, the more the pose estimator
+     * trusts its output. The visions standard deviation should be fairly high until we do some calibration to get 
+     * the exact error.
+     */
+    public static final Vector<N3> kStateStdDev = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5));
+    public static final Vector<N3> kVisionStdDev = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30));
   }
 
   public static class VisionConstants {
     public static final String kCameraOne = "cam1";
     public static final String kCameraTwo = "cam2";
     public static final String kCameraThree = "cam3";
-    public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0, 0, 0));
 
     public static final int[] kReefAprilTags = {11, 17, 18, 19, 20, 21, 22};
 
