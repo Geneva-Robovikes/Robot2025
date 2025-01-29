@@ -47,9 +47,10 @@ public class VisionSubsystem extends SubsystemBase {
     cameraTwo = new PhotonCamera(Constants.VisionConstants.kCameraTwo);
     cameraThree = new PhotonCamera(Constants.VisionConstants.kCameraThree);
 
-    cameraOnePosition = new Transform3d(new Translation3d(0, 0.0, 0), new Rotation3d(0,0,0));
-    cameraTwoPosition = new Transform3d(new Translation3d(0, 0.0, 0), new Rotation3d(0,0,0));
-    cameraThreePosition = new Transform3d(new Translation3d(0, 0.0, 0), new Rotation3d(0,0,0));
+    /* TODO: actually measure these out */
+    cameraOnePosition = Constants.VisionConstants.kCameraOnePosition;
+    cameraTwoPosition = Constants.VisionConstants.kCameraTwoPosition;
+    cameraThreePosition = Constants.VisionConstants.kCameraThreePosition;
 
     photonPoseEstimatorCameraOne = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY, cameraOnePosition);
     photonPoseEstimatorCameraTwo = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY, cameraTwoPosition);
@@ -84,8 +85,8 @@ public class VisionSubsystem extends SubsystemBase {
     Optional<EstimatedRobotPose> photonEstimatedPoseCamThree = photonPoseEstimatorCameraThree.update(cameraThree.getLatestResult());
 
     var camOneResult = cameraOne.getLatestResult();
-    var camTwoResult = cameraOne.getLatestResult();
-    var camThreeResult = cameraOne.getLatestResult();
+    var camTwoResult = cameraTwo.getLatestResult();
+    var camThreeResult = cameraThree.getLatestResult();
 
     boolean camOneHasTargets = camOneResult.hasTargets();
     boolean camTwoHasTargets = camTwoResult.hasTargets();

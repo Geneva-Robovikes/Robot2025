@@ -6,11 +6,13 @@ package frc.robot;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -61,6 +63,10 @@ public final class Constants {
     public static final String kCameraOne = "cam1";
     public static final String kCameraTwo = "cam2";
     public static final String kCameraThree = "cam3";
+
+    public static final Transform3d kCameraOnePosition = new Transform3d(new Translation3d(Units.inchesToMeters(-12.5), 0.0, 0), new Rotation3d(0,0,0));
+    public static final Transform3d kCameraTwoPosition = new Transform3d(new Translation3d(Units.inchesToMeters(12.5), 0.0, 0), new Rotation3d(0,0,0));
+    public static final Transform3d kCameraThreePosition = new Transform3d(new Translation3d(0, Units.inchesToMeters(-12.5), 0), new Rotation3d(0,0,0));
 
     public static final int[] kReefAprilTags = {11, 17, 18, 19, 20, 21, 22};
 

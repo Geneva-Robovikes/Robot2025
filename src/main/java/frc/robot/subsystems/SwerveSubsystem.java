@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.photonvision.EstimatedRobotPose;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -105,10 +108,27 @@ public class SwerveSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Gyro", -gyro.getGyroAngleZ() / 57.295779513);
 
+    List<Optional<EstimatedRobotPose>> estimatedPoses = visionSubsystem.getEstimatedPose();
+    Pose2d estimatedPose2d;
+    double timestamp;
+
     swervePoseEstimator.update(getRotation2d(), new SwerveModulePosition[] {
       frontLeft.getPosition(), frontRight.getPosition(),
       backLeft.getPosition(), backRight.getPosition()
     });
+
+    for (int x = 0; x < estimatedPoses.size(); x++) {
+      if (estimatedPoses.get(x).isPresent()) {
+        EstimatedRobotPose estimatedVisionPose = estimatedPoses.get(x).get();
+
+        estimatedPose2d = estimatedVisionPose.estimatedPose.toPose2d();
+        timestamp = estimatedVisionPose.timestampSeconds;
+
+        swervePoseEstimator.addVisionMeasurement(estimatedPose2d, timestamp);
+      }
+    }
+
+    field.setRobotPose(swervePoseEstimator.getEstimatedPosition());
 
     /* If we have a pose estimation, visually update the pose of the robot on the Elastic field widget.
      * Eventually this will be extended for use in auto/vision alignment, but for now we will keek it 
@@ -117,13 +137,6 @@ public class SwerveSubsystem extends SubsystemBase {
      * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/state-space/state-space-pose-estimators.html
      * Quick link for further reference, read the addVisionMeasurement snippet on that page.
      */
-    for (int x = 0; x < visionSubsystem.getEstimatedPose().size(); x++) {
-      if (visionSubsystem.getEstimatedPose().get(x).isPresent()) {
-        EstimatedRobotPose estimatedVisionPose = visionSubsystem.getEstimatedPose().get(x).get();
-
-        field.setRobotPose(estimatedVisionPose.estimatedPose.toPose2d());
-      }
-    }
   }
 
   public void stopModules() {
