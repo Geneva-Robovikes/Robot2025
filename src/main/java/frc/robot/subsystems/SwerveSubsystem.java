@@ -4,16 +4,21 @@
 
 package frc.robot.subsystems;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
@@ -24,6 +29,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class SwerveSubsystem extends SubsystemBase {
+  /* Get the vision subsystem for odometry purposes. */
+  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  
   /* Initialize swerve modules */
   private final SwerveModule frontLeft = new SwerveModule(1, 3, false, true, 2, "Front Right");
   private final SwerveModule backLeft = new SwerveModule(4, 6, false, true, 5, "Back Right");
@@ -32,20 +40,20 @@ public class SwerveSubsystem extends SubsystemBase {
   
   private final ADIS16448_IMU gyro = new ADIS16448_IMU();
 
+  /* Visial field representation */
   private final Field2d field = new Field2d();
 
-  private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(
+  private final SwerveDrivePoseEstimator swervePoseEstimator = new SwerveDrivePoseEstimator(
     Constants.ModuleConstants.kDriveKinematics, getRotation2d(), 
     new SwerveModulePosition[] {
       frontLeft.getPosition(),
       frontRight.getPosition(),
       backLeft.getPosition(), 
       backRight.getPosition()
-    }, 
+    }, new Pose2d(0, 0, new Rotation2d()), 
 
-    new Pose2d(0, 0, new Rotation2d())
-  );
-  
+    Constants.ModuleConstants.kStateStdDev,
+    Constants.ModuleConstants.kVisionStdDev);
 
   public SwerveSubsystem() {
     SmartDashboard.putData("Field", field);
@@ -100,12 +108,35 @@ public class SwerveSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Gyro", -gyro.getGyroAngleZ() / 57.295779513);
 
-    odometry.update(getRotation2d(), new SwerveModulePosition[] {
+    List<Optional<EstimatedRobotPose>> estimatedPoses = visionSubsystem.getEstimatedPose();
+    Pose2d estimatedPose2d;
+    double timestamp;
+
+    swervePoseEstimator.update(getRotation2d(), new SwerveModulePosition[] {
       frontLeft.getPosition(), frontRight.getPosition(),
       backLeft.getPosition(), backRight.getPosition()
     });
 
-    field.setRobotPose(odometry.getPoseMeters());
+    for (int x = 0; x < estimatedPoses.size(); x++) {
+      if (estimatedPoses.get(x).isPresent()) {
+        EstimatedRobotPose estimatedVisionPose = estimatedPoses.get(x).get();
+
+        estimatedPose2d = estimatedVisionPose.estimatedPose.toPose2d();
+        timestamp = estimatedVisionPose.timestampSeconds;
+
+        swervePoseEstimator.addVisionMeasurement(estimatedPose2d, timestamp);
+      }
+    }
+
+    field.setRobotPose(swervePoseEstimator.getEstimatedPosition());
+
+    /* If we have a pose estimation, visually update the pose of the robot on the Elastic field widget.
+     * Eventually this will be extended for use in auto/vision alignment, but for now we will keek it 
+     * confined to the widget for testing purposes.
+     *  
+     * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/state-space/state-space-pose-estimators.html
+     * Quick link for further reference, read the addVisionMeasurement snippet on that page.
+     */
   }
 
   public void stopModules() {
@@ -140,14 +171,16 @@ public class SwerveSubsystem extends SubsystemBase {
     return states;
   }
 
-  /* Get the position of the robot */
+  /* Get the position of the robot 
+   * TODO: Incorperate the vision estimated odometry!
+  */
   private Pose2d getPose() {
-    return odometry.getPoseMeters();
+    return swervePoseEstimator.getEstimatedPosition();
   }
 
   /* Set the position of the robot */
   private void resetPose(Pose2d pose) {
-    odometry.resetPosition(getRotation2d(), 
+    swervePoseEstimator.resetPosition(getRotation2d(), 
       new SwerveModulePosition[] {
         frontLeft.getPosition(),
         frontRight.getPosition(),

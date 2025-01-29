@@ -4,8 +4,11 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
@@ -13,6 +16,8 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -31,7 +36,9 @@ public class VisionSubsystem extends SubsystemBase {
   private final Transform3d cameraTwoPosition;
   private final Transform3d cameraThreePosition;
 
-  private final PhotonPoseEstimator photonPoseEstimator;
+  private final PhotonPoseEstimator photonPoseEstimatorCameraOne;
+  private final PhotonPoseEstimator photonPoseEstimatorCameraTwo;
+  private final PhotonPoseEstimator photonPoseEstimatorCameraThree;
 
   public VisionSubsystem() {
     aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
@@ -40,11 +47,14 @@ public class VisionSubsystem extends SubsystemBase {
     cameraTwo = new PhotonCamera(Constants.VisionConstants.kCameraTwo);
     cameraThree = new PhotonCamera(Constants.VisionConstants.kCameraThree);
 
-    cameraOnePosition = new Transform3d(new Translation3d(0, 0.0, 0), new Rotation3d(0,0,0));
-    cameraTwoPosition = new Transform3d(new Translation3d(0, 0.0, 0), new Rotation3d(0,0,0));
-    cameraThreePosition = new Transform3d(new Translation3d(0, 0.0, 0), new Rotation3d(0,0,0));
+    /* TODO: actually measure these out */
+    cameraOnePosition = Constants.VisionConstants.kCameraOnePosition;
+    cameraTwoPosition = Constants.VisionConstants.kCameraTwoPosition;
+    cameraThreePosition = Constants.VisionConstants.kCameraThreePosition;
 
-    photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, cameraOnePosition);
+    photonPoseEstimatorCameraOne = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY, cameraOnePosition);
+    photonPoseEstimatorCameraTwo = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY, cameraTwoPosition);
+    photonPoseEstimatorCameraThree = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY, cameraThreePosition);
   }
 
   @Override
@@ -62,5 +72,44 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     return Optional.empty();
+  }
+
+  /* Returns an optional estimated pose; used for telling where the robot is on the field based on what the cameras see. */
+  public List<Optional<EstimatedRobotPose>> getEstimatedPose() {
+    List<Optional<EstimatedRobotPose>> estimatedPoses = new ArrayList<Optional<EstimatedRobotPose>>();
+
+    estimatedPoses.add(Optional.empty()); //To ensure the list always has at least one value in it
+
+    Optional<EstimatedRobotPose> photonEstimatedPoseCamOne = photonPoseEstimatorCameraOne.update(cameraOne.getLatestResult());
+    Optional<EstimatedRobotPose> photonEstimatedPoseCamTwo = photonPoseEstimatorCameraTwo.update(cameraTwo.getLatestResult());
+    Optional<EstimatedRobotPose> photonEstimatedPoseCamThree = photonPoseEstimatorCameraThree.update(cameraThree.getLatestResult());
+
+    var camOneResult = cameraOne.getLatestResult();
+    var camTwoResult = cameraTwo.getLatestResult();
+    var camThreeResult = cameraThree.getLatestResult();
+
+    boolean camOneHasTargets = camOneResult.hasTargets();
+    boolean camTwoHasTargets = camTwoResult.hasTargets();
+    boolean camThreeHasTargets = camThreeResult.hasTargets();
+
+    if (camOneHasTargets) {
+      if (photonEstimatedPoseCamOne.isPresent()){
+        estimatedPoses.add(photonEstimatedPoseCamOne);
+      }
+    }
+
+    if (camTwoHasTargets) {
+      if (photonEstimatedPoseCamTwo.isPresent()){
+        estimatedPoses.add(photonEstimatedPoseCamTwo);
+      }
+    }
+
+    if (camThreeHasTargets) {
+      if (photonEstimatedPoseCamThree.isPresent()){
+        estimatedPoses.add(photonEstimatedPoseCamThree);
+      }
+    }
+
+    return estimatedPoses;
   }
 }
