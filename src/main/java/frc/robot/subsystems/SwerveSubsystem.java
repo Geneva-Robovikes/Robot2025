@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.photonvision.EstimatedRobotPose;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -120,9 +122,9 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     for (int x = 0; x < visionSubsystem.getEstimatedPose().size(); x++) {
       if (visionSubsystem.getEstimatedPose().get(x).isPresent()) {
-        Pose2d estimatedVisionPose = visionSubsystem.getEstimatedPose().get(x).get();
+        EstimatedRobotPose estimatedVisionPose = visionSubsystem.getEstimatedPose().get(x).get();
 
-        field.setRobotPose(estimatedVisionPose);
+        field.setRobotPose(estimatedVisionPose.estimatedPose.toPose2d());
       }
     }
   }

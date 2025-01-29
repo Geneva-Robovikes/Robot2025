@@ -77,8 +77,8 @@ public class VisionSubsystem extends SubsystemBase {
    * 
    * I do admit that this is a bit ridiculous.
   */
-  public List<Optional<Pose2d>> getEstimatedPose() {
-    List<Optional<Pose2d>> estimatedPoses = new ArrayList<Optional<Pose2d>>();
+  public List<Optional<EstimatedRobotPose>> getEstimatedPose() {
+    List<Optional<EstimatedRobotPose>> estimatedPoses = new ArrayList<Optional<EstimatedRobotPose>>();
 
     Optional<EstimatedRobotPose> photonEstimatedPoseCamOne = photonPoseEstimatorCameraOne.update(cameraOne.getLatestResult());
     Optional<EstimatedRobotPose> photonEstimatedPoseCamTwo = photonPoseEstimatorCameraTwo.update(cameraTwo.getLatestResult());
@@ -94,10 +94,9 @@ public class VisionSubsystem extends SubsystemBase {
 
     if (camOneHasTargets) {
       if (photonEstimatedPoseCamOne.isPresent()){
-        Pose3d estimatedPose3d = photonEstimatedPoseCamOne.get().estimatedPose;
-        Pose2d finalEstimaedBotPose = estimatedPose3d.toPose2d();
+        EstimatedRobotPose estimatedPose = photonEstimatedPoseCamOne.get();
 
-        estimatedPoses.add(Optional.of(finalEstimaedBotPose));
+        estimatedPoses.add(Optional.of(estimatedPose));
       } else {
         estimatedPoses.add(Optional.empty());
       }
@@ -107,10 +106,9 @@ public class VisionSubsystem extends SubsystemBase {
 
     if (camTwoHasTargets) {
       if (photonEstimatedPoseCamTwo.isPresent()){
-        Pose3d estimatedPose3d = photonEstimatedPoseCamTwo.get().estimatedPose;
-        Pose2d finalEstimaedBotPose = estimatedPose3d.toPose2d();
+        EstimatedRobotPose estimatedPose = photonEstimatedPoseCamTwo.get();
 
-        estimatedPoses.add(Optional.of(finalEstimaedBotPose));
+        estimatedPoses.add(Optional.of(estimatedPose));
       } else {
         estimatedPoses.add(Optional.empty());
       }
@@ -120,10 +118,9 @@ public class VisionSubsystem extends SubsystemBase {
 
     if (camThreeHasTargets) {
       if (photonEstimatedPoseCamThree.isPresent()){
-        Pose3d estimatedPose3d = photonEstimatedPoseCamThree.get().estimatedPose;
-        Pose2d finalEstimaedBotPose = estimatedPose3d.toPose2d();
+        EstimatedRobotPose estimatedPose = photonEstimatedPoseCamThree.get();
 
-        estimatedPoses.add(Optional.of(finalEstimaedBotPose));
+        estimatedPoses.add(Optional.of(estimatedPose));
       } else {
         estimatedPoses.add(Optional.empty());
       }
