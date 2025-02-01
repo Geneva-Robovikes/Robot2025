@@ -17,18 +17,22 @@ import frc.robot.Constants;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
-public class AutoVisionCommand extends Command {
+public class AutoVisionAlignmentCommand extends Command {
 
   private final VisionSubsystem subsystem;
   private final SwerveSubsystem swerveSubsystem;
-  private final PIDController controller;
+
+  private final PIDController yawController;
+  private final PIDController distanceController;
 
   private boolean stop;
 
-  public AutoVisionCommand(VisionSubsystem s, SwerveSubsystem ss) {
+  public AutoVisionAlignmentCommand(VisionSubsystem s, SwerveSubsystem ss) {
     subsystem = s;
     swerveSubsystem = ss;
-    controller = new PIDController(.12, 0, 0);
+
+    yawController = new PIDController(.015, 0, 0.0);
+    distanceController = new PIDController(.52, 0, 0);
 
     stop = false;
 
@@ -36,17 +40,14 @@ public class AutoVisionCommand extends Command {
   }
 
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   @Override
   public void execute() {
     Optional<PhotonTrackedTarget> optTarget = subsystem.getTarget();
 
     int targetID;
-
     boolean contains;
-
     ChassisSpeeds chassisSpeeds;
     SwerveModuleState[] moduleStates;
 
@@ -62,18 +63,28 @@ public class AutoVisionCommand extends Command {
         targetRange = PhotonUtils.calculateDistanceToTargetMeters(
           Constants.VisionConstants.kCameraHeight, // Measured with a tape measure, or in CAD.
           Constants.VisionConstants.kReefAprilTagHeight, // From 2024 game manual for ID 7
-          Units.degreesToRadians(-30.0), // Measured with a protractor, or in CAD.
+          Units.degreesToRadians(30.0), // Measured with a protractor, or in CAD.
           Units.degreesToRadians(target.getPitch()));
 
-        SmartDashboard.putNumber("Yaw Error", target.getYaw() - Constants.VisionConstants.kReefYawOffset);
+        SmartDashboard.putNumber("Range", targetRange);
+        SmartDashboard.putNumber("Yaw", target.getYaw());
+        SmartDashboard.putNumber("Skew", target.getSkew());
+
+        SmartDashboard.putNumber("PID Distance", MathUtil.clamp(distanceController.calculate((Constants.VisionConstants.kReefDistanceOffset * 10), (targetRange*10)), -1, 1));
         
-        chassisSpeeds = new ChassisSpeeds((Constants.VisionConstants.kMaxVisionDistAlignmentSpeed * MathUtil.clamp(controller.calculate((Constants.VisionConstants.kReefDistanceOffset * 10), (targetRange*10)), -1, 1)), -(Constants.VisionConstants.kMaxVisionAlignmentSpeed * controller.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw())), 0);
+        
+        chassisSpeeds = new ChassisSpeeds((Constants.VisionConstants.kMaxVisionDistAlignmentSpeed * MathUtil.clamp(distanceController.calculate((Constants.VisionConstants.kReefDistanceOffset * 10), (targetRange*10)), -1, 1)), -(Constants.VisionConstants.kMaxVisionAlignmentSpeed * yawController.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw())), 0);
         moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+        
+        /*
+        chassisSpeeds = new ChassisSpeeds(0, -(Constants.VisionConstants.kMaxVisionAlignmentSpeed * yawController.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw())), 0);
+        moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+        */
 
         swerveSubsystem.setModuleStates(moduleStates);
 
-
         if (target.getYaw() - Constants.VisionConstants.kReefYawOffset < 0.2) {
+          System.out.println("Done!");
           stop = true;
         }
       }
@@ -87,6 +98,7 @@ public class AutoVisionCommand extends Command {
 
   @Override
   public boolean isFinished() {
+    
     return stop;
   }
 }

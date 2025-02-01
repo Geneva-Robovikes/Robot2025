@@ -7,9 +7,9 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.SwerveJoystickCommand;
 import frc.robot.commands.VisionAlignmentCommand;
-import frc.robot.commands.AutoVisionCommand;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.commands.AutoVisionAlignmentCommand;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -37,7 +37,7 @@ public class RobotContainer {
 
   /* Commands */
   private final VisionAlignmentCommand visionAlignmentCommand = new VisionAlignmentCommand(visionSubsystem, swerveSubsystem);
-  private final AutoVisionCommand visionAutoCommand = new AutoVisionCommand(visionSubsystem, swerveSubsystem);
+  private final AutoVisionAlignmentCommand visionAutoCommand = new AutoVisionAlignmentCommand(visionSubsystem, swerveSubsystem);
 
   /* Auto */
   private final SendableChooser<Command> autoChooser;

@@ -72,7 +72,7 @@ public final class Constants {
 
     /* TODO: Measure specific values */
     public static final double kLoadingYawOffset = 0.1;
-    public static final double kReefYawOffset = 0.2;
+    public static final double kReefYawOffset = 1.5;
 
     public static final double kReefDistanceOffset = .47;
     public static final double kLoadingDistanceOffset = 1;

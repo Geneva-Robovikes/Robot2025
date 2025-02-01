@@ -72,8 +72,8 @@ public class SwerveSubsystem extends SubsystemBase {
         this::getRobotChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
           (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-            //3k for position, .15 for velociry
-              new PIDConstants(3, 2.7, 0), // Translation PID constants
+            //3, 2.7 for position, .15 for velociry
+              new PIDConstants(3, 0, 0), // Translation PID constants
               new PIDConstants(3, 0.0, 0.0) // Rotation PID constants
             ),
             config, // The robot configuration
@@ -117,6 +117,15 @@ public class SwerveSubsystem extends SubsystemBase {
       backLeft.getPosition(), backRight.getPosition()
     });
 
+    /* If we have a pose estimation, visually update the pose of the robot on the Elastic field widget.
+     * Eventually this will be extended for use in auto/vision alignment, but for now we will keek it 
+     * confined to the widget for testing purposes.
+     *  
+     * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/state-space/state-space-pose-estimators.html
+     * Quick link for further reference, read the addVisionMeasurement snippet on that page.
+     */
+    
+    /* 
     for (int x = 0; x < estimatedPoses.size(); x++) {
       if (estimatedPoses.get(x).isPresent()) {
         EstimatedRobotPose estimatedVisionPose = estimatedPoses.get(x).get();
@@ -126,17 +135,9 @@ public class SwerveSubsystem extends SubsystemBase {
 
         swervePoseEstimator.addVisionMeasurement(estimatedPose2d, timestamp);
       }
-    }
+    } */
 
     field.setRobotPose(swervePoseEstimator.getEstimatedPosition());
-
-    /* If we have a pose estimation, visually update the pose of the robot on the Elastic field widget.
-     * Eventually this will be extended for use in auto/vision alignment, but for now we will keek it 
-     * confined to the widget for testing purposes.
-     *  
-     * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/state-space/state-space-pose-estimators.html
-     * Quick link for further reference, read the addVisionMeasurement snippet on that page.
-     */
   }
 
   public void stopModules() {
