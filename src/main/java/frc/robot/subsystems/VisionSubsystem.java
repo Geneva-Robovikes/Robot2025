@@ -28,33 +28,33 @@ import frc.robot.Constants;
 public class VisionSubsystem extends SubsystemBase {
   private final PhotonCamera cameraOne;
   private final PhotonCamera cameraTwo;
-  private final PhotonCamera cameraThree;
+  //private final PhotonCamera cameraThree;
 
   private final AprilTagFieldLayout aprilTagFieldLayout;
 
   private final Transform3d cameraOnePosition;
   private final Transform3d cameraTwoPosition;
-  private final Transform3d cameraThreePosition;
+  //private final Transform3d cameraThreePosition;
 
   private final PhotonPoseEstimator photonPoseEstimatorCameraOne;
   private final PhotonPoseEstimator photonPoseEstimatorCameraTwo;
-  private final PhotonPoseEstimator photonPoseEstimatorCameraThree;
+  //private final PhotonPoseEstimator photonPoseEstimatorCameraThree;
 
   public VisionSubsystem() {
     aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
     cameraOne = new PhotonCamera(Constants.VisionConstants.kCameraOne);
     cameraTwo = new PhotonCamera(Constants.VisionConstants.kCameraTwo);
-    cameraThree = new PhotonCamera(Constants.VisionConstants.kCameraThree);
+    //cameraThree = new PhotonCamera(Constants.VisionConstants.kCameraThree);
 
     /* TODO: actually measure these out */
     cameraOnePosition = Constants.VisionConstants.kCameraOnePosition;
     cameraTwoPosition = Constants.VisionConstants.kCameraTwoPosition;
-    cameraThreePosition = Constants.VisionConstants.kCameraThreePosition;
+    //cameraThreePosition = Constants.VisionConstants.kCameraThreePosition;
 
-    photonPoseEstimatorCameraOne = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY, cameraOnePosition);
-    photonPoseEstimatorCameraTwo = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY, cameraTwoPosition);
-    photonPoseEstimatorCameraThree = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY, cameraThreePosition);
+    photonPoseEstimatorCameraOne = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameraOnePosition);
+    photonPoseEstimatorCameraTwo = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameraTwoPosition);
+    //photonPoseEstimatorCameraThree = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY, cameraThreePosition);
   }
 
   @Override
@@ -78,36 +78,11 @@ public class VisionSubsystem extends SubsystemBase {
   public List<Optional<EstimatedRobotPose>> getEstimatedPose() {
     List<Optional<EstimatedRobotPose>> estimatedPoses = new ArrayList<Optional<EstimatedRobotPose>>();
 
-    estimatedPoses.add(Optional.empty()); //To ensure the list always has at least one value in it
-
     Optional<EstimatedRobotPose> photonEstimatedPoseCamOne = photonPoseEstimatorCameraOne.update(cameraOne.getLatestResult());
     Optional<EstimatedRobotPose> photonEstimatedPoseCamTwo = photonPoseEstimatorCameraTwo.update(cameraTwo.getLatestResult());
-    Optional<EstimatedRobotPose> photonEstimatedPoseCamThree = photonPoseEstimatorCameraThree.update(cameraThree.getLatestResult());
 
-    var camOneResult = cameraOne.getLatestResult();
-    var camTwoResult = cameraTwo.getLatestResult();
-    var camThreeResult = cameraThree.getLatestResult();
-
-    boolean camOneHasTargets = camOneResult.hasTargets();
-    boolean camTwoHasTargets = camTwoResult.hasTargets();
-    boolean camThreeHasTargets = camThreeResult.hasTargets();
-
-    if (camOneHasTargets) {
-      if (photonEstimatedPoseCamOne.isPresent()){
-        estimatedPoses.add(photonEstimatedPoseCamOne);
-      }
-    }
-
-    if (camTwoHasTargets) {
-      if (photonEstimatedPoseCamTwo.isPresent()){
-        estimatedPoses.add(photonEstimatedPoseCamTwo);
-      }
-    }
-
-    if (camThreeHasTargets) {
-      if (photonEstimatedPoseCamThree.isPresent()){
-        estimatedPoses.add(photonEstimatedPoseCamThree);
-      }
+    if (photonEstimatedPoseCamTwo.isPresent()) {
+      estimatedPoses.add(photonEstimatedPoseCamTwo);
     }
 
     return estimatedPoses;

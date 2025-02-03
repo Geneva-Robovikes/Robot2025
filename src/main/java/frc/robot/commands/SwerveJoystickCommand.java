@@ -40,10 +40,10 @@ public class SwerveJoystickCommand extends Command {
     double ySpeed = controller.getLeftY();
     double turningSpeed = controller.getRightX();
 
-    /* Applies drive easing function */
+    /* Applies drive easing function
     xSpeed = ease.joystick(xSpeed, 4.05);
     ySpeed = ease.joystick(ySpeed, 4.05);
-    turningSpeed = ease.joystick(ease.joystick(turningSpeed, 7));
+    turningSpeed = ease.joystick(ease.joystick(turningSpeed, 7));*/
 
     /* Apply a deadzone so that the motors dont get damaged by turning too slow */
     xSpeed = Math.abs(xSpeed) > Constants.OperatorConstants.controllerDeadzone ? xSpeed : 0.0;

@@ -41,7 +41,7 @@ public final class Constants {
     public static final double kDistanceBetweenWheels = Units.inchesToMeters(18.5);
 
     public static final double kTurnPIDkValue = 0.45;
-    public static final double kDrivePIDkValue = 0.31;
+    public static final double kDrivePIDkValue = 0.15;
 
     /* Locations of swerve modules in relation to the robots center. */
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
@@ -56,7 +56,7 @@ public final class Constants {
      * the exact error.
      */
     public static final Vector<N3> kStateStdDev = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5));
-    public static final Vector<N3> kVisionStdDev = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30));
+    public static final Vector<N3> kVisionStdDev = VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(10));
   }
 
   public static class VisionConstants {
@@ -72,9 +72,9 @@ public final class Constants {
 
     /* TODO: Measure specific values */
     public static final double kLoadingYawOffset = 0.1;
-    public static final double kReefYawOffset = 1.5;
+    public static final double kReefYawOffset = 0;
 
-    public static final double kReefDistanceOffset = .47;
+    public static final double kReefDistanceOffset = 0;
     public static final double kLoadingDistanceOffset = 1;
 
     public static final double kMaxVisionAlignmentSpeed = 6;

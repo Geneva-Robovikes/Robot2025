@@ -32,7 +32,7 @@ public class VisionAlignmentCommand extends Command {
     swerveSubsystem = ss;
 
     yawController = new PIDController(.015, 0, 0.0);
-    distanceController = new PIDController(.52, 0, 0);
+    distanceController = new PIDController(.015, 0, 0);
 
     stop = false;
 
@@ -72,14 +72,14 @@ public class VisionAlignmentCommand extends Command {
 
         SmartDashboard.putNumber("PID Distance", MathUtil.clamp(distanceController.calculate((Constants.VisionConstants.kReefDistanceOffset * 10), (targetRange*10)), -1, 1));
         
-        
+        /* 
         chassisSpeeds = new ChassisSpeeds((Constants.VisionConstants.kMaxVisionDistAlignmentSpeed * MathUtil.clamp(distanceController.calculate((Constants.VisionConstants.kReefDistanceOffset * 10), (targetRange*10)), -1, 1)), -(Constants.VisionConstants.kMaxVisionAlignmentSpeed * yawController.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw())), 0);
         moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-        
-        /*
-        chassisSpeeds = new ChassisSpeeds(0, -(Constants.VisionConstants.kMaxVisionAlignmentSpeed * yawController.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw())), 0);
-        moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
         */
+        
+        chassisSpeeds = new ChassisSpeeds((Constants.VisionConstants.kMaxVisionAlignmentSpeed * yawController.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw())), 0, 0);
+        moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+        
 
         swerveSubsystem.setModuleStates(moduleStates);
       }

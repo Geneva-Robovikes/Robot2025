@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
 
+import com.ctre.phoenix6.Utils;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -108,15 +109,6 @@ public class SwerveSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Gyro", -gyro.getGyroAngleZ() / 57.295779513);
 
-    List<Optional<EstimatedRobotPose>> estimatedPoses = visionSubsystem.getEstimatedPose();
-    Pose2d estimatedPose2d;
-    double timestamp;
-
-    swervePoseEstimator.update(getRotation2d(), new SwerveModulePosition[] {
-      frontLeft.getPosition(), frontRight.getPosition(),
-      backLeft.getPosition(), backRight.getPosition()
-    });
-
     /* If we have a pose estimation, visually update the pose of the robot on the Elastic field widget.
      * Eventually this will be extended for use in auto/vision alignment, but for now we will keek it 
      * confined to the widget for testing purposes.
@@ -124,8 +116,10 @@ public class SwerveSubsystem extends SubsystemBase {
      * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/state-space/state-space-pose-estimators.html
      * Quick link for further reference, read the addVisionMeasurement snippet on that page.
      */
+    List<Optional<EstimatedRobotPose>> estimatedPoses = visionSubsystem.getEstimatedPose();
+    Pose2d estimatedPose2d;
+    double timestamp;
     
-    /* 
     for (int x = 0; x < estimatedPoses.size(); x++) {
       if (estimatedPoses.get(x).isPresent()) {
         EstimatedRobotPose estimatedVisionPose = estimatedPoses.get(x).get();
@@ -133,9 +127,14 @@ public class SwerveSubsystem extends SubsystemBase {
         estimatedPose2d = estimatedVisionPose.estimatedPose.toPose2d();
         timestamp = estimatedVisionPose.timestampSeconds;
 
-        swervePoseEstimator.addVisionMeasurement(estimatedPose2d, timestamp);
+        swervePoseEstimator.addVisionMeasurement(estimatedPose2d, Utils.fpgaToCurrentTime(timestamp));
       }
-    } */
+    }
+
+    swervePoseEstimator.update(getRotation2d(), new SwerveModulePosition[] {
+      frontLeft.getPosition(), frontRight.getPosition(),
+      backLeft.getPosition(), backRight.getPosition()
+    });
 
     field.setRobotPose(swervePoseEstimator.getEstimatedPosition());
   }
