@@ -41,7 +41,7 @@ public class VisionSubsystem extends SubsystemBase {
   //private final PhotonPoseEstimator photonPoseEstimatorCameraThree;
 
   public VisionSubsystem() {
-    aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+    aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
 
     cameraOne = new PhotonCamera(Constants.VisionConstants.kCameraOne);
     cameraTwo = new PhotonCamera(Constants.VisionConstants.kCameraTwo);

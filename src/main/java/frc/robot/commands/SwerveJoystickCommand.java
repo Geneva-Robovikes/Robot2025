@@ -40,10 +40,10 @@ public class SwerveJoystickCommand extends Command {
     double ySpeed = controller.getLeftY();
     double turningSpeed = controller.getRightX();
 
-    /* Applies drive easing function
+    /* Apply easing functions */
     xSpeed = ease.joystick(xSpeed, 4.05);
     ySpeed = ease.joystick(ySpeed, 4.05);
-    turningSpeed = ease.joystick(ease.joystick(turningSpeed, 7));*/
+    turningSpeed = ease.joystick(ease.joystick(turningSpeed, 7));
 
     /* Apply a deadzone so that the motors dont get damaged by turning too slow */
     xSpeed = Math.abs(xSpeed) > Constants.OperatorConstants.controllerDeadzone ? xSpeed : 0.0;
@@ -60,7 +60,7 @@ public class SwerveJoystickCommand extends Command {
     }
 
     /* Set the speeds of the swerve module */
-    ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, -ySpeed, -turningSpeed, swerveSubsystem.getRotation2d());
+    ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(-ySpeed, -xSpeed, -turningSpeed, swerveSubsystem.getRotation2d());
     SwerveModuleState[] moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
 
     swerveSubsystem.setModuleStates(moduleStates);
