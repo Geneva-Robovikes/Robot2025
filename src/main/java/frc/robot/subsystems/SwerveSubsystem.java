@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.StopCommand;
 
 public class SwerveSubsystem extends SubsystemBase {
   /* Get the vision subsystem for odometry purposes. */
@@ -56,10 +57,19 @@ public class SwerveSubsystem extends SubsystemBase {
     Constants.ModuleConstants.kStateStdDev,
     Constants.ModuleConstants.kVisionStdDev);
 
+  private ChassisSpeeds speeds;
+
   public SwerveSubsystem() {
     SmartDashboard.putData("Field", field);
 
     gyro.calibrate();
+
+    setDefaultCommand(new StopCommand(this));
+
+    speeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, getRotation2d());
+    SwerveModuleState[] states = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(speeds);
+    
+    initModules(states);
 
     /* AUTO */
     RobotConfig config;
@@ -157,6 +167,13 @@ public class SwerveSubsystem extends SubsystemBase {
     frontRight.setDesiredState(desiredStates[1]);
     backLeft.setDesiredState(desiredStates[2]);
     backRight.setDesiredState(desiredStates[3]);
+  }
+
+  public void initModules(SwerveModuleState[] desiredStates) {
+    frontLeft.initModule(desiredStates[0]);
+    frontRight.initModule(desiredStates[1]);
+    backLeft.initModule(desiredStates[2]);
+    backRight.initModule(desiredStates[3]);
   }
 
   /* AUTO FUNCTIONS */

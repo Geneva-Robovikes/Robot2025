@@ -56,7 +56,7 @@ public final class Constants {
      * the exact error.
      */
     public static final Vector<N3> kStateStdDev = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5));
-    public static final Vector<N3> kVisionStdDev = VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(10));
+    public static final Vector<N3> kVisionStdDev = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(10));
   }
 
   public static class VisionConstants {

@@ -93,6 +93,12 @@ public class SwerveModule {
         SmartDashboard.putString(moduleName + " swerve module state:", state.toString()); 
     }
 
+    @SuppressWarnings("deprecation")
+    public void initModule(SwerveModuleState desiredState) {
+        SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(getAbsoluteEncoderRad()));
+        currentState = state;
+    }
+
     public void stop() {
         driveMotor.set(0);
         turnMotor.set(0);

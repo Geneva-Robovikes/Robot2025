@@ -62,7 +62,7 @@ public class VisionSubsystem extends SubsystemBase {
 
   /* Returns an "optional" PhotonTrackedTarget. Basically, if there is no target, it returns null. */
   public Optional<PhotonTrackedTarget> getTarget() {
-    var result = cameraTwo.getLatestResult();
+    var result = cameraOne.getLatestResult();
     boolean hasTargets = result.hasTargets();
 
     if (hasTargets) {
@@ -81,6 +81,9 @@ public class VisionSubsystem extends SubsystemBase {
     Optional<EstimatedRobotPose> photonEstimatedPoseCamOne = photonPoseEstimatorCameraOne.update(cameraOne.getLatestResult());
     Optional<EstimatedRobotPose> photonEstimatedPoseCamTwo = photonPoseEstimatorCameraTwo.update(cameraTwo.getLatestResult());
 
+    if (photonEstimatedPoseCamOne.isPresent()) {
+      estimatedPoses.add(photonEstimatedPoseCamOne);
+    }
     if (photonEstimatedPoseCamTwo.isPresent()) {
       estimatedPoses.add(photonEstimatedPoseCamTwo);
     }
