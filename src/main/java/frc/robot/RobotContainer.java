@@ -9,10 +9,8 @@ import frc.robot.commands.SwerveJoystickCommand;
 import frc.robot.commands.VisionAlignmentCommand;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.commands.AutoVisionAlignmentCommand;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,7 +35,6 @@ public class RobotContainer {
 
   /* Commands */
   private final VisionAlignmentCommand visionAlignmentCommand = new VisionAlignmentCommand(visionSubsystem, swerveSubsystem);
-  private final AutoVisionAlignmentCommand visionAutoCommand = new AutoVisionAlignmentCommand(visionSubsystem, swerveSubsystem);
 
   /* Auto */
   private final SendableChooser<Command> autoChooser;
@@ -45,7 +42,9 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    NamedCommands.registerCommand("visionAlignment", visionAutoCommand);
+    /* 
+    NamedCommands.registerCommand("commandAlias", commandObject);
+    */
     
     autoChooser = AutoBuilder.buildAutoChooser();
 
