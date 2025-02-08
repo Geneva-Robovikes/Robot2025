@@ -31,7 +31,7 @@ public class VisionAlignmentCommand extends Command {
     subsystem = s;
     swerveSubsystem = ss;
 
-    yawController = new PIDController(.015, 0, 0.0);
+    yawController = new PIDController(.015, 0, 0);
     distanceController = new PIDController(.015, 0, 0);
 
     stop = false;
@@ -76,8 +76,9 @@ public class VisionAlignmentCommand extends Command {
         chassisSpeeds = new ChassisSpeeds((Constants.VisionConstants.kMaxVisionDistAlignmentSpeed * MathUtil.clamp(distanceController.calculate((Constants.VisionConstants.kReefDistanceOffset * 10), (targetRange*10)), -1, 1)), -(Constants.VisionConstants.kMaxVisionAlignmentSpeed * yawController.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw())), 0);
         moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
         */
-        
-        chassisSpeeds = new ChassisSpeeds((Constants.VisionConstants.kMaxVisionAlignmentSpeed * yawController.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw())), 0, 0);
+        double speed = yawController.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw()) * Constants.VisionConstants.kMaxVisionAlignmentSpeed;
+
+        chassisSpeeds = new ChassisSpeeds(0, (-speed), 0);
         moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
         
 

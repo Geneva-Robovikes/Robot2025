@@ -62,7 +62,7 @@ public class VisionSubsystem extends SubsystemBase {
 
   /* Returns an "optional" PhotonTrackedTarget. Basically, if there is no target, it returns null. */
   public Optional<PhotonTrackedTarget> getTarget() {
-    var result = cameraOne.getLatestResult();
+    var result = cameraTwo.getLatestResult();
     boolean hasTargets = result.hasTargets();
 
     if (hasTargets) {

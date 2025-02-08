@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Adv. Vision Forward"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Adv. Vision Backward"
+            "pathName": "Calibration"
           }
         }
       ]

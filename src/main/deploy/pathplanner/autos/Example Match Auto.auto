@@ -7,25 +7,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Move Forward"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "visionAlignment"
+            "pathName": "Coral 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Move Backward"
+            "pathName": "1 to Reef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef to 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2 to Reef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef to 3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 to Reef"
           }
         }
       ]

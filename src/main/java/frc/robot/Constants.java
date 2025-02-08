@@ -28,7 +28,7 @@ public final class Constants {
   }
   
   public static class ModuleConstants {
-    public static final double kWheelDiameterMeters = 0.09677;
+    public static final double kWheelDiameterMeters = 0.1016;
     public static final double kDriveMotorGearRatio = 6.75;
     public static final double kTurningMotorGearRatio = 150.0/7.0;
     public static final double kFalconEncoderResolution = 2048;
