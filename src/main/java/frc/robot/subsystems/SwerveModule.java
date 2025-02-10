@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
@@ -93,12 +94,6 @@ public class SwerveModule {
         SmartDashboard.putString(moduleName + " swerve module state:", state.toString()); 
     }
 
-    @SuppressWarnings("deprecation")
-    public void initModule(SwerveModuleState desiredState) {
-        SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(getAbsoluteEncoderRad()));
-        currentState = state;
-    }
-
     public void stop() {
         driveMotor.set(0);
         turnMotor.set(0);
@@ -114,5 +109,25 @@ public class SwerveModule {
     /* AUTO FUNCTIONS */
     public SwerveModuleState getModuleState() {
         return currentState;
+    }
+
+    /* MISC */
+
+    /* Initializes modules so auto doesnt crash */
+    @SuppressWarnings("deprecation")
+    public void initModule(SwerveModuleState desiredState) {
+        SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(getAbsoluteEncoderRad()));
+        currentState = state;
+    }
+
+    /* Sets the motors voltages, used in SysId */
+    public void setModule(double driveVolts, double turnVolts) {
+        driveMotor.setVoltage(driveVolts);
+        turnMotor.setVoltage(turnVolts);
+    }
+
+    /* Gets voltage, also used in SysId */
+    public double getDriveVoltage() {
+        return driveMotor.get() * RobotController.getBatteryVoltage();
     }
 }

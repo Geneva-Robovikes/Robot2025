@@ -4,17 +4,16 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Volts;
+
 import java.util.List;
 import java.util.Optional;
-
 import org.photonvision.EstimatedRobotPose;
-
 import com.ctre.phoenix6.Utils;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -22,13 +21,20 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.MutDistance;
+import edu.wpi.first.units.measure.MutLinearVelocity;
+import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.commands.StopCommand;
+
 
 public class SwerveSubsystem extends SubsystemBase {
   /* Get the vision subsystem for odometry purposes. */
@@ -176,7 +182,9 @@ public class SwerveSubsystem extends SubsystemBase {
     backRight.initModule(desiredStates[3]);
   }
 
+  /******************/
   /* AUTO FUNCTIONS */
+  /******************/
 
   /* Gets the states of the modules (the speed and rotation), and returns it all */
   private SwerveModuleState[] getModuleStates() {
@@ -217,5 +225,50 @@ public class SwerveSubsystem extends SubsystemBase {
     SwerveModuleState[] targetStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
 
     setModuleStates(targetStates);
+  }
+
+  /*************************/
+  /* SYSTEM IDENTIFICATION */
+  /*************************/
+
+  /* Okay so i dont know if this will work or not
+   * Definately test on blocks first
+   * Robot might explode
+   */
+
+  // Mutable holders for unit-safe values, persisted to avoid reallocation.
+  private final MutVoltage m_appliedVoltage = new MutVoltage(0, 0, Units.Volts);
+  private final MutDistance m_distance = new MutDistance(0, 0, Units.Meters);
+  private final MutLinearVelocity m_velocity = new MutLinearVelocity(0, 0, Units.MetersPerSecond);
+
+  /* Method for running the drivetrain */
+  public void setModules(double driveVolts, double turnVolts) {
+    frontLeft.setModule(driveVolts, turnVolts);
+    frontRight.setModule(driveVolts, turnVolts);
+    backLeft.setModule(driveVolts, turnVolts);
+    backRight.setModule(driveVolts, turnVolts);
+  }
+
+  /* Set up a new SysId routine */
+  SysIdRoutine routine = new SysIdRoutine(
+    new SysIdRoutine.Config(),
+
+    new SysIdRoutine.Mechanism(
+      volts -> setModules(volts.in(Volts), 0),
+      log -> {
+        log.motor("Front Left").voltage(m_appliedVoltage.mut_replace(backRight.getDriveVoltage(), Volts));
+        log.motor("Front Left").linearPosition(m_distance.mut_replace(backRight.getDrivePosition(), Units.Meters));
+        log.motor("Front Left").linearVelocity(m_velocity.mut_replace(backRight.getDriveVelocity(), Units.MetersPerSecond));
+      },
+      this
+    )
+  );
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return routine.quasistatic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return routine.dynamic(direction);
   }
 }
