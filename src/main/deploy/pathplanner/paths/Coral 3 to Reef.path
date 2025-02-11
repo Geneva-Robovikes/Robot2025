@@ -3,32 +3,53 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.1895,
-        "y": 5.858
+        "x": 1.234733606557377,
+        "y": 5.877100409836065
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1895,
-        "y": 5.858
+        "x": 2.234733606557377,
+        "y": 5.877100409836065
       },
       "isLocked": false,
       "linkedName": "Coral 3"
     },
     {
       "anchor": {
-        "x": 3.12975,
-        "y": 4.03475
+        "x": 2.889036885245902,
+        "y": 5.877100409836065
       },
       "prevControl": {
-        "x": 2.12975,
-        "y": 4.03475
+        "x": 1.8890368852459019,
+        "y": 5.877100409836065
+      },
+      "nextControl": {
+        "x": 3.889036885245902,
+        "y": 5.877100409836065
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.104815573770492,
+        "y": 3.971055327868852
+      },
+      "prevControl": {
+        "x": 2.70922131147541,
+        "y": 4.90609631147541
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Reef"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.3381790359602177,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],

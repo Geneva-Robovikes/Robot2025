@@ -5,11 +5,11 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 public class SwerveModule {
@@ -18,6 +18,9 @@ public class SwerveModule {
     private final CANcoder absoluteEncoder;
 
     private final PIDController turningPidController;
+    private final PIDController drivingPidController;
+
+    private final SimpleMotorFeedforward driveFeedForward;
 
     private SwerveModuleState currentState;
     private String moduleName;
@@ -39,6 +42,9 @@ public class SwerveModule {
         turnMotor.setNeutralMode(NeutralModeValue.Brake);
 
         turningPidController = new PIDController(Constants.ModuleConstants.kTurnPIDkValue, 0, 0);
+        drivingPidController = new PIDController(Constants.ModuleConstants.kDrivePIDkValue, 0, 0);
+
+        driveFeedForward = new SimpleMotorFeedforward(0.12061, 2.2751, 0.10389);
 
         turningPidController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -89,9 +95,23 @@ public class SwerveModule {
         currentState = state;
 
         /* Directly set motor speeds */
-        driveMotor.set(state.speedMetersPerSecond / Constants.ModuleConstants.kMaxSpeedMetersPerSecond);
+
+        double driveOutput = drivingPidController.calculate(getDriveVelocity(), state.speedMetersPerSecond);
+        double driveFeed = driveFeedForward.calculate(state.speedMetersPerSecond);
+
+        if(Math.abs(driveOutput + driveFeed) > 0.75) {
+            //To implement feedback and feedforward controllers add their outputs!
+            driveMotor.setVoltage(driveOutput + driveFeed);
+        } else {
+            driveMotor.setVoltage(0);
+        }
+
         turnMotor.set(turningPidController.calculate(getAbsoluteEncoderRad(), state.angle.getRadians()));
-        SmartDashboard.putString(moduleName + " swerve module state:", state.toString()); 
+
+        /*
+        driveMotor.set(drivingPidController.calculate(getDriveVelocity(), (state.speedMetersPerSecond / Constants.ModuleConstants.kMaxSpeedMetersPerSecond)));
+        turnMotor.set(turningPidController.calculate(getAbsoluteEncoderRad(), state.angle.getRadians()));
+        SmartDashboard.putString(moduleName + " swerve module state:", state.toString()); */
     }
 
     public void stop() {

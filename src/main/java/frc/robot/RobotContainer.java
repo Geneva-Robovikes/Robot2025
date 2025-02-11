@@ -5,8 +5,10 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.LEDJoystickCommand;
 import frc.robot.commands.SwerveJoystickCommand;
 import frc.robot.commands.VisionAlignmentCommand;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
@@ -33,9 +35,11 @@ public class RobotContainer {
   /* Subsystems */
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
   private final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
 
   /* Commands */
   private final VisionAlignmentCommand visionAlignmentCommand = new VisionAlignmentCommand(visionSubsystem, swerveSubsystem);
+  private final LEDJoystickCommand ledJoystickCommand = new LEDJoystickCommand(ledSubsystem);
 
   /* Auto */
   private final SendableChooser<Command> autoChooser;
@@ -67,12 +71,15 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_driverController.a().whileTrue(visionAlignmentCommand);
+    m_driverController.b().toggleOnTrue(ledJoystickCommand);
 
     /* SysId bindings; leave these commented unless you are running SysId tuning */
+    /*
     m_driverController.povUp().whileTrue(swerveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
     m_driverController.povDown().whileTrue(swerveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
     m_driverController.povLeft().whileTrue(swerveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
     m_driverController.povRight().whileTrue(swerveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    */
   }
 
   /**

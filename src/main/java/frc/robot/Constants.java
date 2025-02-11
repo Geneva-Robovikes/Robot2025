@@ -24,7 +24,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
-    public static final double controllerDeadzone = 0.1;
+    public static final double controllerDeadzone = 0.06;
   }
   
   public static class ModuleConstants {
@@ -41,7 +41,7 @@ public final class Constants {
     public static final double kDistanceBetweenWheels = Units.inchesToMeters(18.5);
 
     public static final double kTurnPIDkValue = 0.45;
-    public static final double kDrivePIDkValue = 0.15;
+    public static final double kDrivePIDkValue = 0.00014992;
 
     /* Locations of swerve modules in relation to the robots center. */
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(

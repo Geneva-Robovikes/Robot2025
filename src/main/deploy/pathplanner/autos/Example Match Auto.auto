@@ -7,37 +7,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Coral 1"
+            "pathName": "Start to Coral 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "1 to Reef"
+            "pathName": "Coral 1 to Reef"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Reef to 2"
+            "pathName": "Reef to Coral 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "2 to Reef"
+            "pathName": "Coral 2 to Reef"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Reef to 3"
+            "pathName": "Reef to Coral 3"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 to Reef"
+            "pathName": "Coral 3 to Reef"
           }
         }
       ]

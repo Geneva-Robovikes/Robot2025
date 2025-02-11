@@ -89,8 +89,8 @@ public class SwerveSubsystem extends SubsystemBase {
         this::getRobotChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
           (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-            //3, 2.7 for position, .15 for velociry
-              new PIDConstants(3, 0, 0), // Translation PID constants
+            //d 0.00041
+              new PIDConstants(.16, 0, 0.0000), // Translation PID constants
               new PIDConstants(3, 0.0, 0.0) // Rotation PID constants
             ),
             config, // The robot configuration
