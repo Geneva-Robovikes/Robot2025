@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.LEDJoystickCommand;
+import frc.robot.commands.LEDCommand;
 import frc.robot.commands.SwerveJoystickCommand;
 import frc.robot.commands.VisionAlignmentCommand;
 import frc.robot.subsystems.LEDSubsystem;
@@ -39,7 +39,6 @@ public class RobotContainer {
 
   /* Commands */
   private final VisionAlignmentCommand visionAlignmentCommand = new VisionAlignmentCommand(visionSubsystem, swerveSubsystem);
-  private final LEDJoystickCommand ledJoystickCommand = new LEDJoystickCommand(ledSubsystem);
 
   /* Auto */
   private final SendableChooser<Command> autoChooser;
@@ -71,7 +70,6 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_driverController.a().whileTrue(visionAlignmentCommand);
-    m_driverController.b().toggleOnTrue(ledJoystickCommand);
 
     /* SysId bindings; leave these commented unless you are running SysId tuning */
     /*
@@ -94,5 +92,9 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
+  }
+
+  public Command getLEDCommand() {
+    return new LEDCommand(ledSubsystem);
   }
 }

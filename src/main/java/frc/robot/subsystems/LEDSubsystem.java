@@ -4,11 +4,8 @@
 
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.InchesPerSecond;
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Percent;
 
-import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
@@ -18,26 +15,18 @@ public class LEDSubsystem extends SubsystemBase {
   private final AddressableLED led;
   private final AddressableLEDBuffer ledBuffer;
 
-  private final LEDPattern rainbow;
-  private final LEDPattern scrollingRainbow;
-
-  private final Distance ledSpacing = Meters.of(1 / 100.0);
-
   public LEDSubsystem() {
     led = new AddressableLED(9);
     ledBuffer = new AddressableLEDBuffer(100);
-
-    rainbow = LEDPattern.rainbow(255, 128);
-    scrollingRainbow = rainbow.scrollAtAbsoluteSpeed(InchesPerSecond.of(40), ledSpacing);
-
 
     led.setLength(ledBuffer.getLength());
     
     led.start();
   }
 
-  public void setPattern() {
-    scrollingRainbow.applyTo(ledBuffer);
+  public void setColor(LEDPattern pattern) {
+    pattern.atBrightness(Percent.of(30));
+    pattern.applyTo(ledBuffer);
     
     led.setData(ledBuffer);
   }

@@ -79,6 +79,7 @@ public class Robot extends TimedRobot {
     }
 
     m_robotContainer.getTeleopCommand().schedule();
+    m_robotContainer.getLEDCommand().schedule();
   }
 
   /** This function is called periodically during operator control. */
