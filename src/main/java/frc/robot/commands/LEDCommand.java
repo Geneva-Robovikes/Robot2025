@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.Optional;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
@@ -24,13 +26,14 @@ public class LEDCommand extends Command {
     
     if(alliance.isPresent()) {
       if(alliance.get() == DriverStation.Alliance.Red) {
-        subsystem.setColor(LEDPattern.solid(Color.kRed));
+        subsystem.setColor(LEDPattern.solid(Color.kRed), Optional.of(30));
       } else {
-        subsystem.setColor(LEDPattern.solid(Color.kBlue));
+        subsystem.setColor(LEDPattern.solid(Color.kBlue), Optional.of(30));
       }
     } else {
-      subsystem.setColor(LEDPattern.solid(Color.kWhite));
+      subsystem.setColor(LEDPattern.solid(Color.kWhite), Optional.of(30));
     }
+    // To make brightness default, plug Optional.empty
   }
 
 
