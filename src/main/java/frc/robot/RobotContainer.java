@@ -12,14 +12,18 @@ import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
-import com.pathplanner.lib.auto.AutoBuilder;
+import java.util.Optional;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import choreo.Choreo;
+import choreo.trajectory.SwerveSample;
+import choreo.trajectory.Trajectory;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -41,20 +45,12 @@ public class RobotContainer {
   private final VisionAlignmentCommand visionAlignmentCommand = new VisionAlignmentCommand(visionSubsystem, swerveSubsystem);
 
   /* Auto */
-  private final SendableChooser<Command> autoChooser;
+  private final Optional<Trajectory<SwerveSample>> trajectory = Choreo.loadTrajectory("test_trajectory");
+  private final Timer timer = new Timer();
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    /* 
-    NamedCommands.registerCommand("commandAlias", commandObject);
-    */
-    
-    autoChooser = AutoBuilder.buildAutoChooser();
-
-    SmartDashboard.putData("Auto Chooser", autoChooser);
-    
-
     // Configure the trigger bindings
     configureBindings();
   }
@@ -90,11 +86,38 @@ public class RobotContainer {
     return new SwerveJoystickCommand(swerveSubsystem, m_driverController);
   }
 
-  public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+  /* TODO: make work */
+  public void autonomousInit() {
+    if (trajectory.isPresent()) {
+      // Get the initial pose of the trajectory
+      Optional<Pose2d> initialPose = trajectory.get().getInitialPose(isRedAlliance());
+
+      if (initialPose.isPresent()) {
+        // Reset odometry to the start of the trajectory
+        swerveSubsystem.resetPose(initialPose.get());
+        }
+      }
+
+    // Reset and start the timer when the autonomous period begins
+    timer.restart();
+  }
+
+  public void autonomousPeriodic() {
+    if (trajectory.isPresent()) {
+      // Sample the trajectory at the current time into the autonomous period
+      Optional<SwerveSample> sample = trajectory.get().sampleAt(timer.get(), isRedAlliance());
+
+      if (sample.isPresent()) {
+        swerveSubsystem.followTrajectory(sample.get());
+      }
+    }
   }
 
   public Command getLEDCommand() {
     return new LEDCommand(ledSubsystem);
+  }
+
+  private boolean isRedAlliance() {
+    return DriverStation.getAlliance().orElse(Alliance.Blue).equals(Alliance.Red);
   }
 }

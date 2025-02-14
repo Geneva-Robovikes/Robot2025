@@ -10,10 +10,9 @@ import java.util.List;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import com.ctre.phoenix6.Utils;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.config.PIDConstants;
-import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
+import choreo.trajectory.SwerveSample;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -65,6 +64,10 @@ public class SwerveSubsystem extends SubsystemBase {
 
   private ChassisSpeeds speeds;
 
+  private final PIDController xController = new PIDController(0, 0, 0);
+  private final PIDController yController = new PIDController(0, 0, 0);
+  private final PIDController headingController = new PIDController(0, 0, 0);
+
   public SwerveSubsystem() {
     SmartDashboard.putData("Field", field);
 
@@ -76,41 +79,6 @@ public class SwerveSubsystem extends SubsystemBase {
     SwerveModuleState[] states = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(speeds);
     
     initModules(states);
-
-    /* AUTO */
-    RobotConfig config;
-    
-    try{
-      config = RobotConfig.fromGUISettings();
-      // Configure AutoBuilder last
-      AutoBuilder.configure(
-        this::getPose, // Robot pose supplier
-        this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-        this::getRobotChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-          (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-            //d 0.00041
-              new PIDConstants(.00000001, 0.08, 0), // Translation PID constants
-              new PIDConstants(1.8, 0, 0.0) // Rotation PID constants
-            ),
-            config, // The robot configuration
-            () -> {
-            // Boolean supplier that controls when the path will be mirrored for the red alliance
-          // This will flip the path being followed to the red side of the field.
-          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-          var alliance = DriverStation.getAlliance();
-          if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Red;
-          }
-          return false;
-        },
-        this // Reference to this subsystem to set requirements
-      );
-    } catch (Exception e) {
-      // Handle exception as needed
-      e.printStackTrace();
-    }
   }
 
   public void zeroHeading() {
@@ -199,12 +167,12 @@ public class SwerveSubsystem extends SubsystemBase {
   /* Get the position of the robot 
    * TODO: Incorperate the vision estimated odometry!
   */
-  private Pose2d getPose() {
+  public Pose2d getPose() {
     return swervePoseEstimator.getEstimatedPosition();
   }
 
   /* Set the position of the robot */
-  private void resetPose(Pose2d pose) {
+  public void resetPose(Pose2d pose) {
     swervePoseEstimator.resetPosition(getRotation2d(), 
       new SwerveModulePosition[] {
         frontLeft.getPosition(),
@@ -216,16 +184,33 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   /* Returns ChassisSpeeds of the current states of the modules */
-  private ChassisSpeeds getRobotChassisSpeeds() {
+  public ChassisSpeeds getRobotChassisSpeeds() {
     return Constants.ModuleConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
   }
 
-  private void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
     ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
     SwerveModuleState[] targetStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
 
     setModuleStates(targetStates);
   }
+
+  /* Choreo method for following trajectories */
+  public void followTrajectory(SwerveSample sample) {
+    // Get the current pose of the robot
+    Pose2d pose = getPose();
+
+    // Generate the next speeds for the robot
+    ChassisSpeeds speeds = new ChassisSpeeds(
+      sample.vx + xController.calculate(pose.getX(), sample.x),
+      sample.vy + yController.calculate(pose.getY(), sample.y),
+      sample.omega + headingController.calculate(pose.getRotation().getRadians(), sample.heading)
+    );
+
+      // Apply the generated speeds
+      SwerveModuleState[] moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(speeds);
+      setModuleStates(moduleStates);
+    }
 
   /*************************/
   /* SYSTEM IDENTIFICATION */
