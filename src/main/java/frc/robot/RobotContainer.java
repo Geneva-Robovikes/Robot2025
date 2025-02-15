@@ -45,7 +45,7 @@ public class RobotContainer {
   private final VisionAlignmentCommand visionAlignmentCommand = new VisionAlignmentCommand(visionSubsystem, swerveSubsystem);
 
   /* Auto */
-  private final Optional<Trajectory<SwerveSample>> trajectory = Choreo.loadTrajectory("test_trajectory");
+  private final Optional<Trajectory<SwerveSample>> trajectory = Choreo.loadTrajectory("test_traj3");
   private final Timer timer = new Timer();
 
 
