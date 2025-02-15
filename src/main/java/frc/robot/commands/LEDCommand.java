@@ -9,13 +9,20 @@ import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class LEDCommand extends Command {
-  private final LEDSubsystem subsystem;
+  private final LEDSubsystem ledSubsystem;
+  private final VisionSubsystem visionSubsystem;
 
-  public LEDCommand(LEDSubsystem subsystem) {
-    this.subsystem = subsystem;
+  private LEDPattern defaultColor = LEDPattern.solid(null);
+
+  public LEDCommand(LEDSubsystem ledSubsystem, VisionSubsystem visionSubsystem) {
+    this.ledSubsystem = ledSubsystem;
+    this.visionSubsystem = visionSubsystem;
+
+    defaultColor = LEDPattern.solid(Color.kWhite);
   }
 
   @Override
@@ -24,19 +31,29 @@ public class LEDCommand extends Command {
     
     if(alliance.isPresent()) {
       if(alliance.get() == DriverStation.Alliance.Red) {
-        subsystem.setColor(LEDPattern.solid(Color.kRed));
+        defaultColor = LEDPattern.solid(Color.kRed);
+
+        ledSubsystem.setColor(defaultColor);
       } else {
-        subsystem.setColor(LEDPattern.solid(Color.kBlue));
+        defaultColor = LEDPattern.solid(Color.kBlue);
+
+        ledSubsystem.setColor(defaultColor);
       }
     } else {
-      subsystem.setColor(LEDPattern.solid(Color.kWhite));
+      ledSubsystem.setColor(LEDPattern.solid(Color.kWhite));
     }
   }
 
 
   @Override
   public void execute() {
-
+    if(visionSubsystem.targetReady()) {
+      ledSubsystem.setColor(LEDPattern.solid(Color.kGreen));
+    } else if(visionSubsystem.targetInView()) {
+      ledSubsystem.setColor(LEDPattern.solid(Color.kGreenYellow));
+    } else {
+      ledSubsystem.setColor(defaultColor);
+    }
   }
 
 

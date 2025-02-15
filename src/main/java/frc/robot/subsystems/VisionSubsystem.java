@@ -21,6 +21,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -62,7 +63,7 @@ public class VisionSubsystem extends SubsystemBase {
 
   /* Returns an "optional" PhotonTrackedTarget. Basically, if there is no target, it returns null. */
   public Optional<PhotonTrackedTarget> getTarget() {
-    var result = cameraTwo.getLatestResult();
+    var result = cameraOne.getLatestResult();
     boolean hasTargets = result.hasTargets();
 
     if (hasTargets) {
@@ -89,5 +90,32 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     return estimatedPoses;
+  }
+
+  public boolean targetReady() {
+    var result = cameraOne.getLatestResult();
+
+    if(result.hasTargets()) {
+      SmartDashboard.putNumber("Yaw", result.getBestTarget().getYaw());
+      
+      if ((result.getBestTarget().getYaw() >= -20) && (result.getBestTarget().getYaw() <= -10)) {
+
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  public boolean targetInView() {
+    var result = cameraOne.getLatestResult();
+
+    if(result.hasTargets()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

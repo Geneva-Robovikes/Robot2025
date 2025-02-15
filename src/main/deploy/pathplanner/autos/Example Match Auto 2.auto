@@ -1,0 +1,55 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Start to Back Reef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Back Reef to Coral 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Coral 1 to Right Reef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Reef to Coral 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Coral 2 to Reef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef to Coral 3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Coral 3 to Left Reef"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

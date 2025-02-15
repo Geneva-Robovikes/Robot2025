@@ -95,6 +95,6 @@ public class RobotContainer {
   }
 
   public Command getLEDCommand() {
-    return new LEDCommand(ledSubsystem);
+    return new LEDCommand(ledSubsystem, visionSubsystem);
   }
 }

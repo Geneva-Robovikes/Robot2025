@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -24,6 +26,7 @@ public class VisionAlignmentCommand extends Command {
 
   private final PIDController yawController;
   private final PIDController distanceController;
+  private final PIDController rotController;
 
   private boolean stop;
 
@@ -32,7 +35,8 @@ public class VisionAlignmentCommand extends Command {
     swerveSubsystem = ss;
 
     yawController = new PIDController(.015, 0, 0);
-    distanceController = new PIDController(.015, 0, 0);
+    distanceController = new PIDController(.1, 0, 0);
+    rotController = new PIDController(1, 0, 0);
 
     stop = false;
 
@@ -76,9 +80,14 @@ public class VisionAlignmentCommand extends Command {
         chassisSpeeds = new ChassisSpeeds((Constants.VisionConstants.kMaxVisionDistAlignmentSpeed * MathUtil.clamp(distanceController.calculate((Constants.VisionConstants.kReefDistanceOffset * 10), (targetRange*10)), -1, 1)), -(Constants.VisionConstants.kMaxVisionAlignmentSpeed * yawController.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw())), 0);
         moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
         */
-        double speed = yawController.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw()) * Constants.VisionConstants.kMaxVisionAlignmentSpeed;
+        double yawSpeed = yawController.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw()) * Constants.VisionConstants.kMaxVisionAlignmentSpeed;
+        double distSpeed = distanceController.calculate(Constants.VisionConstants.kReefDistanceOffset, targetRange) * Constants.VisionConstants.kMaxVisionAlignmentSpeed;
+        double rotSpeed = rotController.calculate(swerveSubsystem.getRotation2d().getRadians(), 0) * Constants.VisionConstants.kMaxVisionRotationalSpeed;
+        
+        SmartDashboard.putNumber("Rotational Speed", rotSpeed);
 
-        chassisSpeeds = new ChassisSpeeds(0, (-speed), 0);
+        //chassisSpeeds = new ChassisSpeeds((distSpeed), (-yawSpeed), (rotSpeed * 2.5));
+        chassisSpeeds = new ChassisSpeeds(0, (-yawSpeed), (rotSpeed * 2.6));
         moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
         
 

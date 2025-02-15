@@ -1,12 +1,14 @@
 {
-  "robotWidth": 0.9,
-  "robotLength": 0.9,
+  "robotWidth": 0.7,
+  "robotLength": 0.7,
   "holonomicMode": true,
   "pathFolders": [
-    "New Folder"
+    "Coral to Reef",
+    "Other",
+    "Reef to Coral"
   ],
   "autoFolders": [],
-  "defaultMaxVel": 2.0,
+  "defaultMaxVel": 4.5,
   "defaultMaxAccel": 1.0,
   "defaultMaxAngVel": 360.0,
   "defaultMaxAngAccel": 360.0,
@@ -20,7 +22,7 @@
   "driveMotorType": "falcon500",
   "driveCurrentLimit": 60.0,
   "wheelCOF": 1.2,
-  "flModuleX": 0.23495,
+  "flModuleX": 0.235,
   "flModuleY": 0.235,
   "frModuleX": 0.235,
   "frModuleY": -0.235,

@@ -72,13 +72,14 @@ public final class Constants {
 
     /* TODO: Measure specific values */
     public static final double kLoadingYawOffset = 0.1;
-    public static final double kReefYawOffset = 0;
+    public static final double kReefYawOffset = 0-12;
 
-    public static final double kReefDistanceOffset = 0;
+    public static final double kReefDistanceOffset = 1.9;
     public static final double kLoadingDistanceOffset = 1;
 
     public static final double kMaxVisionAlignmentSpeed = 6;
     public static final double kMaxVisionDistAlignmentSpeed = 6;
+    public static final double kMaxVisionRotationalSpeed = 3.14;
     public static final double kMaxVisionRotationSpeed = Math.PI/2;
 
     public static final double kCameraHeight = Units.inchesToMeters(4.5);
