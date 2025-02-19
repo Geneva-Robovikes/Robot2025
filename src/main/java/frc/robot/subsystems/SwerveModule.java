@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 public class SwerveModule {
@@ -110,8 +111,8 @@ public class SwerveModule {
 
         /*
         driveMotor.set(drivingPidController.calculate(getDriveVelocity(), (state.speedMetersPerSecond / Constants.ModuleConstants.kMaxSpeedMetersPerSecond)));
-        turnMotor.set(turningPidController.calculate(getAbsoluteEncoderRad(), state.angle.getRadians()));
-        SmartDashboard.putString(moduleName + " swerve module state:", state.toString()); */
+        turnMotor.set(turningPidController.calculate(getAbsoluteEncoderRad(), state.angle.getRadians())); */
+        SmartDashboard.putString(moduleName + " swerve module state:", state.toString());
     }
 
     public void stop() {

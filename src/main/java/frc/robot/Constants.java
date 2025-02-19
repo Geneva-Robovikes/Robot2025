@@ -85,4 +85,10 @@ public final class Constants {
     public static final double kCameraHeight = Units.inchesToMeters(4.5);
     public static final double kReefAprilTagHeight = Units.inchesToMeters(19.4);
   }
+
+  public static class MechanismConstants {
+    /* TODO: real voltage value*/
+    public static final double kClawMotorSpeed = .3;
+    public static final double kMaxClawMotorCurrent = 0;
+  }
 }

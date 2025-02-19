@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Percent;
+import static edu.wpi.first.units.Units.Seconds;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
@@ -28,6 +29,15 @@ public class LEDSubsystem extends SubsystemBase {
     pattern.atBrightness(Percent.of(30));
     pattern.applyTo(ledBuffer);
     
+    led.setData(ledBuffer);
+  }
+
+  public void flashColor(LEDPattern color, double flashTime) {
+    LEDPattern blink = color.blink(Seconds.of(flashTime));
+
+    blink.applyTo(ledBuffer);
+
+
     led.setData(ledBuffer);
   }
 

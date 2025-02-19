@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-import static edu.wpi.first.units.Units.RotationsPerSecond;
-
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -81,7 +79,7 @@ public class VisionAlignmentCommand extends Command {
         moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
         */
         double yawSpeed = yawController.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw()) * Constants.VisionConstants.kMaxVisionAlignmentSpeed;
-        double distSpeed = distanceController.calculate(Constants.VisionConstants.kReefDistanceOffset, targetRange) * Constants.VisionConstants.kMaxVisionAlignmentSpeed;
+        //double distSpeed = distanceController.calculate(Constants.VisionConstants.kReefDistanceOffset, targetRange) * Constants.VisionConstants.kMaxVisionAlignmentSpeed;
         double rotSpeed = rotController.calculate(swerveSubsystem.getRotation2d().getRadians(), 0) * Constants.VisionConstants.kMaxVisionRotationalSpeed;
         
         SmartDashboard.putNumber("Rotational Speed", rotSpeed);
