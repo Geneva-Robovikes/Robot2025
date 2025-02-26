@@ -38,15 +38,15 @@ public class MechanismJoystickCommand extends Command {
     if (motorSubsystem.getClawMotorCurrent() >= Constants.MechanismConstants.kMaxClawMotorCurrent) {
       ledSubsystem.flashColor(LEDPattern.solid(Color.kGreen), .3);
     }
-    
-    // if (controller.leftTrigger().getAsBoolean()) {
-    //   motorSubsystem.runClaw();
-    // }
-    
-    // ELEVATOR LEFT & TRIGGERS CONTROL (BASIC SYSTEM)
-   if (controller.a().getAsBoolean()) {
-    elevatorSubsystem.Set_Motor_Speed(.5);
-   }
+
+    // INTAKE SYSTEM
+      // Intake system codes will be placed under Intake System title
+
+    // CLAW
+      // Claw codes will be placed under Claw title
+
+    // ELEVATOR 
+    // ELEVATOR LEFT & TRIGGERS CONTROL (BASIC SYSTEM FOR SATURDAY)
 
     if (controller.getLeftTriggerAxis() > Constants.ModuleConstants.kDeadzoneMinimum && controller.getLeftTriggerAxis() < Constants.ModuleConstants.kDeadzoneMaximum) {
 
