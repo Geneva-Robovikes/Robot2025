@@ -43,6 +43,10 @@ public final class Constants {
     public static final double kTurnPIDkValue = 0.45;
     public static final double kDrivePIDkValue = 0.00014992;
 
+    // Deadzone constant for controller
+    public static final double kDeadzoneMinimum = .1;
+    public static final double kDeadzoneMaximum = .9;
+
     /* Locations of swerve modules in relation to the robots center. */
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
       new Translation2d(kDistanceBetweenWheels/2, kDistanceBetweenWheels/2), //front left
