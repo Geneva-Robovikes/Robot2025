@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.TunerConstants;
 
 public class SwerveModule {
     private final TalonFX driveMotor;
@@ -42,8 +43,8 @@ public class SwerveModule {
         driveMotor.setNeutralMode(NeutralModeValue.Brake);
         turnMotor.setNeutralMode(NeutralModeValue.Brake);
 
-        turningPidController = new PIDController(Constants.ModuleConstants.kTurnPIDkValue, 0, 0);
-        drivingPidController = new PIDController(Constants.ModuleConstants.kDrivePIDkValue, 0, 0);
+        turningPidController = new PIDController(TunerConstants.kTeleopTurnPIDpValue, TunerConstants.kTeleopTurnPIDiValue, TunerConstants.kTeleopTurnPIDdValue);
+        drivingPidController = new PIDController(TunerConstants.kTeleopDrivePIDpValue, TunerConstants.kTeleopDrivePIDiValue , TunerConstants.kTeleopDrivePIDdValue);
 
         driveFeedForward = new SimpleMotorFeedforward(0.12061, 2.2751, 0.10389);
 

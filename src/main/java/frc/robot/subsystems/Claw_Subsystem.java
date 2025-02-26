@@ -19,7 +19,7 @@ public class Claw_Subsystem extends SubsystemBase {
     }
     
     
-    public void Set_Motor_Speed(double speed) {
+    public void set_Motor_Speed(double speed) {
       claw_motor_controller.set(speed);
     }
 
