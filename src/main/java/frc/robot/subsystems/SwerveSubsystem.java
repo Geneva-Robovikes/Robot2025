@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.TunerConstants;
 import frc.robot.commands.StopCommand;
 
 
@@ -90,8 +91,8 @@ public class SwerveSubsystem extends SubsystemBase {
           (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
             //d 0.00041
-              new PIDConstants(.0000000001, 0.095, 0), // Translation PID constants
-              new PIDConstants(2, 0, 0.0) // Rotation PID constants
+              new PIDConstants(TunerConstants.kAutoDrivePIDpValue, TunerConstants.kAutoDrivePIDiValue, TunerConstants.kAutoDrivePIDdValue), // Translation PID constants
+              new PIDConstants(TunerConstants.kAutoTurnPIDpValue, TunerConstants.kAutoTurnPIDiValue, TunerConstants.kAutoTurnPIDdValue) // Rotation PID constants
             ),
             config, // The robot configuration
             () -> {
