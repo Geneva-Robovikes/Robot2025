@@ -6,12 +6,12 @@ import edu.wpi.first.wpilibj.motorcontrol.PWMMotorController;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 
 
-public class Sohum_Intake_Subsystem extends SubsystemBase {
+public class Intake_Subsystem extends SubsystemBase {
     
     Talon intake_motor;
     
 
-    public Sohum_Intake_Subsystem() {
+    public Intake_Subsystem() {
         // configure channel once it is known
         intake_motor = new Talon(0);
         intake_motor.setInverted(true);

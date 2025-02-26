@@ -8,19 +8,20 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.Sohum_Intake_Subsystem;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Claw_Subsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
-public class Sohum_Intake_Motor_Control extends Command {
-  private final Sohum_Intake_Subsystem sohum_Intake_Subsystem;
+public class Claw_Motor_Control extends Command {
+  private final Claw_Subsystem sohum_Claw_Subsystem;
   /** Example static factory for an autonomous command. */
-  public Sohum_Intake_Motor_Control(Sohum_Intake_Subsystem sohum_Intake_Subsystem) {
+  public Claw_Motor_Control(Claw_Subsystem sohum_Claw_Subsystem) {
 
-    this.sohum_Intake_Subsystem = sohum_Intake_Subsystem;
-    addRequirements(sohum_Intake_Subsystem);
+    this.sohum_Claw_Subsystem = sohum_Claw_Subsystem;
+    addRequirements(sohum_Claw_Subsystem);
   }
   
   
@@ -31,13 +32,13 @@ public class Sohum_Intake_Motor_Control extends Command {
   // called when something needs to happen?
   @Override
   public void execute() {
-    sohum_Intake_Subsystem.Set_Motor_Speed(0.5);
+    sohum_Claw_Subsystem.Set_Motor_Speed(0.5);
 
   }
   // called when the trigger is stopped
   @Override
   public void end(boolean interrupted) {
-    sohum_Intake_Subsystem.Set_Motor_Speed(0);
+    sohum_Claw_Subsystem.Set_Motor_Speed(0);
   
   // called when all of the operations are done running in this file?
   }

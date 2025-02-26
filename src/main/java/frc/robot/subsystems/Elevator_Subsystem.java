@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.Rev2mDistanceSensor.Port;
 
-public class Sohum_Elevator_Subsystem extends SubsystemBase{
+public class Elevator_Subsystem extends SubsystemBase{
     
     PWMMotorController elevator_motor_controller;
    
@@ -23,7 +23,7 @@ public class Sohum_Elevator_Subsystem extends SubsystemBase{
     // first double is
     // elevatorSim.createElevatorSystem(DCMotor, double, double, double);
 
-    public Sohum_Elevator_Subsystem() {
+    public Elevator_Subsystem() {
         // configure channel once it is known
         elevator_motor_controller = new PWMSparkMax(0);
         distOnboard = new Rev2mDistanceSensor(Port.kOnboard);

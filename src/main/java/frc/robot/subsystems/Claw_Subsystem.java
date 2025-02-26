@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 
 
 
-public class Sohum_Claw_Subsystem extends SubsystemBase {
+public class Claw_Subsystem extends SubsystemBase {
     
     PWMMotorController claw_motor_controller;
 
-    public Sohum_Claw_Subsystem() {
+    public Claw_Subsystem() {
         // configure channel once it is known
         claw_motor_controller = new PWMSparkMax(0);
         claw_motor_controller.setInverted(true);

@@ -8,17 +8,17 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.Sohum_Elevator_Subsystem;
+import frc.robot.subsystems.Elevator_Subsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
 
-public class Sohum_Elevator_Negative_Motor_Control extends Command {
-  private final Sohum_Elevator_Subsystem sohum_Elevator_Subsystem;
+public class Elevator_Negative_Motor_Control extends Command {
+  private final Elevator_Subsystem sohum_Elevator_Subsystem;
   /** Example static factory for an autonomous command. */
-  public Sohum_Elevator_Negative_Motor_Control(Sohum_Elevator_Subsystem sohum_Elevator_Subsystem) {
+  public Elevator_Negative_Motor_Control(Elevator_Subsystem sohum_Elevator_Subsystem) {
 
     this.sohum_Elevator_Subsystem = sohum_Elevator_Subsystem;
     addRequirements(sohum_Elevator_Subsystem);
