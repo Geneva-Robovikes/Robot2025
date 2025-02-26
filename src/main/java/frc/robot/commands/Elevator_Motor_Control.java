@@ -11,8 +11,8 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Elevator_Subsystem;
 
-import com.revrobotics.Rev2mDistanceSensor;
-import com.revrobotics.Rev2mDistanceSensor.Port;
+// import com.revrobotics.Rev2mDistanceSensor;
+// import com.revrobotics.Rev2mDistanceSensor.Port;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -20,40 +20,40 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Elevator_Subsystem;
 
 
-
 public class Elevator_Motor_Control extends Command {
-  private final Elevator_Subsystem sohum_Elevator_Subsystem;
+  // THIS COMMAND IS USELESS FOR SATURDAY, CHECK MECHANISM JOYSTICK COMMAND FOR BASIC ELEVATOR COMMANDS
+  private final Elevator_Subsystem Elevator_Subsystem;
   /** Example static factory for an autonomous command. */
-  public Elevator_Motor_Control(Elevator_Subsystem sohum_Elevator_Subsystem) {
-
-    this.sohum_Elevator_Subsystem = sohum_Elevator_Subsystem;
-    addRequirements(sohum_Elevator_Subsystem);
+  public Elevator_Motor_Control(Elevator_Subsystem Elevator_Subsystem) {
+    this.Elevator_Subsystem = Elevator_Subsystem;
+    addRequirements(Elevator_Subsystem);
   }
   
-  private Rev2mDistanceSensor distOnboard; 
+  // private Rev2mDistanceSensor distOnboard; 
   
   // initializes the operation?
   @Override
-  public void initialize() {}
+  public void initialize() {
+    Elevator_Subsystem.Set_Motor_Speed(0);
+  }
   
   // called when something needs to happen?
   @Override
   public void execute() {
-    if (distOnboard.getRange() >= 0.5) {
-      sohum_Elevator_Subsystem.Set_Motor_Speed(0.5);
-    }
+    // if (distOnboard.getRange() >= 0.5) {
+    //   sohum_Elevator_Subsystem.Set_Motor_Speed(0.5);
+    // }
   }
   // called when the trigger is stopped
   @Override
   public void end(boolean interrupted) {
-    sohum_Elevator_Subsystem.Set_Motor_Speed(0);
+    Elevator_Subsystem.Set_Motor_Speed(0);
   
   // called when all of the operations are done running in this file?
   }
+
   @Override
   public boolean isFinished() {
     return false;
   }
-
-    
   }
