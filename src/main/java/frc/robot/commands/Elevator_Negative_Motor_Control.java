@@ -32,13 +32,13 @@ public class Elevator_Negative_Motor_Control extends Command {
   // called when something needs to happen?
   @Override
   public void execute() {
-    sohum_Elevator_Subsystem.Set_Motor_Speed(-0.5);
+    sohum_Elevator_Subsystem.set_Motor_Speed(-0.1);
 
   }
   // called when the trigger is stopped
   @Override
   public void end(boolean interrupted) {
-    sohum_Elevator_Subsystem.Set_Motor_Speed(0);
+    sohum_Elevator_Subsystem.set_Motor_Speed(0);
   
   // called when all of the operations are done running in this file?
   }

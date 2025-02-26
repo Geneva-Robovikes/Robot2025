@@ -8,21 +8,19 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.Claw_Subsystem;
+import frc.robot.subsystems.Intake_Subsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj.SensorUtil;
 
 
-public class Claw_Negative_Motor_Control extends Command {
-  private final Claw_Subsystem sohum_Claw_Subsystem;
+public class Intake_Negative_Motor_Control extends Command {
+  private final Intake_Subsystem sohum_Intake_Subsystem;
   /** Example static factory for an autonomous command. */
-  public Claw_Negative_Motor_Control(Claw_Subsystem sohum_Claw_Subsystem) {
+  public Intake_Negative_Motor_Control(Intake_Subsystem sohum_Intake_Subsystem) {
 
-    this.sohum_Claw_Subsystem = sohum_Claw_Subsystem;
-    addRequirements(sohum_Claw_Subsystem);
+    this.sohum_Intake_Subsystem = sohum_Intake_Subsystem;
+    addRequirements(sohum_Intake_Subsystem);
   }
   
   
@@ -33,13 +31,13 @@ public class Claw_Negative_Motor_Control extends Command {
   // called when something needs to happen?
   @Override
   public void execute() {
-    sohum_Claw_Subsystem.set_Motor_Speed(-0.5);
+    sohum_Intake_Subsystem.set_Motor_Speed(-0.5);
 
   }
   // called when the trigger is stopped
   @Override
   public void end(boolean interrupted) {
-    sohum_Claw_Subsystem.set_Motor_Speed(0);
+    sohum_Intake_Subsystem.set_Motor_Speed(0);
   
   // called when all of the operations are done running in this file?
   }

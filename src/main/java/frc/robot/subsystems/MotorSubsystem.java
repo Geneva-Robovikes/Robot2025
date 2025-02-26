@@ -32,6 +32,7 @@ public class MotorSubsystem extends SubsystemBase {
 
   private final SparkMax clawMotor = new SparkMax(0, MotorType.kBrushless);
 
+ 
 
   public MotorSubsystem() {}
 
@@ -46,6 +47,7 @@ public class MotorSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Neo Current", clawMotor.getOutputCurrent());
     return clawMotor.getOutputCurrent();
   }
+
 
 
   /*************************/
