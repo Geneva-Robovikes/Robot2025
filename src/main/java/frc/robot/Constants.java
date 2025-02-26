@@ -40,8 +40,6 @@ public final class Constants {
 
     public static final double kDistanceBetweenWheels = Units.inchesToMeters(18.5);
 
-    public static final double kTurnPIDkValue = 0.45;
-    public static final double kDrivePIDkValue = 0.00014992;
 
     // Deadzone constant for controller
     public static final double kDeadzoneMinimum = .1;
