@@ -24,6 +24,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kAuxiliaryControllerPort = 1;
     public static final double controllerDeadzone = 0.06;
   }
   
