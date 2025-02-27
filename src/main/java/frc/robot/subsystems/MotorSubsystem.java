@@ -29,32 +29,27 @@ public class MotorSubsystem extends SubsystemBase {
 
   /* TODO: real can id's */
   private final TalonFX elevatorMotor = new TalonFX(0);
+  private final TalonFX intakeMotor = new TalonFX(0);
+  private final TalonFX intakeTiltMotor = new TalonFX(0);
+  private final TalonFX clawMotor = new TalonFX(0);
 
-  private final SparkMax clawMotor = new SparkMax(0, MotorType.kBrushless);
-
-  private final TalonFX intakeMotorIntake = new TalonFX(0);
-  private final TalonFX intakeMotorTilt = new TalonFX(0);
-
-
- 
-
- 
-
-  public MotorSubsystem() {}
+  public MotorSubsystem() {
+    intakeMotor.setInverted(false);
+    intakeTiltMotor.setInverted(false);
+  }
+  
 
   @Override
   public void periodic() {}
 
-
-  
 
   public void runClaw() {
     clawMotor.set(Constants.MechanismConstants.kClawMotorSpeed);
   }
  
   public double getClawMotorCurrent() {
-    SmartDashboard.putNumber("Neo Current", clawMotor.getOutputCurrent());
-    return clawMotor.getOutputCurrent();
+    SmartDashboard.putNumber("Talon Current", clawMotor.getMotorVoltage().getValueAsDouble());
+    return clawMotor.getMotorVoltage().getValueAsDouble();
   }
 
   public void setClawMotorSpeed(double speed) {
@@ -66,13 +61,11 @@ public class MotorSubsystem extends SubsystemBase {
   }
 
   public void setIntakeMotorSpeed(double speed) {
-    intakeMotorIntake.set(speed);
-    intakeMotorIntake.setInverted(false);
+    intakeMotor.set(speed);
   }
 
   public void setTiltMotorSpeed(double speed) {
-    intakeMotorTilt.set(speed);
-    intakeMotorTilt.setInverted(false);
+    intakeTiltMotor.set(speed);
   }
 
 
