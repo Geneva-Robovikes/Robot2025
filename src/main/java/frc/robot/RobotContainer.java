@@ -9,11 +9,12 @@ import frc.robot.commands.LEDCommand;
 import frc.robot.commands.SwerveJoystickCommand;
 import frc.robot.commands.VisionAlignmentCommand;
 import frc.robot.commands.MechanismJoystickCommand;
-import frc.robot.subsystems.Elevator_Subsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.MotorSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+
+import com.pathplanner.lib.auto.AutoBuilder;
 
 // import com.pathplanner.lib.auto.AutoBuilder;
 
@@ -40,7 +41,6 @@ public class RobotContainer {
   private final VisionSubsystem visionSubsystem = new VisionSubsystem();
   private final MotorSubsystem motorSubsystem = new MotorSubsystem();
   private final LEDSubsystem ledSubsystem = new LEDSubsystem();
-  private final Elevator_Subsystem elevatorSubsystem = new Elevator_Subsystem();
 
   /* Commands */
   private final VisionAlignmentCommand visionAlignmentCommand = new VisionAlignmentCommand(visionSubsystem, swerveSubsystem);
@@ -101,7 +101,7 @@ public class RobotContainer {
   public Command getTeleopCommand() {
     return new ParallelCommandGroup(
       new SwerveJoystickCommand(swerveSubsystem, m_driverController),
-      new MechanismJoystickCommand(motorSubsystem, ledSubsystem, elevatorSubsystem, m_driverController)
+      new MechanismJoystickCommand(motorSubsystem, ledSubsystem, m_driverController)
       );
   }
 
