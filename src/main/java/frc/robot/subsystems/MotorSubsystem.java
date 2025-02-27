@@ -7,8 +7,6 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.MutDistance;
@@ -19,8 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.Constants;
 
+@SuppressWarnings("removal")
 public class MotorSubsystem extends SubsystemBase {
   private final MutVoltage m_appliedVoltage = new MutVoltage(0, 0, Units.Volts);
   private final MutDistance m_distance = new MutDistance(0, 0, Units.Meters);
@@ -41,11 +39,6 @@ public class MotorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {}
-
-
-  public void runClaw() {
-    clawMotor.set(Constants.MechanismConstants.kClawMotorSpeed);
-  }
  
   public double getClawMotorCurrent() {
     SmartDashboard.putNumber("Talon Current", clawMotor.getMotorVoltage().getValueAsDouble());

@@ -6,22 +6,26 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.LEDCommand;
+import frc.robot.commands.ClawIntakeCommand;
+import frc.robot.commands.ElevatorUpCommand;
+import frc.robot.commands.ResetHeadingCommand;
+import frc.robot.commands.ElevatorDownCommand;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ClawOuttakeCommand;
 import frc.robot.commands.SwerveJoystickCommand;
 import frc.robot.commands.VisionAlignmentCommand;
-import frc.robot.commands.MechanismJoystickCommand;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.MotorSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
-//import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -32,8 +36,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   /* Controllers */
-  private final XboxController m_driverController =
-      new XboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController m_driverController =
+      new CommandXboxController(OperatorConstants.kDriverControllerPort);
       
   /* Subsystems */
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
@@ -43,6 +47,12 @@ public class RobotContainer {
 
   /* Commands */
   private final VisionAlignmentCommand visionAlignmentCommand = new VisionAlignmentCommand(visionSubsystem, swerveSubsystem);
+  private final ClawIntakeCommand clawIntakeCommand = new ClawIntakeCommand(motorSubsystem);
+  private final ClawOuttakeCommand ClawOuttakeCommand = new ClawOuttakeCommand(motorSubsystem);
+  private final ElevatorDownCommand elevatorDownCommand = new ElevatorDownCommand(motorSubsystem);
+  private final ElevatorUpCommand elevatorUpCommand = new ElevatorUpCommand(motorSubsystem);
+  private final IntakeCommand intakeCommand = new IntakeCommand(motorSubsystem);
+  private final ResetHeadingCommand resetHeadingCommand = new ResetHeadingCommand(swerveSubsystem);
 
   /* Auto */
   private final SendableChooser<Command> autoChooser;
@@ -75,6 +85,14 @@ public class RobotContainer {
   private void configureBindings() {
     m_driverController.a().whileTrue(visionAlignmentCommand);
 
+    m_driverController.y().whileTrue(resetHeadingCommand);
+
+    m_driverController.rightTrigger().whileTrue(elevatorUpCommand);
+    m_driverController.leftTrigger().whileTrue(elevatorDownCommand);
+
+    m_driverController.leftBumper().whileTrue(new ParallelCommandGroup(clawIntakeCommand, intakeCommand));
+    m_driverController.rightBumper().whileTrue(ClawOuttakeCommand);
+
     /* SysId bindings; leave these commented unless you are running SysId tuning */
     /* SWERVE DRIVE
     m_driverController.povUp().whileTrue(swerveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
@@ -98,10 +116,7 @@ public class RobotContainer {
    */
 
   public Command getTeleopCommand() {
-    return new ParallelCommandGroup(
-      new SwerveJoystickCommand(swerveSubsystem, m_driverController),
-      new MechanismJoystickCommand(motorSubsystem, ledSubsystem, m_driverController)
-      );
+    return new SwerveJoystickCommand(swerveSubsystem, m_driverController);
   }
 
   public Command getAutonomousCommand() {
