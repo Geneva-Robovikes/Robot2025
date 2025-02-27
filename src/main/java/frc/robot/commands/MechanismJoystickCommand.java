@@ -40,7 +40,7 @@ public class MechanismJoystickCommand extends Command {
     // INTAKE SYSTEM
       // Intake system codes will be placed under Intake System title
     while (controller.getRightBumperButtonPressed() == true) {
-      motorSubsystem.setElevatorMotorSpeed(0.5);
+      motorSubsystem.setClawMotorSpeed(-0.5);
     }
 
     // CLAW

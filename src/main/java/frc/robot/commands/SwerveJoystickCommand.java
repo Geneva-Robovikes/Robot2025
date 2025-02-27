@@ -4,18 +4,18 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.Easings;
 
 public class SwerveJoystickCommand extends Command {
   private final SwerveSubsystem swerveSubsystem;
-  private final CommandXboxController controller;
+  private final XboxController controller;
   private final SlewRateLimiter xLim, yLim, turnLim;
   private final Easings ease;
 
-  public SwerveJoystickCommand(SwerveSubsystem s, CommandXboxController controller) {
+  public SwerveJoystickCommand(SwerveSubsystem s, XboxController controller) {
     swerveSubsystem = s;
 
     this.controller = controller;
@@ -55,7 +55,7 @@ public class SwerveJoystickCommand extends Command {
     ySpeed = yLim.calculate(ySpeed) * Constants.ModuleConstants.kMaxSpeedMetersPerSecond;
     turningSpeed = turnLim.calculate(turningSpeed)  * Constants.ModuleConstants.kMaxAngularSpeedRadiansPerSecond;
 
-    if (controller.leftTrigger().getAsBoolean()) {
+    if (Math.sqrt((controller.getLeftX())) + Math.sqrt(controller.getLeftY()) >= .5) {
       swerveSubsystem.zeroHeading();
     }
 
