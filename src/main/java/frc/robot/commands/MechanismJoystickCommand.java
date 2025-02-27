@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.MotorSubsystem;
 import frc.robot.util.Easings;
-import frc.robot.subsystems.Elevator_Subsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.Constants;
 
@@ -18,15 +17,13 @@ import frc.robot.Constants;
 public class MechanismJoystickCommand extends Command {
   private final MotorSubsystem motorSubsystem;
   private final LEDSubsystem ledSubsystem;
-  private final Elevator_Subsystem elevatorSubsystem;
   private final CommandXboxController controller;
   private final Easings easings;
 
-  public MechanismJoystickCommand(MotorSubsystem subsystem, LEDSubsystem ledSubsystem, Elevator_Subsystem elevatorSubsystem, CommandXboxController controller) {
+  public MechanismJoystickCommand(MotorSubsystem subsystem, LEDSubsystem ledSubsystem, CommandXboxController controller) {
     motorSubsystem = subsystem;
     this.ledSubsystem = ledSubsystem;
     this.controller = controller;
-    this.elevatorSubsystem = elevatorSubsystem;
     easings = new Easings();
   }
 
@@ -51,12 +48,12 @@ public class MechanismJoystickCommand extends Command {
     if (controller.getLeftTriggerAxis() > Constants.ModuleConstants.kDeadzoneMinimum && controller.getLeftTriggerAxis() < Constants.ModuleConstants.kDeadzoneMaximum) {
 
       double leftTriggerSpeed = easings.joystick(easings.joystick(controller.getLeftTriggerAxis()), 2);
-      elevatorSubsystem.Set_Motor_Speed(leftTriggerSpeed);
+
 
     } else if (controller.getRightTriggerAxis() > Constants.ModuleConstants.kDeadzoneMinimum && controller.getRightTriggerAxis() < Constants.ModuleConstants.kDeadzoneMaximum) {
 
       double rightTriggerSpeed = easings.joystick(easings.joystick(controller.getRightTriggerAxis()), 2) * -1;
-      elevatorSubsystem.Set_Motor_Speed(rightTriggerSpeed);
+
 
     }
     
@@ -65,7 +62,6 @@ public class MechanismJoystickCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    elevatorSubsystem.Set_Motor_Speed(0);
   }
 
   // Returns true when the command should end.
