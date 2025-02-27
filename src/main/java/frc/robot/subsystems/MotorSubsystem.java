@@ -32,8 +32,8 @@ public class MotorSubsystem extends SubsystemBase {
 
   private final SparkMax clawMotor = new SparkMax(0, MotorType.kBrushless);
 
-  private final TalonFX intake_motor_intake = new TalonFX(0);
-  private final TalonFX intake_motor_tilt = new TalonFX(0);
+  private final TalonFX intakeMotorIntake = new TalonFX(0);
+  private final TalonFX intakeMotorTilt = new TalonFX(0);
 
 
  
@@ -66,13 +66,13 @@ public class MotorSubsystem extends SubsystemBase {
   }
 
   public void setIntakeMotorSpeed(double speed) {
-    intake_motor_intake.set(speed);
-    intake_motor_intake.setInverted(false);
+    intakeMotorIntake.set(speed);
+    intakeMotorIntake.setInverted(false);
   }
 
   public void setTiltMotorSpeed(double speed) {
-    intake_motor_tilt.set(speed);
-    intake_motor_tilt.setInverted(false);
+    intakeMotorTilt.set(speed);
+    intakeMotorTilt.setInverted(false);
   }
 
 
