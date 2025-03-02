@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.drive;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -6,8 +6,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
-import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.util.Easings;
+import frc.robot.subsystems.drive.SwerveSubsystem;
+import frc.robot.subsystems.util.Easings;
 
 public class SwerveJoystickCommand extends Command {
   private final SwerveSubsystem swerveSubsystem;

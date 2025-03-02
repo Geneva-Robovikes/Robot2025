@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.subsystems.util;
 
 import static edu.wpi.first.units.Units.Percent;
 import static edu.wpi.first.units.Units.Seconds;
@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class LEDSubsystem extends SubsystemBase {
+public class LED extends SubsystemBase {
   private final AddressableLED led;
   private final AddressableLEDBuffer ledBuffer;
 
-  public LEDSubsystem() {
+  public LED() {
     led = new AddressableLED(9);
     ledBuffer = new AddressableLEDBuffer(100);
 

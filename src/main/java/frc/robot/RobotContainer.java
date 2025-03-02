@@ -6,18 +6,17 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.LEDCommand;
-import frc.robot.commands.ClawIntakeCommand;
-import frc.robot.commands.ElevatorUpCommand;
-import frc.robot.commands.ResetHeadingCommand;
-import frc.robot.commands.ElevatorDownCommand;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.ClawOuttakeCommand;
-import frc.robot.commands.SwerveJoystickCommand;
-import frc.robot.commands.VisionAlignmentCommand;
-import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.MotorSubsystem;
-import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.commands.claw.ClawIntakeCommand;
+import frc.robot.commands.elevator.ElevatorCommand;
+import frc.robot.commands.drive.ResetHeadingCommand;
+import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.claw.ClawOuttakeCommand;
+import frc.robot.commands.drive.SwerveJoystickCommand;
+import frc.robot.commands.vision.VisionAlignmentCommand;
+import frc.robot.subsystems.util.LED;
+import frc.robot.subsystems.mechanisms.MotorSubsystem;
+import frc.robot.subsystems.drive.SwerveSubsystem;
+import frc.robot.subsystems.util.Vision;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
@@ -41,21 +40,22 @@ public class RobotContainer {
       
   /* Subsystems */
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
-  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  private final Vision visionSubsystem = new Vision();
   private final MotorSubsystem motorSubsystem = new MotorSubsystem();
-  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
 
   /* Commands */
   private final VisionAlignmentCommand visionAlignmentCommand = new VisionAlignmentCommand(visionSubsystem, swerveSubsystem);
   private final ClawIntakeCommand clawIntakeCommand = new ClawIntakeCommand(motorSubsystem);
   private final ClawOuttakeCommand ClawOuttakeCommand = new ClawOuttakeCommand(motorSubsystem);
-  private final ElevatorDownCommand elevatorDownCommand = new ElevatorDownCommand(motorSubsystem);
-  private final ElevatorUpCommand elevatorUpCommand = new ElevatorUpCommand(motorSubsystem);
+  private final ElevatorCommand elevatorCommand = new ElevatorCommand(motorSubsystem);
   private final IntakeCommand intakeCommand = new IntakeCommand(motorSubsystem);
   private final ResetHeadingCommand resetHeadingCommand = new ResetHeadingCommand(swerveSubsystem);
 
   /* Auto */
   private final SendableChooser<Command> autoChooser;
+
+  /* Util */
+  private final LED ledController = new LED();
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -87,8 +87,8 @@ public class RobotContainer {
 
     m_driverController.y().whileTrue(resetHeadingCommand);
 
-    m_driverController.rightTrigger().whileTrue(elevatorUpCommand);
-    m_driverController.leftTrigger().whileTrue(elevatorDownCommand);
+    m_driverController.rightTrigger().whileTrue(elevatorCommand);
+    m_driverController.leftTrigger().whileTrue(elevatorCommand);
 
     m_driverController.leftBumper().whileTrue(new ParallelCommandGroup(clawIntakeCommand, intakeCommand));
     m_driverController.rightBumper().whileTrue(ClawOuttakeCommand);
@@ -124,6 +124,6 @@ public class RobotContainer {
   }
 
   public Command getLEDCommand() {
-    return new LEDCommand(ledSubsystem, visionSubsystem);
+    return new LEDCommand(ledController, visionSubsystem);
   }
 }

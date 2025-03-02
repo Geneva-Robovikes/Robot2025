@@ -1,4 +1,4 @@
-package frc.robot.util;
+package frc.robot.subsystems.util;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;

@@ -1,7 +1,7 @@
-package frc.robot.util;
+package frc.robot.subsystems.util;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.MotorSubsystem;
+import frc.robot.subsystems.mechanisms.MotorSubsystem;
 
 @SuppressWarnings("unused")
 public final class Presets {

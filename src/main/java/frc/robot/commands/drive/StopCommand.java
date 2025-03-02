@@ -1,7 +1,7 @@
-package frc.robot.commands;
+package frc.robot.commands.drive;
 
-import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.drive.SwerveSubsystem;
 
 
 public class StopCommand extends Command  {

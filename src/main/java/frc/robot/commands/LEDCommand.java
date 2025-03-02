@@ -8,21 +8,22 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.util.LED;
+import frc.robot.subsystems.util.Vision;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class LEDCommand extends Command {
-  private final LEDSubsystem ledSubsystem;
-  private final VisionSubsystem visionSubsystem;
+  private final LED ledSubsystem;
+  private final Vision visionSubsystem;
 
   private LEDPattern defaultColor = LEDPattern.solid(null);
 
-  public LEDCommand(LEDSubsystem ledSubsystem, VisionSubsystem visionSubsystem) {
+  public LEDCommand(LED ledSubsystem, Vision visionSubsystem) {
     this.ledSubsystem = ledSubsystem;
     this.visionSubsystem = visionSubsystem;
 
     defaultColor = LEDPattern.solid(Color.kWhite);
+
   }
 
   @Override

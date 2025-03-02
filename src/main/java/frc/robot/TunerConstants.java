@@ -16,4 +16,8 @@ public final class TunerConstants {
     public static final double kAutoDrivePIDpValue = 0.0000000001;
     public static final double kAutoDrivePIDiValue = 0.095;
     public static final double kAutoDrivePIDdValue = 0;
+
+    public static final double kDriveFeedForwardkS = 0.12061;
+    public static final double kDriveFeedForwardkV = 2.2751;
+    public static final double kDriveFeedForwardkA = 0.10389;
 }

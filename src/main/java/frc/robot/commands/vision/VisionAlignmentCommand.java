@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.vision;
 
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -14,12 +14,12 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.drive.SwerveSubsystem;
+import frc.robot.subsystems.util.Vision;
 
 public class VisionAlignmentCommand extends Command {
 
-  private final VisionSubsystem subsystem;
+  private final Vision subsystem;
   private final SwerveSubsystem swerveSubsystem;
 
   private final PIDController yawController;
@@ -28,7 +28,7 @@ public class VisionAlignmentCommand extends Command {
 
   private boolean stop;
 
-  public VisionAlignmentCommand(VisionSubsystem s, SwerveSubsystem ss) {
+  public VisionAlignmentCommand(Vision s, SwerveSubsystem ss) {
     subsystem = s;
     swerveSubsystem = ss;
 

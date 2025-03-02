@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.Volts;
 
@@ -34,12 +34,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.TunerConstants;
-import frc.robot.commands.StopCommand;
+import frc.robot.commands.drive.StopCommand;
+import frc.robot.subsystems.util.Vision;
 
 
 public class SwerveSubsystem extends SubsystemBase {
   /* Get the vision subsystem for odometry purposes. */
-  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  private final Vision visionSubsystem = new Vision();
   
   /* Initialize swerve modules */
   private final SwerveModule frontLeft = new SwerveModule(1, 3, false, true, 2, "Front Right");

@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.drive;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -46,7 +46,7 @@ public class SwerveModule {
         turningPidController = new PIDController(TunerConstants.kTeleopTurnPIDpValue, TunerConstants.kTeleopTurnPIDiValue, TunerConstants.kTeleopTurnPIDdValue);
         drivingPidController = new PIDController(TunerConstants.kTeleopDrivePIDpValue, TunerConstants.kTeleopDrivePIDiValue , TunerConstants.kTeleopDrivePIDdValue);
 
-        driveFeedForward = new SimpleMotorFeedforward(0.12061, 2.2751, 0.10389);
+        driveFeedForward = new SimpleMotorFeedforward(TunerConstants.kDriveFeedForwardkS, TunerConstants.kDriveFeedForwardkV, TunerConstants.kDriveFeedForwardkA);
 
         turningPidController.enableContinuousInput(-Math.PI, Math.PI);
 
