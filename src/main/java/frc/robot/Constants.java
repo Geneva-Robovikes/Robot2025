@@ -91,7 +91,11 @@ public final class Constants {
 
   public static class MechanismConstants {
     /* TODO: real voltage value*/
-    public static final double kClawMotorSpeed = .3;
-    public static final double kMaxClawMotorCurrent = 0;
+    public static final double kIntakeMotorSpeed = .45;
+    public static final double kIntakeTiltMotorSpeed = .1;
+    public static final double kElevatorMotorDeadzone = .1;
+    public static final double kElevatorMotorMaximumSpeed = 1;
+
+    public static final int kMaxClawMotorCurrent = 0;
   }
 }

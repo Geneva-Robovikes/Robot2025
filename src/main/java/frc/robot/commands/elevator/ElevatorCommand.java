@@ -7,12 +7,18 @@ package frc.robot.commands.elevator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.util.Easings;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.MechanismConstants;
 import frc.robot.subsystems.mechanisms.MotorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ElevatorCommand extends Command {
   MotorSubsystem motorSubsystem;
   Easings easings;
+  MechanismConstants mechanismConstants;
+  OperatorConstants operatorConstants;
+  double maxSpeed;
+  double deadzone;
 
   XboxController controller;
   double rightTriggerAxis;
@@ -26,6 +32,10 @@ public class ElevatorCommand extends Command {
 
     easings = new Easings();
     controller = new XboxController(0);
+  
+    mechanismConstants = new MechanismConstants();
+    maxSpeed = mechanismConstants.kElevatorMotorMaximumSpeed;
+    deadzone = mechanismConstants.kElevatorMotorDeadzone;
   }
 
   // Called when the command is initially scheduled.
@@ -48,18 +58,16 @@ public class ElevatorCommand extends Command {
     rightTriggerAxis = (rightTriggerAxis - .5) * 2;
     leftTriggerAxis = (leftTriggerAxis - .5) * 2;
 
+    combinedTriggerAxis = rightTriggerAxis - leftTriggerAxis;
+
     // rightTriggerAxis = easings.joystick(rightTriggerAxis);
     // leftTriggerAxis = easings.joystick(leftTriggerAxis);
-
-    if (rightTriggerAxis < .1) {
-      rightTriggerAxis = 0;
-    }
-    if (leftTriggerAxis < .1) {
+    combinedTriggerAxis = combinedTriggerAxis * maxSpeed;
+    if (-deadzone <= combinedTriggerAxis && combinedTriggerAxis < deadzone) {
       leftTriggerAxis = 0;
     }
 
-    combinedTriggerAxis = rightTriggerAxis - leftTriggerAxis;
-    System.out.println(combinedTriggerAxis);
+    // System.out.println(combinedTriggerAxis);
     motorSubsystem.setElevatorMotorSpeed(combinedTriggerAxis);
   }
 

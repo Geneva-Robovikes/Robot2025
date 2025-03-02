@@ -9,7 +9,10 @@ import frc.robot.commands.LEDCommand;
 import frc.robot.commands.claw.ClawIntakeCommand;
 import frc.robot.commands.elevator.ElevatorCommand;
 import frc.robot.commands.drive.ResetHeadingCommand;
-import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.intake.IntakeOutCommand;
+import frc.robot.commands.intake.IntakeInCommand;
+import frc.robot.commands.intake.IntakePivotDownCommand;
+import frc.robot.commands.intake.IntakePivotUpCommand;
 import frc.robot.commands.claw.ClawOuttakeCommand;
 import frc.robot.commands.drive.SwerveJoystickCommand;
 import frc.robot.commands.vision.VisionAlignmentCommand;
@@ -25,8 +28,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -53,7 +55,10 @@ public class RobotContainer {
   private final ClawIntakeCommand clawIntakeCommand = new ClawIntakeCommand(clawSubsystem);
   private final ClawOuttakeCommand ClawOuttakeCommand = new ClawOuttakeCommand(clawSubsystem);
   private final ElevatorCommand elevatorCommand = new ElevatorCommand(motorSubsystem);
-  private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
+  private final IntakeInCommand intakeInCommand = new IntakeInCommand(intakeSubsystem);
+  private final IntakeOutCommand intakeOutCommand = new IntakeOutCommand(intakeSubsystem);
+  private final IntakePivotDownCommand intakePivotUpCommand = new IntakePivotDownCommand(intakeSubsystem);
+  private final IntakePivotUpCommand intakePivotDownCommand = new IntakePivotUpCommand(intakeSubsystem);
   private final ResetHeadingCommand resetHeadingCommand = new ResetHeadingCommand(swerveSubsystem);
 
   /* Auto */
@@ -88,9 +93,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.a().whileTrue(visionAlignmentCommand);
-
-    m_driverController.y().whileTrue(resetHeadingCommand);
+    m_driverController.x().whileTrue(intakePivotDownCommand);
+    m_driverController.y().whileTrue(intakePivotUpCommand);
 
     m_driverController.rightTrigger().whileTrue(elevatorCommand);
     m_driverController.leftTrigger().whileTrue(elevatorCommand);
@@ -98,7 +102,11 @@ public class RobotContainer {
     m_driverController.leftBumper().whileTrue(clawIntakeCommand);
     m_driverController.rightBumper().whileTrue(ClawOuttakeCommand);
 
-    m_driverController.b().whileTrue(intakeCommand);
+    m_driverController.b().whileTrue(intakeOutCommand);
+    m_driverController.a().whileTrue(intakeInCommand);
+
+    m_driverController.povLeft().whileTrue(visionAlignmentCommand);
+    m_driverController.povDown().whileTrue(resetHeadingCommand);
 
     /* Collyn Controls TM */
     /*
