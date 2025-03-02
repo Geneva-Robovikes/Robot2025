@@ -5,16 +5,16 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.mechanisms.MotorSubsystem;
+import frc.robot.subsystems.mechanisms.IntakeSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeCommand extends Command {
-  private final MotorSubsystem motorSubsystem;
+  private final IntakeSubsystem intakeSubsystem;
 
-  public IntakeCommand(MotorSubsystem subsystem) {
-    this.motorSubsystem = subsystem;
+  public IntakeCommand(IntakeSubsystem subsystem) {
+    this.intakeSubsystem = subsystem;
 
-    addRequirements(motorSubsystem);
+    addRequirements(intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -24,13 +24,13 @@ public class IntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    motorSubsystem.setIntakeMotorSpeed(.5);
+    intakeSubsystem.setIntakeMotorSpeed(-.5);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    motorSubsystem.setIntakeMotorSpeed(0);
+    intakeSubsystem.setIntakeMotorSpeed(0);
   }
 
   // Returns true when the command should end.

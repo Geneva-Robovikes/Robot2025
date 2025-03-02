@@ -5,13 +5,13 @@
 package frc.robot.commands.claw;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.mechanisms.MotorSubsystem;
+import frc.robot.subsystems.mechanisms.ClawSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ClawIntakeCommand extends Command {
-  private final MotorSubsystem motorSubsystem;
+  private final ClawSubsystem motorSubsystem;
 
-  public ClawIntakeCommand(MotorSubsystem subsystem) {
+  public ClawIntakeCommand(ClawSubsystem subsystem) {
     this.motorSubsystem = subsystem;
 
     addRequirements(motorSubsystem);

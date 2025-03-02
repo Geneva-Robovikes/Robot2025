@@ -27,34 +27,18 @@ public class MotorSubsystem extends SubsystemBase {
 
   /* TODO: real can id's */
   private final TalonFX elevatorMotor = new TalonFX(14);
-  private final TalonFX intakeMotor = new TalonFX(13);
   private final TalonFX intakeTiltMotor = new TalonFX(0);
-  private final TalonFX clawMotor = new TalonFX(15);
 
   public MotorSubsystem() {
-    intakeMotor.setInverted(false);
     intakeTiltMotor.setInverted(false);
   }
   
 
   @Override
   public void periodic() {}
- 
-  public double getClawMotorCurrent() {
-    SmartDashboard.putNumber("Talon Current", clawMotor.getMotorVoltage().getValueAsDouble());
-    return clawMotor.getMotorVoltage().getValueAsDouble();
-  }
-
-  public void setClawMotorSpeed(double speed) {
-    clawMotor.set(speed);
-  }
 
   public void setElevatorMotorSpeed(double speed) {
     elevatorMotor.set(speed);
-  }
-
-  public void setIntakeMotorSpeed(double speed) {
-    intakeMotor.set(speed);
   }
 
   public void setTiltMotorSpeed(double speed) {

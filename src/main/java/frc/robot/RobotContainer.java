@@ -15,6 +15,8 @@ import frc.robot.commands.drive.SwerveJoystickCommand;
 import frc.robot.commands.vision.VisionAlignmentCommand;
 import frc.robot.subsystems.util.LED;
 import frc.robot.subsystems.mechanisms.MotorSubsystem;
+import frc.robot.subsystems.mechanisms.IntakeSubsystem;
+import frc.robot.subsystems.mechanisms.ClawSubsystem;
 import frc.robot.subsystems.drive.SwerveSubsystem;
 import frc.robot.subsystems.util.Vision;
 
@@ -43,13 +45,15 @@ public class RobotContainer {
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
   private final Vision visionSubsystem = new Vision();
   private final MotorSubsystem motorSubsystem = new MotorSubsystem();
+  private final ClawSubsystem clawSubsystem = new ClawSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
   /* Commands */
   private final VisionAlignmentCommand visionAlignmentCommand = new VisionAlignmentCommand(visionSubsystem, swerveSubsystem);
-  private final ClawIntakeCommand clawIntakeCommand = new ClawIntakeCommand(motorSubsystem);
-  private final ClawOuttakeCommand ClawOuttakeCommand = new ClawOuttakeCommand(motorSubsystem);
+  private final ClawIntakeCommand clawIntakeCommand = new ClawIntakeCommand(clawSubsystem);
+  private final ClawOuttakeCommand ClawOuttakeCommand = new ClawOuttakeCommand(clawSubsystem);
   private final ElevatorCommand elevatorCommand = new ElevatorCommand(motorSubsystem);
-  private final IntakeCommand intakeCommand = new IntakeCommand(motorSubsystem);
+  private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
   private final ResetHeadingCommand resetHeadingCommand = new ResetHeadingCommand(swerveSubsystem);
 
   /* Auto */
@@ -91,8 +95,10 @@ public class RobotContainer {
     m_driverController.rightTrigger().whileTrue(elevatorCommand);
     m_driverController.leftTrigger().whileTrue(elevatorCommand);
 
-    m_driverController.leftBumper().whileTrue(new ParallelCommandGroup(clawIntakeCommand, intakeCommand));
+    m_driverController.leftBumper().whileTrue(clawIntakeCommand);
     m_driverController.rightBumper().whileTrue(ClawOuttakeCommand);
+
+    m_driverController.b().whileTrue(intakeCommand);
 
     /* Collyn Controls TM */
     /*
@@ -134,6 +140,6 @@ public class RobotContainer {
   }
 
   public Command getLEDCommand() {
-    return new LEDCommand(ledController, visionSubsystem, motorSubsystem);
+    return new LEDCommand(ledController, visionSubsystem, clawSubsystem);
   }
 }
