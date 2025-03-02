@@ -10,17 +10,21 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.util.LED;
 import frc.robot.subsystems.util.Vision;
+import frc.robot.subsystems.mechanisms.MotorSubsystem;
+import frc.robot.Constants;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class LEDCommand extends Command {
   private final LED ledSubsystem;
   private final Vision visionSubsystem;
+  private final MotorSubsystem motorSubsystem;
 
   private LEDPattern defaultColor = LEDPattern.solid(null);
 
-  public LEDCommand(LED ledSubsystem, Vision visionSubsystem) {
+  public LEDCommand(LED ledSubsystem, Vision visionSubsystem, MotorSubsystem motorSubsystem) {
     this.ledSubsystem = ledSubsystem;
     this.visionSubsystem = visionSubsystem;
+    this.motorSubsystem = motorSubsystem;
 
     defaultColor = LEDPattern.solid(Color.kWhite);
 
@@ -52,6 +56,8 @@ public class LEDCommand extends Command {
       ledSubsystem.setColor(LEDPattern.solid(Color.kGreen));
     } else if(visionSubsystem.targetInView()) {
       ledSubsystem.setColor(LEDPattern.solid(Color.kGreenYellow));
+    } else if(motorSubsystem.getClawMotorCurrent() > Constants.MechanismConstants.kMaxClawMotorCurrent) {
+      ledSubsystem.flashColor(LEDPattern.solid(Color.kGreen), .2);
     } else {
       ledSubsystem.setColor(defaultColor);
     }

@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -93,6 +94,15 @@ public class RobotContainer {
     m_driverController.leftBumper().whileTrue(new ParallelCommandGroup(clawIntakeCommand, intakeCommand));
     m_driverController.rightBumper().whileTrue(ClawOuttakeCommand);
 
+    /* Collyn Controls TM */
+    /*
+    m_driverController.leftTrigger().whileTrue(new ParallelCommandGroup(
+      new SequentialCommandGroup(intakeDownPreset, clawDownPreset),
+      clawIntakeCommand,
+      intakeCommand));
+    */
+    
+
     /* SysId bindings; leave these commented unless you are running SysId tuning */
     /* SWERVE DRIVE
     m_driverController.povUp().whileTrue(swerveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
@@ -124,6 +134,6 @@ public class RobotContainer {
   }
 
   public Command getLEDCommand() {
-    return new LEDCommand(ledController, visionSubsystem);
+    return new LEDCommand(ledController, visionSubsystem, motorSubsystem);
   }
 }
