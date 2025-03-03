@@ -23,9 +23,14 @@ public class IntakeSubsystem extends SubsystemBase {
     intakePivotMotor.set(speed);
   }
 
-  public double getClawMotorCurrent() {
+  public double getIntakeMotorCurrent() {
     SmartDashboard.putNumber("Talon Current", intakeMotor.getMotorVoltage().getValueAsDouble());
     return intakeMotor.getMotorVoltage().getValueAsDouble();
+  }
+
+  public double getIntakeMotorPosition() {
+    SmartDashboard.putNumber("Intake Position", intakePivotMotor.getPosition().getValueAsDouble());
+    return intakePivotMotor.getPosition().getValueAsDouble();
   }
 
   @Override

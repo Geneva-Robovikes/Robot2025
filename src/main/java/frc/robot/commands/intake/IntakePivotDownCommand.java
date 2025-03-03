@@ -25,6 +25,7 @@ public class IntakePivotDownCommand extends Command {
   @Override
   public void execute() {
     intakeSubsystem.setIntakePivotMotorSpeed(-.1);
+    double test = intakeSubsystem.getIntakeMotorPosition();
   }
 
   // Called once the command ends or is interrupted.
