@@ -18,6 +18,7 @@ import frc.robot.subsystems.mechanisms.ClawSubsystem;
 import frc.robot.commands.presets.IntakeDownPreset;
 import frc.robot.commands.presets.IntakeUpPreset;
 import frc.robot.subsystems.drive.SwerveSubsystem;
+import frc.robot.subsystems.mechanisms.PneumaticSubsystem;
 import frc.robot.subsystems.util.Vision;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -46,6 +47,7 @@ public class RobotContainer {
   private final MotorSubsystem motorSubsystem = new MotorSubsystem();
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private final PneumaticSubsystem pneumaticSubsystem = new PneumaticSubsystem();
 
   /* Commands */
   private final IntakeInCommand intakeInCommand = new IntakeInCommand(intakeSubsystem);
@@ -53,8 +55,10 @@ public class RobotContainer {
   private final IntakePivotDownCommand intakePivotUpCommand = new IntakePivotDownCommand(intakeSubsystem);
   private final IntakePivotUpCommand intakePivotDownCommand = new IntakePivotUpCommand(intakeSubsystem);
 
+  /* Presets */
   private final IntakeDownPreset intakeDownPreset = new IntakeDownPreset(intakeSubsystem, motorSubsystem);
   private final IntakeUpPreset intakeUpPreset = new IntakeUpPreset(intakeSubsystem, motorSubsystem);
+
   /* Auto */
   private final SendableChooser<Command> autoChooser;
 
