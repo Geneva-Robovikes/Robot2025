@@ -24,7 +24,7 @@ public class IntakeOutCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.setIntakeMotorSpeed(.45);
+    intakeSubsystem.setIntakeMotorSpeed(.35);
     intakeSubsystem.getIntakeMotorCurrent();
     double test = intakeSubsystem.getIntakeMotorPosition();
   }

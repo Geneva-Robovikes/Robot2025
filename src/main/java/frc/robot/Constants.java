@@ -96,7 +96,10 @@ public final class Constants {
     public static final double kElevatorMotorDeadzone = .1;
     public static final double kElevatorMotorMaximumSpeed = 1;
 
-    public static final double kIntakePivotMotorDownPosition = 0;
+    public static final double kIntakePivotMotorDownPosition = 11.5;
+    public static final double kIntakePivotMotorUpPosition = 0;
+
+    public static final double kMinElevatorPosForIntakeUp = -2.1;
 
     public static final int kMaxClawMotorCurrent = 0;
   }

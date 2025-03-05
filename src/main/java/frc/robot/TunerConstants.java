@@ -21,7 +21,7 @@ public final class TunerConstants {
     public static final double kDriveFeedForwardkV = 2.2751;
     public static final double kDriveFeedForwardkA = 0.10389;
 
-    public static final double kIntakePIDpValue = 0.0000000001;
+    public static final double kIntakePIDpValue = 0.2;
     public static final double kIntakePIDiValue = 0;
     public static final double kIntakePIDdValue = 0;
 }

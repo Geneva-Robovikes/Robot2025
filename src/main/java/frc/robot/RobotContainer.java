@@ -13,6 +13,7 @@ import frc.robot.commands.intake.IntakeOutCommand;
 import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.commands.intake.IntakePivotDownCommand;
 import frc.robot.commands.intake.IntakePivotUpCommand;
+import frc.robot.commands.intake.IntakeTimedInOutCommand;
 import frc.robot.commands.claw.ClawOuttakeCommand;
 import frc.robot.commands.drive.SwerveJoystickCommand;
 import frc.robot.commands.vision.VisionAlignmentCommand;
@@ -20,6 +21,8 @@ import frc.robot.subsystems.util.LED;
 import frc.robot.subsystems.mechanisms.MotorSubsystem;
 import frc.robot.subsystems.mechanisms.IntakeSubsystem;
 import frc.robot.subsystems.mechanisms.ClawSubsystem;
+import frc.robot.commands.presets.IntakeDownPreset;
+import frc.robot.commands.presets.IntakeUpPreset;
 import frc.robot.subsystems.drive.SwerveSubsystem;
 import frc.robot.subsystems.util.Vision;
 
@@ -28,9 +31,12 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -57,10 +63,13 @@ public class RobotContainer {
   private final ElevatorCommand elevatorCommand = new ElevatorCommand(motorSubsystem);
   private final IntakeInCommand intakeInCommand = new IntakeInCommand(intakeSubsystem);
   private final IntakeOutCommand intakeOutCommand = new IntakeOutCommand(intakeSubsystem);
+  private final IntakeTimedInOutCommand intakeTimedInOutCommand = new IntakeTimedInOutCommand(intakeSubsystem);
   private final IntakePivotDownCommand intakePivotUpCommand = new IntakePivotDownCommand(intakeSubsystem);
   private final IntakePivotUpCommand intakePivotDownCommand = new IntakePivotUpCommand(intakeSubsystem);
   private final ResetHeadingCommand resetHeadingCommand = new ResetHeadingCommand(swerveSubsystem);
 
+  private final IntakeDownPreset intakeDownPreset = new IntakeDownPreset(intakeSubsystem, motorSubsystem);
+  private final IntakeUpPreset intakeUpPreset = new IntakeUpPreset(intakeSubsystem, motorSubsystem);
   /* Auto */
   private final SendableChooser<Command> autoChooser;
 
@@ -96,17 +105,18 @@ public class RobotContainer {
     m_driverController.x().whileTrue(intakePivotDownCommand);
     m_driverController.y().whileTrue(intakePivotUpCommand);
 
-    m_driverController.rightTrigger().whileTrue(elevatorCommand);
-    m_driverController.leftTrigger().whileTrue(elevatorCommand);
+    //m_driverController.rightTrigger().whileTrue(elevatorCommand);
+    //m_driverController.leftTrigger().whileTrue(elevatorCommand);
 
-    m_driverController.leftBumper().whileTrue(clawIntakeCommand);
-    m_driverController.rightBumper().whileTrue(ClawOuttakeCommand);
+    m_driverController.leftBumper().whileTrue(intakeInCommand);
 
-    m_driverController.b().whileTrue(intakeOutCommand);
-    m_driverController.a().whileTrue(intakeInCommand);
+    m_driverController.rightTrigger().whileTrue(new SequentialCommandGroup(intakeDownPreset, intakeInCommand)).onFalse(intakeUpPreset);
 
-    m_driverController.povLeft().whileTrue(visionAlignmentCommand);
+    m_driverController.b().whileTrue(intakeTimedInOutCommand);
+    m_driverController.a().whileTrue(intakeOutCommand);
+
     m_driverController.povDown().whileTrue(resetHeadingCommand);
+    m_driverController.povLeft().whileTrue(intakeUpPreset);
 
     /* Collyn Controls TM */
     /*

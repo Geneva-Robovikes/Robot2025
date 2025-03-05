@@ -4,8 +4,6 @@
 
 package frc.robot.commands.presets;
 
-import com.ctre.phoenix6.signals.MotorOutputStatusValue;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,21 +13,20 @@ import frc.robot.Constants;
 import frc.robot.TunerConstants;
 
 
-public class IntakeDownPreset extends Command {
+public class IntakeUpPreset extends Command {
   private final IntakeSubsystem intakeSubsystem;
   private final MotorSubsystem motorSubsystem;
-
   private final PIDController intakePositionPID;
 
   private boolean done;
 
-  public IntakeDownPreset(IntakeSubsystem intakeSubsystem, MotorSubsystem motorSubsystem) {
+  public IntakeUpPreset(IntakeSubsystem intakeSubsystem, MotorSubsystem motorSubsystem) {
     this.intakeSubsystem = intakeSubsystem;
     this.motorSubsystem = motorSubsystem;
 
-    intakePositionPID = new PIDController(TunerConstants.kIntakePIDpValue, TunerConstants.kIntakePIDiValue, TunerConstants.kIntakePIDdValue);
-
     done = false;
+
+    intakePositionPID = new PIDController(TunerConstants.kIntakePIDpValue, TunerConstants.kIntakePIDiValue, TunerConstants.kIntakePIDdValue);
 
     addRequirements(intakeSubsystem);
   }
@@ -39,12 +36,12 @@ public class IntakeDownPreset extends Command {
 
   @Override
   public void execute() {
-    motorSubsystem.getElevatorMotorPosition();
-    intakeSubsystem.setIntakePivotMotorSpeed(MathUtil.clamp((intakePositionPID.calculate(intakeSubsystem.getIntakeMotorPosition(), Constants.MechanismConstants.kIntakePivotMotorDownPosition)), -.13, .13));
+    System.out.println(intakeSubsystem.getIntakeMotorPosition());
+    intakeSubsystem.setIntakePivotMotorSpeed(MathUtil.clamp((intakePositionPID.calculate(intakeSubsystem.getIntakeMotorPosition(), Constants.MechanismConstants.kIntakePivotMotorUpPosition)), -.13, .13));
 
-    double diff = intakeSubsystem.getIntakeMotorPosition() - Constants.MechanismConstants.kIntakePivotMotorDownPosition;
+    double diff = intakeSubsystem.getIntakeMotorPosition() - Constants.MechanismConstants.kIntakePivotMotorUpPosition;
 
-    if (diff > 0) {
+    if (diff < 0 || motorSubsystem.getElevatorMotorPosition() < Constants.MechanismConstants.kMinElevatorPosForIntakeUp) {
       done = true;
     } else {
       done = false;
@@ -53,6 +50,7 @@ public class IntakeDownPreset extends Command {
 
   @Override
   public void end(boolean interrupted) {
+    System.out.println("end");
     intakeSubsystem.setIntakePivotMotorSpeed(0);
   }
 

@@ -45,6 +45,10 @@ public class SwerveJoystickCommand extends Command {
     ySpeed = ease.joystick(ySpeed, 4.05);
     turningSpeed = ease.joystick(ease.joystick(turningSpeed, 7));
 
+    if (controller.getLeftTriggerAxis() > 0.5) {
+      swerveSubsystem.zeroHeading();
+    }
+
     /* Apply a deadzone so that the motors dont get damaged by turning too slow */
     xSpeed = Math.abs(xSpeed) > Constants.OperatorConstants.controllerDeadzone ? xSpeed : 0.0;
     ySpeed = Math.abs(ySpeed) > Constants.OperatorConstants.controllerDeadzone ? ySpeed : 0.0;

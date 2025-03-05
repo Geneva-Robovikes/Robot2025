@@ -13,6 +13,7 @@ import edu.wpi.first.units.measure.MutDistance;
 import edu.wpi.first.units.measure.MutLinearVelocity;
 import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -42,6 +43,10 @@ public class MotorSubsystem extends SubsystemBase {
 
   public void setTiltMotorSpeed(double speed) {
     intakeTiltMotor.set(speed);
+  }
+  public double getElevatorMotorPosition(){
+    SmartDashboard.putNumber("elevator pos", elevatorMotor.getPosition().getValueAsDouble());
+    return elevatorMotor.getPosition().getValueAsDouble();
   }
 
 

@@ -5,6 +5,7 @@
 package frc.robot.subsystems.mechanisms;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,7 +14,9 @@ public class IntakeSubsystem extends SubsystemBase {
   private final TalonFX intakeMotor = new TalonFX(13);
   private final TalonFX intakePivotMotor = new TalonFX(16);
 
-  public IntakeSubsystem() {}
+  public IntakeSubsystem() {
+    intakePivotMotor.setNeutralMode(NeutralModeValue.Brake);
+  }
 
   public void setIntakeMotorSpeed(double speed) {
     intakeMotor.set(speed);
