@@ -6,36 +6,30 @@ package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.util.Easings;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.Constants.MechanismConstants;
+import frc.robot.Constants;
 import frc.robot.subsystems.mechanisms.MotorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ElevatorCommand extends Command {
-  MotorSubsystem motorSubsystem;
-  Easings easings;
-  MechanismConstants mechanismConstants;
-  OperatorConstants operatorConstants;
-  double maxSpeed;
-  double deadzone;
+  private final MotorSubsystem motorSubsystem;
+  
+  private double maxSpeed;
+  private double deadzone;
 
-  XboxController controller;
-  double rightTriggerAxis;
-  double leftTriggerAxis;
-  double combinedTriggerAxis;
+  private final XboxController controller;
+  private double rightTriggerAxis;
+  private double leftTriggerAxis;
+  private double combinedTriggerAxis;
 
   /** Creates a new ElevatorUpCommand. */
   public ElevatorCommand(MotorSubsystem motorSubsystem) {
     this.motorSubsystem = motorSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
 
-    easings = new Easings();
     controller = new XboxController(0);
   
-    mechanismConstants = new MechanismConstants();
-    maxSpeed = mechanismConstants.kElevatorMotorMaximumSpeed;
-    deadzone = mechanismConstants.kElevatorMotorDeadzone;
+    maxSpeed = Constants.MechanismConstants.kElevatorMotorMaximumSpeed;
+    deadzone = Constants.MechanismConstants.kElevatorMotorDeadzone;
   }
 
   // Called when the command is initially scheduled.

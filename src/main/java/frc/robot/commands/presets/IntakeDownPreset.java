@@ -4,8 +4,6 @@
 
 package frc.robot.commands.presets;
 
-import com.ctre.phoenix6.signals.MotorOutputStatusValue;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
