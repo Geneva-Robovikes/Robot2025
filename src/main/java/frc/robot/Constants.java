@@ -99,6 +99,9 @@ public final class Constants {
     public static final double kIntakePivotMotorDownPosition = 11.5;
     public static final double kIntakePivotMotorUpPosition = 0;
 
+    public static final double kClawDownPosition = -3.8;
+    public static final double kClawL2Position = -.82;
+
     public static final double kMinElevatorPosForIntakeUp = -2.1;
 
     public static final int kMaxClawMotorCurrent = 0;

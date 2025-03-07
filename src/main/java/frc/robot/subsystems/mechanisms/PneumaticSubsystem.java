@@ -15,7 +15,7 @@ public class PneumaticSubsystem extends SubsystemBase {
   private final DoubleSolenoid solenoidTwo;
   private final DoubleSolenoid solenoidThree;
 
-  private final Compressor compressor;
+  //private final Compressor compressor;
 
   public PneumaticSubsystem() {
     solenoidZero = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
@@ -23,7 +23,7 @@ public class PneumaticSubsystem extends SubsystemBase {
     solenoidTwo = new DoubleSolenoid(PneumaticsModuleType.REVPH, 4, 5);
     solenoidThree = new DoubleSolenoid(PneumaticsModuleType.REVPH, 6, 7);
 
-    compressor = new Compressor(PneumaticsModuleType.REVPH);
+    // /compressor = new Compressor(PneumaticsModuleType.REVPH);
 
     solenoidZero.set(DoubleSolenoid.Value.kReverse);
     solenoidOne.set(DoubleSolenoid.Value.kReverse);

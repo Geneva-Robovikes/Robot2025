@@ -24,13 +24,13 @@ public class ClawIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //motorSubsystem.setClawMotorSpeed(.5);
+    motorSubsystem.setClawMotorSpeed(-.3);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //motorSubsystem.setClawMotorSpeed(0);
+    motorSubsystem.setClawMotorSpeed(0);
   }
 
   // Returns true when the command should end.

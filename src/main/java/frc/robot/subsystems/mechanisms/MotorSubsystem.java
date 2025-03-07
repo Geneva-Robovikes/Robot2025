@@ -35,7 +35,8 @@ public class MotorSubsystem extends SubsystemBase {
   
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+  }
 
   public void setElevatorMotorSpeed(double speed) {
     elevatorMotor.set(speed);

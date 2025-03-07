@@ -24,4 +24,8 @@ public final class TunerConstants {
     public static final double kIntakePIDpValue = 0.2;
     public static final double kIntakePIDiValue = 0;
     public static final double kIntakePIDdValue = 0;
+
+    public static final double kElevatorPIDpValue = 1;
+    public static final double kElevatorPIDiValue = 0;
+    public static final double kElevatorPIDdValue = 0;
 }

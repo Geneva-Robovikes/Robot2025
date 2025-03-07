@@ -26,7 +26,6 @@ public class IntakeOutCommand extends Command {
   public void execute() {
     intakeSubsystem.setIntakeMotorSpeed(.35);
     intakeSubsystem.getIntakeMotorCurrent();
-    double test = intakeSubsystem.getIntakeMotorPosition();
   }
 
   // Called once the command ends or is interrupted.

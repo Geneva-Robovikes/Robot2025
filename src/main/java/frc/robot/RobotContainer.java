@@ -9,12 +9,21 @@ import frc.robot.commands.LEDCommand;
 import frc.robot.commands.intake.IntakeOutCommand;
 import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.commands.intake.IntakePivotDownCommand;
+import frc.robot.commands.elevator.ElevatorUpCommand;
+import frc.robot.commands.elevator.ElevatorDownCommand;
 import frc.robot.commands.intake.IntakePivotUpCommand;
+import frc.robot.commands.pneumatics.RobotUpCommand;
+import frc.robot.commands.claw.ClawIntakeCommand;
+import frc.robot.commands.claw.ClawOuttakeCommand;
+import frc.robot.commands.claw.ClawHoldCommand;
 import frc.robot.commands.drive.SwerveJoystickCommand;
 import frc.robot.subsystems.util.LED;
 import frc.robot.subsystems.mechanisms.MotorSubsystem;
 import frc.robot.subsystems.mechanisms.IntakeSubsystem;
+import frc.robot.subsystems.mechanisms.ElevatorSubsystem;
 import frc.robot.subsystems.mechanisms.ClawSubsystem;
+import frc.robot.commands.presets.ClawDownPreset;
+import frc.robot.commands.presets.ClawL2Preset;
 import frc.robot.commands.presets.IntakeDownPreset;
 import frc.robot.commands.presets.IntakeUpPreset;
 import frc.robot.subsystems.drive.SwerveSubsystem;
@@ -26,6 +35,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -47,17 +57,25 @@ public class RobotContainer {
   private final MotorSubsystem motorSubsystem = new MotorSubsystem();
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  private final PneumaticSubsystem pneumaticSubsystem = new PneumaticSubsystem();
+  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+  //private final PneumaticSubsystem pneumaticSubsystem = new PneumaticSubsystem();
 
   /* Commands */
   private final IntakeInCommand intakeInCommand = new IntakeInCommand(intakeSubsystem);
   private final IntakeOutCommand intakeOutCommand = new IntakeOutCommand(intakeSubsystem);
   private final IntakePivotDownCommand intakePivotUpCommand = new IntakePivotDownCommand(intakeSubsystem);
   private final IntakePivotUpCommand intakePivotDownCommand = new IntakePivotUpCommand(intakeSubsystem);
+  private final ClawIntakeCommand clawIntakeCommand = new ClawIntakeCommand(clawSubsystem);
+  private final ClawOuttakeCommand clawOutCommand = new ClawOuttakeCommand(clawSubsystem);
+  private final ElevatorUpCommand elevatorUpCommand = new ElevatorUpCommand(motorSubsystem);
+  private final ElevatorDownCommand elevatorDownCommand = new ElevatorDownCommand(motorSubsystem);
+  private final ClawHoldCommand clawHoldCommand = new ClawHoldCommand(clawSubsystem);
 
   /* Presets */
   private final IntakeDownPreset intakeDownPreset = new IntakeDownPreset(intakeSubsystem, motorSubsystem);
   private final IntakeUpPreset intakeUpPreset = new IntakeUpPreset(intakeSubsystem, motorSubsystem);
+  private final ClawDownPreset clawDownPreset = new ClawDownPreset(elevatorSubsystem);
+  private final ClawL2Preset clawL2Preset = new ClawL2Preset(elevatorSubsystem);
 
   /* Auto */
   private final SendableChooser<Command> autoChooser;
@@ -99,11 +117,12 @@ public class RobotContainer {
 
     m_driverController.leftBumper().whileTrue(intakeInCommand);
 
-    m_driverController.rightTrigger().whileTrue(new SequentialCommandGroup(intakeDownPreset, intakeInCommand)).onFalse(intakeUpPreset);
+    //m_driverController.rightTrigger().whileTrue(new SequentialCommandGroup(intakeDownPreset, clawDownPreset, new ParallelCommandGroup(intakeInCommand, clawIntakeCommand))).onFalse(new ParallelCommandGroup(new SequentialCommandGroup(clawL2Preset, intakeUpPreset), clawHoldCommand));
+    //m_driverController.rightTrigger().whileTrue(new SequentialCommandGroup(intakeDownPreset, new ParallelCommandGroup(intakeInCommand, clawIntakeCommand))).onFalse(intakeUpPreset);
 
-    m_driverController.a().whileTrue(intakeOutCommand);
-
-    m_driverController.povLeft().whileTrue(intakeUpPreset);
+    m_driverController.a().whileTrue(elevatorUpCommand);
+    m_driverController.b().whileTrue(clawOutCommand);
+    //m_driverController.povRight().whileTrue(new RobotUpCommand(pneumaticSubsystem));
 
     /* Collyn Controls TM */
     /*
