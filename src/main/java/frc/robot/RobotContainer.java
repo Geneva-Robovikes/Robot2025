@@ -117,10 +117,10 @@ public class RobotContainer {
 
     m_driverController.leftBumper().whileTrue(intakeInCommand);
 
-    //m_driverController.rightTrigger().whileTrue(new SequentialCommandGroup(intakeDownPreset, clawDownPreset, new ParallelCommandGroup(intakeInCommand, clawIntakeCommand))).onFalse(new ParallelCommandGroup(new SequentialCommandGroup(clawL2Preset, intakeUpPreset), clawHoldCommand));
+    m_driverController.rightTrigger().whileTrue(new SequentialCommandGroup(intakeDownPreset, clawDownPreset, new ParallelCommandGroup(intakeInCommand, clawIntakeCommand))).onFalse(new ParallelCommandGroup(new SequentialCommandGroup(clawL2Preset, intakeUpPreset), clawHoldCommand));
     //m_driverController.rightTrigger().whileTrue(new SequentialCommandGroup(intakeDownPreset, new ParallelCommandGroup(intakeInCommand, clawIntakeCommand))).onFalse(intakeUpPreset);
 
-    m_driverController.a().whileTrue(elevatorUpCommand);
+    m_driverController.a().whileTrue(intakeOutCommand);
     m_driverController.b().whileTrue(clawOutCommand);
     //m_driverController.povRight().whileTrue(new RobotUpCommand(pneumaticSubsystem));
 

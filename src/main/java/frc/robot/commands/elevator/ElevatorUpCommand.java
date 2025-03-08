@@ -23,12 +23,14 @@ public class ElevatorUpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    motorSubsystem.setVortexSpeed(1);
     motorSubsystem.setElevatorMotorSpeed(1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    motorSubsystem.setVortexSpeed(0);
     motorSubsystem.setElevatorMotorSpeed(0);
   }
 

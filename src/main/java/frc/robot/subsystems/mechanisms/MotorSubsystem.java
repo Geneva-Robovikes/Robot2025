@@ -7,6 +7,8 @@ package frc.robot.subsystems.mechanisms;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.MutDistance;
@@ -40,6 +42,11 @@ public class MotorSubsystem extends SubsystemBase {
 
   public void setElevatorMotorSpeed(double speed) {
     elevatorMotor.set(speed);
+    ///neoVortex.set(speed);
+  }
+
+  public void setVortexSpeed(double speed) {
+    //neoVortex.set(speed);
   }
 
   public void setTiltMotorSpeed(double speed) {

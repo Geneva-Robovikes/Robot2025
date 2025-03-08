@@ -36,11 +36,12 @@ public class ClawL2Preset extends Command {
   public void execute() {
     //elevatorSubsystem.setElevatorMotorSpeed(MathUtil.clamp((intakePositionPID.calculate(elevatorSubsystem.getElevatorMotorPosition(), Constants.MechanismConstants.kClawDownPosition)), -1, 1));
 
-    elevatorSubsystem.setElevatorMotorSpeed(1);
+    elevatorSubsystem.setElevatorMotorSpeed(.19);
 
     double diff = Math.abs(elevatorSubsystem.getElevatorMotorPosition()) - Math.abs(Constants.MechanismConstants.kClawL2Position);
 
-    if (diff < 0) {
+    if (diff < -.01) {
+      System.out.println("h");
       done = true;
     } else {
       done = false;

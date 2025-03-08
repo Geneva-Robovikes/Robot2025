@@ -37,7 +37,7 @@ public class IntakeUpPreset extends Command {
   @Override
   public void execute() {
     System.out.println(intakeSubsystem.getIntakeMotorPosition());
-    intakeSubsystem.setIntakePivotMotorSpeed(MathUtil.clamp((intakePositionPID.calculate(intakeSubsystem.getIntakeMotorPosition(), Constants.MechanismConstants.kIntakePivotMotorUpPosition)), -.13, .13));
+    intakeSubsystem.setIntakePivotMotorSpeed(MathUtil.clamp((intakePositionPID.calculate(intakeSubsystem.getIntakeMotorPosition(), Constants.MechanismConstants.kIntakePivotMotorUpPosition)), -.14, .14));
 
     double diff = intakeSubsystem.getIntakeMotorPosition() - Constants.MechanismConstants.kIntakePivotMotorUpPosition;
 
