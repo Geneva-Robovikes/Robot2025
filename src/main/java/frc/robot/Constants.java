@@ -67,7 +67,7 @@ public final class Constants {
     public static final String kCameraTwo = "cam2";
     public static final String kCameraThree = "cam3";
 
-    public static final Transform3d kCameraOnePosition = new Transform3d(new Translation3d(Units.inchesToMeters(-12.5), 0.0, 0), new Rotation3d(0,0,0));
+    public static final Transform3d kCameraOnePosition = new Transform3d(new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(11), 0), new Rotation3d(0,0,0));
     public static final Transform3d kCameraTwoPosition = new Transform3d(new Translation3d(Units.inchesToMeters(12.5), 0.0, 0), new Rotation3d(0,0,0));
     public static final Transform3d kCameraThreePosition = new Transform3d(new Translation3d(0, Units.inchesToMeters(-12.5), 0), new Rotation3d(0,0,0));
 
@@ -75,7 +75,7 @@ public final class Constants {
 
     /* TODO: Measure specific values */
     public static final double kLoadingYawOffset = 0.1;
-    public static final double kReefYawOffset = 0-12;
+    public static final double kReefYawOffset = 0;
 
     public static final double kReefDistanceOffset = 1.9;
     public static final double kLoadingDistanceOffset = 1;
@@ -98,9 +98,11 @@ public final class Constants {
 
     public static final double kIntakePivotMotorDownPosition = 11.5;
     public static final double kIntakePivotMotorUpPosition = 0;
+    public static final double kIntakeL1MotorUpPosition = 3.9;
 
     public static final double kClawDownPosition = -3.8;
-    public static final double kClawL2Position = -.95;
+    public static final double kClawL2Position = -.6;
+    public static final double kClawL1Position = -1.48;
 
     public static final double kMinElevatorPosForIntakeUp = -2.1;
 

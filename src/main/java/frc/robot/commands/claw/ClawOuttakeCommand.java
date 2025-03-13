@@ -24,7 +24,7 @@ public class ClawOuttakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    motorSubsystem.setClawMotorSpeed(.3);
+    motorSubsystem.setClawMotorSpeed(.9);
   }
 
   // Called once the command ends or is interrupted.

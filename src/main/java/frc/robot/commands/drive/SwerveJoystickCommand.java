@@ -59,11 +59,17 @@ public class SwerveJoystickCommand extends Command {
     ySpeed = yLim.calculate(ySpeed) * Constants.ModuleConstants.kMaxSpeedMetersPerSecond;
     turningSpeed = turnLim.calculate(turningSpeed)  * Constants.ModuleConstants.kMaxAngularSpeedRadiansPerSecond;
 
-    /* Set the speeds of the swerve module */
-    ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(-ySpeed, -xSpeed, -turningSpeed, swerveSubsystem.getRotation2d());
-    SwerveModuleState[] moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-
-    swerveSubsystem.setModuleStates(moduleStates);
+    if (controller.leftStick().getAsBoolean()) {
+      ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(-ySpeed/2, -xSpeed/2, -turningSpeed/2, swerveSubsystem.getRotation2d());
+      SwerveModuleState[] moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+  
+      swerveSubsystem.setModuleStates(moduleStates);
+    } else {
+      ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(-ySpeed, -xSpeed, -turningSpeed, swerveSubsystem.getRotation2d());
+      SwerveModuleState[] moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+  
+      swerveSubsystem.setModuleStates(moduleStates);
+    }
   }
 
 

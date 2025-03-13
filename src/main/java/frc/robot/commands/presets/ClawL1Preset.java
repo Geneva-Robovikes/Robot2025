@@ -4,26 +4,21 @@
 
 package frc.robot.commands.presets;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.mechanisms.ElevatorSubsystem;
 import frc.robot.Constants;
-import frc.robot.TunerConstants;
 
-
-public class ClawL2Preset extends Command {
+public class ClawL1Preset extends Command {
   private final ElevatorSubsystem elevatorSubsystem;
 
-  private final PIDController intakePositionPID;
+  //private final PIDController intakePositionPID;
 
   private boolean done;
 
-  public ClawL2Preset(ElevatorSubsystem elevatorSubsystem) {
+  public ClawL1Preset(ElevatorSubsystem elevatorSubsystem) {
     this.elevatorSubsystem = elevatorSubsystem;
 
-    intakePositionPID = new PIDController(TunerConstants.kElevatorPIDpValue, TunerConstants.kElevatorPIDiValue, TunerConstants.kElevatorPIDdValue);
+    //intakePositionPID = new PIDController(TunerConstants.kElevatorPIDpValue, TunerConstants.kElevatorPIDiValue, TunerConstants.kElevatorPIDdValue);
 
     done = false;
 
@@ -35,14 +30,13 @@ public class ClawL2Preset extends Command {
 
   @Override
   public void execute() {
-    double speed = MathUtil.clamp((intakePositionPID.calculate(elevatorSubsystem.getElevatorMotorPosition(), Constants.MechanismConstants.kClawL2Position)), -.3, .3);
+    //elevatorSubsystem.setElevatorMotorSpeed(MathUtil.clamp((intakePositionPID.calculate(elevatorSubsystem.getElevatorMotorPosition(), Constants.MechanismConstants.kClawDownPosition)), -1, 1));
 
-    SmartDashboard.putNumber("elevator pid", speed);
-    elevatorSubsystem.setElevatorMotorSpeed(speed * 3);
+    elevatorSubsystem.setElevatorMotorSpeed(.22);
 
-    double diff = Math.abs(elevatorSubsystem.getElevatorMotorPosition()) - Math.abs(Constants.MechanismConstants.kClawL2Position);
+    double diff = Math.abs(elevatorSubsystem.getElevatorMotorPosition()) - Math.abs(Constants.MechanismConstants.kClawL1Position);
 
-    if (speed < .02) {
+    if (diff < 0) {
       System.out.println("h");
       done = true;
     } else {
