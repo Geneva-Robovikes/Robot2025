@@ -7,29 +7,24 @@ package frc.robot.commands.elevator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.mechanisms.ElevatorSubsystem;
 import frc.robot.subsystems.mechanisms.MotorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ElevatorCommand extends Command {
-  private final MotorSubsystem motorSubsystem;
+  private final ElevatorSubsystem elevatorSubsytem;
   
-  private double maxSpeed;
-  private double deadzone;
-
   private final XboxController controller;
   private double rightTriggerAxis;
   private double leftTriggerAxis;
   private double combinedTriggerAxis;
 
   /** Creates a new ElevatorUpCommand. */
-  public ElevatorCommand(MotorSubsystem motorSubsystem) {
-    this.motorSubsystem = motorSubsystem;
+  public ElevatorCommand(ElevatorSubsystem elevatorSubsystem) {
+    this.elevatorSubsytem = elevatorSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
 
-    controller = new XboxController(0);
-  
-    maxSpeed = Constants.MechanismConstants.kElevatorMotorMaximumSpeed;
-    deadzone = Constants.MechanismConstants.kElevatorMotorDeadzone;
+    controller = new XboxController(Constants.OperatorConstants.kAuxiliaryControllerPort);
   }
 
   // Called when the command is initially scheduled.
@@ -56,19 +51,20 @@ public class ElevatorCommand extends Command {
 
     // rightTriggerAxis = easings.joystick(rightTriggerAxis);
     // leftTriggerAxis = easings.joystick(leftTriggerAxis);
-    combinedTriggerAxis = combinedTriggerAxis * maxSpeed;
-    if (-deadzone <= combinedTriggerAxis && combinedTriggerAxis < deadzone) {
-      leftTriggerAxis = 0;
+    combinedTriggerAxis = combinedTriggerAxis * Constants.MechanismConstants.kElevatorMotorMaximumSpeed;
+    if (-Constants.MechanismConstants.kElevatorMotorDeadzone <= combinedTriggerAxis && combinedTriggerAxis <= Constants.MechanismConstants.kElevatorMotorDeadzone) {
+      combinedTriggerAxis = 0;
     }
 
     // System.out.println(combinedTriggerAxis);
-    motorSubsystem.setElevatorMotorSpeed(combinedTriggerAxis);
+    elevatorSubsytem.setElevatorMotorSpeed(combinedTriggerAxis);
+    elevatorSubsytem.setVortexSpeed(combinedTriggerAxis);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    motorSubsystem.setElevatorMotorSpeed(0);
+    elevatorSubsytem.setElevatorMotorSpeed(0);
   }
 
   // Returns true when the command should end.

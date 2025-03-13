@@ -8,8 +8,10 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.LEDCommand;
 import frc.robot.commands.intake.IntakeOutCommand;
 import frc.robot.commands.intake.IntakeInCommand;
+import frc.robot.commands.intake.IntakeJoystickCommand;
 import frc.robot.commands.intake.IntakePivotDownCommand;
 import frc.robot.commands.elevator.ElevatorUpCommand;
+import frc.robot.commands.elevator.ElevatorCommand;
 import frc.robot.commands.elevator.ElevatorDownCommand;
 import frc.robot.commands.intake.IntakePivotUpCommand;
 import frc.robot.commands.pneumatics.RobotUpCommand;
@@ -50,6 +52,8 @@ public class RobotContainer {
   /* Controllers */
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController m_auxillaryController =
+      new CommandXboxController(1);
       
   /* Subsystems */
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
@@ -66,9 +70,11 @@ public class RobotContainer {
   private final IntakePivotDownCommand intakePivotUpCommand = new IntakePivotDownCommand(intakeSubsystem);
   private final IntakePivotUpCommand intakePivotDownCommand = new IntakePivotUpCommand(intakeSubsystem);
   private final ClawIntakeCommand clawIntakeCommand = new ClawIntakeCommand(clawSubsystem);
+  private final IntakeJoystickCommand intakeJoystickCommand = new IntakeJoystickCommand(motorSubsystem);
   private final ClawOuttakeCommand clawOutCommand = new ClawOuttakeCommand(clawSubsystem);
   private final ElevatorUpCommand elevatorUpCommand = new ElevatorUpCommand(motorSubsystem);
   private final ElevatorDownCommand elevatorDownCommand = new ElevatorDownCommand(motorSubsystem);
+  private final ElevatorCommand elevatorCommand = new ElevatorCommand(elevatorSubsystem);
   private final ClawHoldCommand clawHoldCommand = new ClawHoldCommand(clawSubsystem);
 
   /* Presets */
@@ -122,6 +128,17 @@ public class RobotContainer {
 
     m_driverController.a().whileTrue(intakeOutCommand);
     m_driverController.b().whileTrue(clawOutCommand);
+
+    m_auxillaryController.rightTrigger().whileTrue(elevatorCommand);
+    m_auxillaryController.leftTrigger().whileTrue(elevatorCommand);
+
+    m_auxillaryController.leftBumper().whileTrue(intakeJoystickCommand);
+    m_auxillaryController.a().whileTrue(intakeInCommand);
+    m_auxillaryController.x().whileTrue(clawIntakeCommand);
+
+    m_auxillaryController.b().whileTrue(intakeOutCommand);
+    m_auxillaryController.y().whileTrue(clawOutCommand);
+
     //m_driverController.povRight().whileTrue(new RobotUpCommand(pneumaticSubsystem));
 
     /* Collyn Controls TM */
