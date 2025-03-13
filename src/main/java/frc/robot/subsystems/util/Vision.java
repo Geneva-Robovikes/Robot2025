@@ -28,33 +28,33 @@ import frc.robot.Constants;
 @SuppressWarnings("unused")
 public class Vision extends SubsystemBase {
   private final PhotonCamera cameraOne;
-  private final PhotonCamera cameraTwo;
+  //private final PhotonCamera cameraTwo;
   //private final PhotonCamera cameraThree;
 
   private final AprilTagFieldLayout aprilTagFieldLayout;
 
   private final Transform3d cameraOnePosition;
-  private final Transform3d cameraTwoPosition;
+  //private final Transform3d cameraTwoPosition;
   //private final Transform3d cameraThreePosition;
 
   private final PhotonPoseEstimator photonPoseEstimatorCameraOne;
-  private final PhotonPoseEstimator photonPoseEstimatorCameraTwo;
+  //private final PhotonPoseEstimator photonPoseEstimatorCameraTwo;
   //private final PhotonPoseEstimator photonPoseEstimatorCameraThree;
 
   public Vision() {
     aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
 
     cameraOne = new PhotonCamera(Constants.VisionConstants.kCameraOne);
-    cameraTwo = new PhotonCamera(Constants.VisionConstants.kCameraTwo);
+    //cameraTwo = new PhotonCamera(Constants.VisionConstants.kCameraTwo);
     //cameraThree = new PhotonCamera(Constants.VisionConstants.kCameraThree);
 
     /* TODO: actually measure these out */
     cameraOnePosition = Constants.VisionConstants.kCameraOnePosition;
-    cameraTwoPosition = Constants.VisionConstants.kCameraTwoPosition;
+    //cameraTwoPosition = Constants.VisionConstants.kCameraTwoPosition;
     //cameraThreePosition = Constants.VisionConstants.kCameraThreePosition;
 
     photonPoseEstimatorCameraOne = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameraOnePosition);
-    photonPoseEstimatorCameraTwo = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameraTwoPosition);
+    //photonPoseEstimatorCameraTwo = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameraTwoPosition);
     //photonPoseEstimatorCameraThree = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY, cameraThreePosition);
   }
 
@@ -80,15 +80,17 @@ public class Vision extends SubsystemBase {
     List<Optional<EstimatedRobotPose>> estimatedPoses = new ArrayList<Optional<EstimatedRobotPose>>();
 
     Optional<EstimatedRobotPose> photonEstimatedPoseCamOne = photonPoseEstimatorCameraOne.update(cameraOne.getLatestResult());
-    Optional<EstimatedRobotPose> photonEstimatedPoseCamTwo = photonPoseEstimatorCameraTwo.update(cameraTwo.getLatestResult());
+   // Optional<EstimatedRobotPose> photonEstimatedPoseCamTwo = photonPoseEstimatorCameraTwo.update(cameraTwo.getLatestResult());
 
     if (photonEstimatedPoseCamOne.isPresent()) {
       estimatedPoses.add(photonEstimatedPoseCamOne);
     }
+
+    /*
     if (photonEstimatedPoseCamTwo.isPresent()) {
       estimatedPoses.add(photonEstimatedPoseCamTwo);
     }
-
+    */
     return estimatedPoses;
   }
 

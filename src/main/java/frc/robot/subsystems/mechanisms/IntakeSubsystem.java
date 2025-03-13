@@ -23,6 +23,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setIntakePivotMotorSpeed(double speed) {
+    System.out.println(speed);
     intakePivotMotor.set(speed);
   }
 
@@ -38,6 +39,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("intake pos", getIntakeMotorPosition());
     // This method will be called once per scheduler run
   }
 }

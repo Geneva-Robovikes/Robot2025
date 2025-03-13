@@ -24,7 +24,6 @@ public class VisionAlignmentCommand extends Command {
 
   private final PIDController yawController;
   private final PIDController distanceController;
-  private final PIDController rotController;
 
   private boolean stop;
 
@@ -34,7 +33,6 @@ public class VisionAlignmentCommand extends Command {
 
     yawController = new PIDController(.015, 0, 0);
     distanceController = new PIDController(.1, 0, 0);
-    rotController = new PIDController(1, 0, 0);
 
     stop = false;
 
@@ -80,12 +78,12 @@ public class VisionAlignmentCommand extends Command {
         */
         double yawSpeed = yawController.calculate(Constants.VisionConstants.kReefYawOffset, target.getYaw()) * Constants.VisionConstants.kMaxVisionAlignmentSpeed;
         //double distSpeed = distanceController.calculate(Constants.VisionConstants.kReefDistanceOffset, targetRange) * Constants.VisionConstants.kMaxVisionAlignmentSpeed;
-        double rotSpeed = rotController.calculate(swerveSubsystem.getRotation2d().getRadians(), 0) * Constants.VisionConstants.kMaxVisionRotationalSpeed;
+        //double rotSpeed = rotController.calculate(swerveSubsystem.getRotation2d().getRadians(), 0) * Constants.VisionConstants.kMaxVisionRotationalSpeed;
         
-        SmartDashboard.putNumber("Rotational Speed", rotSpeed);
+       // SmartDashboard.putNumber("Rotational Speed", rotSpeed);
 
         //chassisSpeeds = new ChassisSpeeds((distSpeed), (-yawSpeed), (rotSpeed * 2.5));
-        chassisSpeeds = new ChassisSpeeds(0, (-yawSpeed), (rotSpeed * 2.6));
+        chassisSpeeds = new ChassisSpeeds(0, (-yawSpeed), 0);
         moduleStates = Constants.ModuleConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
         
 
@@ -101,7 +99,6 @@ public class VisionAlignmentCommand extends Command {
 
   @Override
   public boolean isFinished() {
-    
     return stop;
   }
 }

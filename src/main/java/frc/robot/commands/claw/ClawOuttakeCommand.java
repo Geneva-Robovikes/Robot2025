@@ -6,13 +6,14 @@ package frc.robot.commands.claw;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.mechanisms.ClawSubsystem;
+import frc.robot.subsystems.mechanisms.MotorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ClawOuttakeCommand extends Command {
   private final ClawSubsystem motorSubsystem;
 
-  public ClawOuttakeCommand(ClawSubsystem subsystem) {
-    this.motorSubsystem = subsystem;
+  public ClawOuttakeCommand(ClawSubsystem clawSubsystem) {
+    this.motorSubsystem = clawSubsystem;
 
     addRequirements(motorSubsystem);
   }
@@ -24,7 +25,7 @@ public class ClawOuttakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    motorSubsystem.setClawMotorSpeed(.3);
+    motorSubsystem.setClawMotorSpeed(.9);
   }
 
   // Called once the command ends or is interrupted.

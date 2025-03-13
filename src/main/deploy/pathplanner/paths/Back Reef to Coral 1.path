@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.749262152777777,
-        "y": 4.0249999999999995
+        "x": 5.742110655737705,
+        "y": 4.1748463114754095
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.749262152777777,
-        "y": 4.0249999999999995
+        "x": 6.742110655737705,
+        "y": 4.1748463114754095
       },
       "isLocked": false,
       "linkedName": "Back Reef"
@@ -45,10 +45,10 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Reef to Coral",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -176.76682937747185
   },
   "useDefaultConstraints": true
 }

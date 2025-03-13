@@ -13,14 +13,14 @@ import frc.robot.Constants;
 import frc.robot.TunerConstants;
 
 
-public class IntakeUpPreset extends Command {
+public class IntakeL1Preset extends Command {
   private final IntakeSubsystem intakeSubsystem;
   private final MotorSubsystem motorSubsystem;
   private final PIDController intakePositionPID;
 
   private boolean done;
 
-  public IntakeUpPreset(IntakeSubsystem intakeSubsystem, MotorSubsystem motorSubsystem) {
+  public IntakeL1Preset(IntakeSubsystem intakeSubsystem, MotorSubsystem motorSubsystem) {
     this.intakeSubsystem = intakeSubsystem;
     this.motorSubsystem = motorSubsystem;
 
@@ -36,13 +36,12 @@ public class IntakeUpPreset extends Command {
 
   @Override
   public void execute() {
-    System.out.println("running");
-    intakeSubsystem.setIntakePivotMotorSpeed(-.2);
+    System.out.println(intakeSubsystem.getIntakeMotorPosition());
+    intakeSubsystem.setIntakePivotMotorSpeed(MathUtil.clamp((intakePositionPID.calculate(intakeSubsystem.getIntakeMotorPosition(), Constants.MechanismConstants.kIntakePivotMotorUpPosition)), -.14, .14));
 
     double diff = intakeSubsystem.getIntakeMotorPosition() - Constants.MechanismConstants.kIntakePivotMotorUpPosition;
 
     if (diff < 0 || motorSubsystem.getElevatorMotorPosition() < Constants.MechanismConstants.kMinElevatorPosForIntakeUp) {
-      System.out.println("done");
       done = true;
     } else {
       done = false;
