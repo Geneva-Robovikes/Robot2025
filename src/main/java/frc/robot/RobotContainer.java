@@ -158,7 +158,10 @@ public class RobotContainer {
     m_auxillaryController.leftTrigger().whileTrue(elevatorCommand);
 
     m_auxillaryController.rightBumper().whileTrue(new ClawHoldCommand(clawSubsystem));
-    m_auxillaryController.leftBumper().whileTrue(new IntakeJoystickCommand(motorSubsystem));
+    // m_auxillaryController.leftBumper().whileTrue(new IntakeJoystickCommand(motorSubsystem));
+    m_auxillaryController.povUp().whileTrue(new IntakePivotUpCommand(intakeSubsystem));
+    m_auxillaryController.povDown().whileTrue(new IntakePivotDownCommand(intakeSubsystem));
+
     m_auxillaryController.a().whileTrue(new IntakeInCommand(intakeSubsystem));
     m_auxillaryController.x().whileTrue(new ClawIntakeCommand(clawSubsystem));
 
