@@ -5,26 +5,24 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.MechanismConstants.ELEVATOR_POSITION;
+import frc.robot.Constants.MechanismConstants.INTAKE_POSITION;
 import frc.robot.commands.LEDCommand;
 import frc.robot.commands.intake.IntakeOutCommand;
+import frc.robot.commands.intake.IntakeStateCommand;
 import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.commands.intake.IntakeJoystickCommand;
-import frc.robot.commands.intake.IntakePivotDownCommand;
-import frc.robot.commands.elevator.ElevatorUpCommand;
 import frc.robot.commands.elevator.ElevatorCommand;
-import frc.robot.commands.elevator.ElevatorDownCommand;
-import frc.robot.commands.intake.IntakePivotUpCommand;
+import frc.robot.commands.elevator.ElevatorStateCommand;
 import frc.robot.commands.claw.ClawIntakeCommand;
 import frc.robot.commands.claw.ClawOuttakeCommand;
 import frc.robot.commands.claw.ClawHoldCommand;
 import frc.robot.commands.drive.SwerveJoystickCommand;
-import frc.robot.commands.elevator.ElevatorBumpCommand;
 import frc.robot.subsystems.util.LED;
 import frc.robot.subsystems.mechanisms.IntakeSubsystem;
 import frc.robot.subsystems.mechanisms.ElevatorSubsystem;
 import frc.robot.subsystems.mechanisms.ClawSubsystem;
 import frc.robot.subsystems.drive.SwerveSubsystem;
-import frc.robot.subsystems.mechanisms.PneumaticSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -60,21 +58,16 @@ public class RobotContainer {
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-  private final PneumaticSubsystem pneumaticSubsystem = new PneumaticSubsystem();
 
   /* Commands */
   private final IntakeInCommand intakeInCommand = new IntakeInCommand(intakeSubsystem);
-  private final IntakePivotDownCommand intakePivotUpCommand = new IntakePivotDownCommand(intakeSubsystem);
-  private final IntakePivotUpCommand intakePivotDownCommand = new IntakePivotUpCommand(intakeSubsystem);
   private final ClawIntakeCommand clawIntakeCommand = new ClawIntakeCommand(clawSubsystem);
   private final IntakeJoystickCommand intakeJoystickCommand = new IntakeJoystickCommand(intakeSubsystem);
   private final ClawOuttakeCommand clawOutCommand = new ClawOuttakeCommand(clawSubsystem);
-  private final ElevatorUpCommand elevatorUpCommand = new ElevatorUpCommand(elevatorSubsystem);
-  private final ElevatorDownCommand elevatorDownCommand = new ElevatorDownCommand(elevatorSubsystem);
   private final ElevatorCommand elevatorCommand = new ElevatorCommand(elevatorSubsystem);
   private final ClawHoldCommand clawHoldCommand = new ClawHoldCommand(clawSubsystem);
+  private final IntakeOutCommand intakeOutCommand = new IntakeOutCommand(intakeSubsystem);
   private final LEDCommand ledCommand = new LEDCommand(ledController);
-  private final ElevatorBumpCommand elevatorBumpCommand = new ElevatorBumpCommand(elevatorSubsystem);
 
   /* Presets */
 
@@ -103,21 +96,29 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.x().whileTrue(intakePivotDownCommand);
-    m_driverController.y().whileTrue(intakePivotUpCommand);
+    m_driverController.a().whileTrue(clawOutCommand);
+    m_driverController.b().whileTrue(intakeOutCommand);
 
-    m_auxillaryController.rightTrigger().whileTrue(elevatorCommand);
-    m_auxillaryController.leftTrigger().whileTrue(elevatorCommand);
+    m_driverController.leftTrigger().whileTrue(
+      new SequentialCommandGroup(
+        new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L0),
+        new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_GND))).onFalse(
+          new SequentialCommandGroup(
+            new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L2),
+            new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_STW),
+            new ClawHoldCommand(clawSubsystem))
+        );
 
-    m_auxillaryController.rightBumper().whileTrue(new ClawHoldCommand(clawSubsystem));
-    m_auxillaryController.povUp().whileTrue(new IntakePivotUpCommand(intakeSubsystem));
-    m_auxillaryController.povDown().whileTrue(new IntakePivotDownCommand(intakeSubsystem));
 
     m_auxillaryController.a().whileTrue(new IntakeInCommand(intakeSubsystem));
-    m_auxillaryController.x().whileTrue(new ClawIntakeCommand(clawSubsystem));
-
     m_auxillaryController.b().whileTrue(new IntakeOutCommand(intakeSubsystem));
+    m_auxillaryController.x().whileTrue(new ClawIntakeCommand(clawSubsystem));
     m_auxillaryController.y().whileTrue(new ClawOuttakeCommand(clawSubsystem));
+
+    m_auxillaryController.leftTrigger().whileTrue(elevatorCommand);
+    m_auxillaryController.rightTrigger().whileTrue(elevatorCommand);
+
+    m_auxillaryController.rightBumper().whileTrue(new ClawHoldCommand(clawSubsystem));
 
     /* SysId bindings; leave these commented unless you are running SysId tuning */
     /* SWERVE DRIVE

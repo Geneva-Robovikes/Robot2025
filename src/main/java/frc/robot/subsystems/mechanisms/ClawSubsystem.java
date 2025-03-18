@@ -6,8 +6,6 @@ package frc.robot.subsystems.mechanisms;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClawSubsystem extends SubsystemBase {
@@ -17,17 +15,11 @@ public class ClawSubsystem extends SubsystemBase {
     clawMotor.setNeutralMode(NeutralModeValue.Brake);
   }
 
-  public double getClawMotorCurrent() {
-    SmartDashboard.putNumber("Talon Current", clawMotor.getMotorVoltage().getValueAsDouble());
-    return clawMotor.getMotorVoltage().getValueAsDouble();
-  }
-
   public void setClawMotorSpeed(double speed) {
     clawMotor.set(speed);
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
   }
 }

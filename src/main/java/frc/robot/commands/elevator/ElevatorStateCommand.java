@@ -3,36 +3,35 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.elevator;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.MechanismConstants.ELEVATOR_POSITION;
 import frc.robot.subsystems.mechanisms.ElevatorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ElevatorBumpCommand extends Command {
+public class ElevatorStateCommand extends Command {
   private final ElevatorSubsystem elevatorSubsystem;
+  
+  private ELEVATOR_POSITION position;
 
-  public ElevatorBumpCommand(ElevatorSubsystem elevatorSubsystem) {
+  public ElevatorStateCommand(ElevatorSubsystem elevatorSubsystem, ELEVATOR_POSITION elevatorPosition) {
     this.elevatorSubsystem = elevatorSubsystem;
+    this.position = elevatorPosition;
 
     addRequirements(elevatorSubsystem);
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    elevatorSubsystem.setElevatorMotorSpeed(1);
+  public void initialize() {
+    elevatorSubsystem.setPosition(position);
   }
 
-  // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    elevatorSubsystem.setElevatorMotorSpeed(0);
-  }
+  public void execute() {}
 
-  // Returns true when the command should end.
+  @Override
+  public void end(boolean interrupted) {}
+
   @Override
   public boolean isFinished() {
     return false;

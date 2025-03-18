@@ -53,40 +53,21 @@ public final class Constants {
       new Translation2d(-kDistanceBetweenWheels/2, kDistanceBetweenWheels/2), //back left
       new Translation2d(-kDistanceBetweenWheels/2, -kDistanceBetweenWheels/2)); //back right
 
-
-    /* Standard deviations used in the SwerveDrivePoseEstimator, the higher n1 and n2, the more the pose estimator
-     * trusts its output. The visions standard deviation should be fairly high until we do some calibration to get 
-     * the exact error.
-     */
     public static final Vector<N3> kStateStdDev = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5));
-    public static final Vector<N3> kVisionStdDev = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(10));
   }
 
   public static class VisionConstants {
-    public static final String kCameraOne = "cam1";
-    public static final String kCameraTwo = "cam2";
-    public static final String kCameraThree = "cam3";
+    public static final String kFrontLeft = "frontl";
+    public static final String kFrontRight = "frontr";
+    public static final String kBackLeft = "backl";
+    public static final String kBackRight = "backr";
 
-    public static final Transform3d kCameraOnePosition = new Transform3d(new Translation3d(Units.inchesToMeters(2), Units.inchesToMeters(11), 0), new Rotation3d(0,0,0));
-    public static final Transform3d kCameraTwoPosition = new Transform3d(new Translation3d(Units.inchesToMeters(12.5), 0.0, 0), new Rotation3d(0,0,0));
-    public static final Transform3d kCameraThreePosition = new Transform3d(new Translation3d(0, Units.inchesToMeters(-12.5), 0), new Rotation3d(0,0,0));
+    public static final Transform3d kFrontLeftPosition = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
+    public static final Transform3d kFrontRightPosition = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
+    public static final Transform3d kBackLeftPosition = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
+    public static final Transform3d kBackRightPosition = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
 
-    public static final int[] kReefAprilTags = {11, 17, 18, 19, 20, 21, 22};
-
-    /* TODO: Measure specific values */
-    public static final double kLoadingYawOffset = 0.1;
-    public static final double kReefYawOffset = 0;
-
-    public static final double kReefDistanceOffset = 1.9;
-    public static final double kLoadingDistanceOffset = 1;
-
-    public static final double kMaxVisionAlignmentSpeed = 6;
-    public static final double kMaxVisionDistAlignmentSpeed = 6;
-    public static final double kMaxVisionRotationalSpeed = 3.14;
-    public static final double kMaxVisionRotationSpeed = Math.PI/2;
-
-    public static final double kCameraHeight = Units.inchesToMeters(4.5);
-    public static final double kReefAprilTagHeight = Units.inchesToMeters(19.4);
+    public static final Vector<N3> kVisionStdDev = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(10));
   }
 
   public static class MechanismConstants {
@@ -107,5 +88,18 @@ public final class Constants {
     public static final double kMinElevatorPosForIntakeUp = -2.1;
 
     public static final int kMaxClawMotorCurrent = 0;
+
+    public static enum ELEVATOR_POSITION {
+      K_L0,
+      K_L1,
+      K_L2,
+      K_L3
+    }
+
+    public static enum INTAKE_POSITION {
+      K_GND,
+      K_STW,
+      K_L1
+    }
   }
 }

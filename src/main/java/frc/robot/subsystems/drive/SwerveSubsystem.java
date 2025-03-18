@@ -6,6 +6,11 @@ package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.Volts;
 
+import java.util.List;
+
+import org.photonvision.EstimatedRobotPose;
+
+import com.ctre.phoenix6.Utils;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -31,6 +36,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.TunerConstants;
 import frc.robot.commands.drive.StopCommand;
+import frc.robot.subsystems.mechanisms.OdometrySubsystem;
 
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -44,6 +50,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /* Visial field representation */
   private final Field2d field = new Field2d();
+  
+  private final OdometrySubsystem odometrySubsystem = new OdometrySubsystem();
 
   private final SwerveDrivePoseEstimator swervePoseEstimator = new SwerveDrivePoseEstimator(
     Constants.ModuleConstants.kDriveKinematics, getRotation2d(), 
@@ -55,7 +63,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }, new Pose2d(0, 0, new Rotation2d()), 
 
     Constants.ModuleConstants.kStateStdDev,
-    Constants.ModuleConstants.kVisionStdDev);
+    Constants.VisionConstants.kVisionStdDev);
 
   private ChassisSpeeds speeds;
 
@@ -123,6 +131,12 @@ public class SwerveSubsystem extends SubsystemBase {
       frontLeft.getPosition(), frontRight.getPosition(),
       backLeft.getPosition(), backRight.getPosition()
     });
+
+    List<EstimatedRobotPose> estimatedPoses = odometrySubsystem.getEstimatedRobotPoses();
+
+    for (int x = 0; x < estimatedPoses.size(); x++) {
+      swervePoseEstimator.addVisionMeasurement(estimatedPoses.get(x).estimatedPose.toPose2d(), Utils.fpgaToCurrentTime(estimatedPoses.get(x).timestampSeconds));
+    }
 
     field.setRobotPose(swervePoseEstimator.getEstimatedPosition());
   }

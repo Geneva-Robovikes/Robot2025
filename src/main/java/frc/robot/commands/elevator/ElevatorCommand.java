@@ -57,7 +57,6 @@ public class ElevatorCommand extends Command {
 
     // System.out.println(combinedTriggerAxis);
     elevatorSubsytem.setElevatorMotorSpeed(combinedTriggerAxis);
-    elevatorSubsytem.setVortexSpeed(combinedTriggerAxis);
   }
 
   // Called once the command ends or is interrupted.

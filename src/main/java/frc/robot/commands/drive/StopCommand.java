@@ -8,9 +8,9 @@ public class StopCommand extends Command  {
     private final SwerveSubsystem swerveSubsystem;
 
     public StopCommand(SwerveSubsystem swerveSubsystem) {
-        this.swerveSubsystem = swerveSubsystem;
+      this.swerveSubsystem = swerveSubsystem;
 
-        addRequirements(swerveSubsystem);
+      addRequirements(swerveSubsystem);
     }
 
     public void execute(){
