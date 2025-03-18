@@ -18,6 +18,7 @@ import frc.robot.commands.claw.ClawIntakeCommand;
 import frc.robot.commands.claw.ClawOuttakeCommand;
 import frc.robot.commands.claw.ClawHoldCommand;
 import frc.robot.commands.drive.SwerveJoystickCommand;
+import frc.robot.commands.drive.SwerveToPoseCommand;
 import frc.robot.subsystems.util.LED;
 import frc.robot.subsystems.mechanisms.IntakeSubsystem;
 import frc.robot.subsystems.mechanisms.ElevatorSubsystem;
@@ -27,6 +28,8 @@ import frc.robot.subsystems.drive.SwerveSubsystem;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -98,6 +101,7 @@ public class RobotContainer {
   private void configureBindings() {
     m_driverController.a().whileTrue(clawOutCommand);
     m_driverController.b().whileTrue(intakeOutCommand);
+    m_driverController.x().whileTrue(new SwerveToPoseCommand(new Pose2d(3.189, 3.839, new Rotation2d()), swerveSubsystem));
 
     m_driverController.leftTrigger().whileTrue(
       new SequentialCommandGroup(

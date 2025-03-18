@@ -185,7 +185,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /* Get the position of the robot 
    * TODO: Incorperate the vision estimated odometry!
   */
-  private Pose2d getPose() {
+  public Pose2d getPose() {
     return swervePoseEstimator.getEstimatedPosition();
   }
 
