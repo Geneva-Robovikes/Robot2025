@@ -14,26 +14,17 @@ import frc.robot.commands.elevator.ElevatorUpCommand;
 import frc.robot.commands.elevator.ElevatorCommand;
 import frc.robot.commands.elevator.ElevatorDownCommand;
 import frc.robot.commands.intake.IntakePivotUpCommand;
-import frc.robot.commands.pneumatics.RobotUpCommand;
 import frc.robot.commands.claw.ClawIntakeCommand;
 import frc.robot.commands.claw.ClawOuttakeCommand;
 import frc.robot.commands.claw.ClawHoldCommand;
 import frc.robot.commands.drive.SwerveJoystickCommand;
 import frc.robot.commands.elevator.ElevatorBumpCommand;
 import frc.robot.subsystems.util.LED;
-import frc.robot.subsystems.mechanisms.MotorSubsystem;
 import frc.robot.subsystems.mechanisms.IntakeSubsystem;
 import frc.robot.subsystems.mechanisms.ElevatorSubsystem;
 import frc.robot.subsystems.mechanisms.ClawSubsystem;
-import frc.robot.commands.presets.ClawDownPreset;
-import frc.robot.commands.presets.ClawL1Preset;
-import frc.robot.commands.presets.ClawL2Preset;
-import frc.robot.commands.presets.IntakeDownPreset;
-import frc.robot.commands.presets.IntakeUpPreset;
-import frc.robot.commands.vision.VisionAlignmentCommand;
 import frc.robot.subsystems.drive.SwerveSubsystem;
 import frc.robot.subsystems.mechanisms.PneumaticSubsystem;
-import frc.robot.subsystems.util.Vision;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -65,8 +56,7 @@ public class RobotContainer {
       
   /* Subsystems */
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
-  private final Vision visionSubsystem = new Vision();
-  private final MotorSubsystem motorSubsystem = new MotorSubsystem();
+
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
@@ -77,33 +67,23 @@ public class RobotContainer {
   private final IntakePivotDownCommand intakePivotUpCommand = new IntakePivotDownCommand(intakeSubsystem);
   private final IntakePivotUpCommand intakePivotDownCommand = new IntakePivotUpCommand(intakeSubsystem);
   private final ClawIntakeCommand clawIntakeCommand = new ClawIntakeCommand(clawSubsystem);
-  private final IntakeJoystickCommand intakeJoystickCommand = new IntakeJoystickCommand(motorSubsystem);
+  private final IntakeJoystickCommand intakeJoystickCommand = new IntakeJoystickCommand(intakeSubsystem);
   private final ClawOuttakeCommand clawOutCommand = new ClawOuttakeCommand(clawSubsystem);
-  private final ElevatorUpCommand elevatorUpCommand = new ElevatorUpCommand(motorSubsystem);
-  private final ElevatorDownCommand elevatorDownCommand = new ElevatorDownCommand(motorSubsystem);
+  private final ElevatorUpCommand elevatorUpCommand = new ElevatorUpCommand(elevatorSubsystem);
+  private final ElevatorDownCommand elevatorDownCommand = new ElevatorDownCommand(elevatorSubsystem);
   private final ElevatorCommand elevatorCommand = new ElevatorCommand(elevatorSubsystem);
   private final ClawHoldCommand clawHoldCommand = new ClawHoldCommand(clawSubsystem);
-  private final RobotUpCommand robotUpCommand = new RobotUpCommand(pneumaticSubsystem);
   private final LEDCommand ledCommand = new LEDCommand(ledController);
-  private final VisionAlignmentCommand visionAlignmentCommand = new VisionAlignmentCommand(visionSubsystem, swerveSubsystem);
-  private final ElevatorBumpCommand elevatorBumpCommand = new ElevatorBumpCommand(motorSubsystem);
+  private final ElevatorBumpCommand elevatorBumpCommand = new ElevatorBumpCommand(elevatorSubsystem);
 
   /* Presets */
-  private final IntakeDownPreset intakeDownPreset = new IntakeDownPreset(intakeSubsystem, motorSubsystem);
-  private final IntakeUpPreset intakeUpPreset = new IntakeUpPreset(intakeSubsystem, motorSubsystem);
-  private final ClawDownPreset clawDownPreset = new ClawDownPreset(elevatorSubsystem);
-  private final ClawL2Preset clawL2Preset = new ClawL2Preset(elevatorSubsystem);
+
   /* Auto */
   private final SendableChooser<Command> autoChooser;
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    
-    NamedCommands.registerCommand("clawToL2", new ParallelCommandGroup(new ClawL2Preset(elevatorSubsystem)));
-    NamedCommands.registerCommand("clawOut", new ClawOuttakeCommand(clawSubsystem));
-    
-    
     autoChooser = AutoBuilder.buildAutoChooser();
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -126,39 +106,10 @@ public class RobotContainer {
     m_driverController.x().whileTrue(intakePivotDownCommand);
     m_driverController.y().whileTrue(intakePivotUpCommand);
 
-    //m_driverController.rightTrigger().whileTrue(elevatorCommand);
-    //m_driverController.leftTrigger().whileTrue(elevatorCommand);
-
-   // m_driverController.leftBumper().whileTrue(intakeInCommand);
-
-    //m_driverController.leftBumper().whileTrue(new SequentialCommandGroup(new IntakeDownPreset(intakeSubsystem, motorSubsystem), new IntakeInCommand(intakeSubsystem), new ParallelCommandGroup(new ClawL1Preset(elevatorSubsystem), new ClawHoldCommand(clawSubsystem))));
-    m_driverController.rightBumper().whileTrue(new IntakeOutCommand(intakeSubsystem));
-    m_driverController.rightTrigger().whileTrue(new SequentialCommandGroup(intakeDownPreset, clawDownPreset, new ParallelCommandGroup(intakeInCommand, clawIntakeCommand))).onFalse(new ParallelCommandGroup(new SequentialCommandGroup(clawL2Preset, new IntakeUpPreset(intakeSubsystem, motorSubsystem)), clawHoldCommand));
-    m_driverController.leftBumper().whileTrue(new SequentialCommandGroup(new IntakeDownPreset(intakeSubsystem, motorSubsystem), new ClawDownPreset(elevatorSubsystem), new ParallelCommandGroup(new IntakeInCommand(intakeSubsystem), new ClawIntakeCommand(clawSubsystem)))).onFalse(new ParallelCommandGroup(new SequentialCommandGroup(new ClawL1Preset(elevatorSubsystem), new IntakeUpPreset(intakeSubsystem, motorSubsystem)), new ClawHoldCommand(clawSubsystem)));
-    //m_driverController.rightTrigger().whileTrue(new SequentialCommandGroup(intakeDownPreset, new ParallelCommandGroup(intakeInCommand, clawIntakeCommand))).onFalse(intakeUpPreset);
-
-    //m_driverController.povRight().whileTrue(new RobotUpCommand(pneumaticSubsystem));
-    m_driverController.povRight().whileTrue(robotUpCommand);
-
-    m_driverController.povDown().whileTrue(ledCommand);
-    m_driverController.povUp().whileTrue(new ParallelCommandGroup(elevatorBumpCommand, new ClawHoldCommand(clawSubsystem)));
-
-    m_driverController.a().whileTrue(visionAlignmentCommand);
-    m_driverController.b().whileTrue(clawOutCommand);
-
-    /* Collyn Controls TM */
-    /*
-    m_driverController.leftTrigger().whileTrue(new ParallelCommandGroup(
-      new SequentialCommandGroup(intakeDownPreset, clawDownPreset),
-      clawIntakeCommand,
-      intakeCommand));
-    */
-
     m_auxillaryController.rightTrigger().whileTrue(elevatorCommand);
     m_auxillaryController.leftTrigger().whileTrue(elevatorCommand);
 
     m_auxillaryController.rightBumper().whileTrue(new ClawHoldCommand(clawSubsystem));
-    // m_auxillaryController.leftBumper().whileTrue(new IntakeJoystickCommand(motorSubsystem));
     m_auxillaryController.povUp().whileTrue(new IntakePivotUpCommand(intakeSubsystem));
     m_auxillaryController.povDown().whileTrue(new IntakePivotDownCommand(intakeSubsystem));
 

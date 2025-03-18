@@ -4,16 +4,16 @@
 
 package frc.robot.commands.elevator;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.mechanisms.MotorSubsystem;
+import frc.robot.subsystems.mechanisms.ElevatorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ElevatorUpCommand extends Command {
-  private final MotorSubsystem motorSubsystem;
+  private final ElevatorSubsystem elevatorSubsystem;
 
-  public ElevatorUpCommand(MotorSubsystem motorSubsystem) {
-    this.motorSubsystem = motorSubsystem;
+  public ElevatorUpCommand(ElevatorSubsystem elevatorSubsystem) {
+    this.elevatorSubsystem = elevatorSubsystem;
 
-    addRequirements(motorSubsystem);
+    addRequirements(elevatorSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -23,15 +23,13 @@ public class ElevatorUpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    motorSubsystem.setVortexSpeed(1);
-    motorSubsystem.setElevatorMotorSpeed(1);
+    elevatorSubsystem.setElevatorMotorSpeed(1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    motorSubsystem.setVortexSpeed(0);
-    motorSubsystem.setElevatorMotorSpeed(0);
+    elevatorSubsystem.setElevatorMotorSpeed(0);
   }
 
   // Returns true when the command should end.

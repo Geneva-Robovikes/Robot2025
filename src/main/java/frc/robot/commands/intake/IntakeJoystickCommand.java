@@ -6,22 +6,20 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.mechanisms.IntakeSubsystem;
-import frc.robot.subsystems.mechanisms.MotorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeJoystickCommand extends Command {
-  MotorSubsystem motorSubsystem;
+  IntakeSubsystem intakeSubsystem;
   XboxController controller;
 
   double axis;
   /** Creates a new IntakeJoystickCommand. */
-  public IntakeJoystickCommand(MotorSubsystem motorSubsystem) {
+  public IntakeJoystickCommand(IntakeSubsystem intakeSubsystem) {
     controller = new XboxController(1);
-    this.motorSubsystem = motorSubsystem;
+    this.intakeSubsystem = intakeSubsystem;
 
-    addRequirements(motorSubsystem);
+    addRequirements(intakeSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -34,7 +32,7 @@ public class IntakeJoystickCommand extends Command {
   public void execute() {
     axis = controller.getLeftY();
 
-    motorSubsystem.setTiltMotorSpeed(axis);
+    intakeSubsystem.setIntakePivotMotorSpeed(axis);
   }
 
   // Called once the command ends or is interrupted.

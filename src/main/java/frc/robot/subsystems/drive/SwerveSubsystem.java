@@ -6,10 +6,6 @@ package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.Volts;
 
-import java.util.List;
-import java.util.Optional;
-import org.photonvision.EstimatedRobotPose;
-import com.ctre.phoenix6.Utils;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -35,13 +31,9 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.TunerConstants;
 import frc.robot.commands.drive.StopCommand;
-import frc.robot.subsystems.util.Vision;
 
 
 public class SwerveSubsystem extends SubsystemBase {
-  /* Get the vision subsystem for odometry purposes. */
-  private final Vision visionSubsystem = new Vision();
-  
   /* Initialize swerve modules */
   private final SwerveModule frontLeft = new SwerveModule(1, 3, false, true, 2, "Front Right");
   private final SwerveModule backLeft = new SwerveModule(4, 6, false, true, 5, "Back Right");
@@ -126,28 +118,6 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Gyro", -gyro.getGyroAngleZ() / 57.295779513);
-
-    /* If we have a pose estimation, visually update the pose of the robot on the Elastic field widget.
-     * Eventually this will be extended for use in auto/vision alignment, but for now we will keek it 
-     * confined to the widget for testing purposes.
-     *  
-     * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/state-space/state-space-pose-estimators.html
-     * Quick link for further reference, read the addVisionMeasurement snippet on that page.
-     */
-    List<Optional<EstimatedRobotPose>> estimatedPoses = visionSubsystem.getEstimatedPose();
-    Pose2d estimatedPose2d;
-    double timestamp;
-    
-    for (int x = 0; x < estimatedPoses.size(); x++) {
-      if (estimatedPoses.get(x).isPresent()) {
-        EstimatedRobotPose estimatedVisionPose = estimatedPoses.get(x).get();
-
-        estimatedPose2d = estimatedVisionPose.estimatedPose.toPose2d();
-        timestamp = estimatedVisionPose.timestampSeconds;
-
-        swervePoseEstimator.addVisionMeasurement(estimatedPose2d, Utils.fpgaToCurrentTime(timestamp));
-      }
-    }
 
     swervePoseEstimator.update(getRotation2d(), new SwerveModulePosition[] {
       frontLeft.getPosition(), frontRight.getPosition(),
