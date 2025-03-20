@@ -66,8 +66,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         getPosition(), 
         Constants.MechanismConstants.kClawL1Position));
 
-        SmartDashboard.putNumber("Elevator PID:", elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL1Position));
-        SmartDashboard.putBoolean("Elevator L1", true);
+      SmartDashboard.putNumber("Elevator PID:", elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL1Position));
+      SmartDashboard.putBoolean("Elevator L1", true);
     }
     else if (position == ELEVATOR_POSITION.K_L2) {
       setVoltages(
@@ -75,8 +75,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         getPosition(), 
         Constants.MechanismConstants.kClawL2Position));
 
-        SmartDashboard.putNumber("Elevator PID:", elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL2Position));
-        SmartDashboard.putBoolean("Elevator L2", true);
+      SmartDashboard.putNumber("Elevator PID:", elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL2Position));
+      SmartDashboard.putBoolean("Elevator L2", true);
     }
     else if (position == ELEVATOR_POSITION.K_L3) {
       setVoltages(
