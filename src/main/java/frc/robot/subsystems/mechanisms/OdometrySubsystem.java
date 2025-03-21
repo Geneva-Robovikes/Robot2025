@@ -3,9 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems.mechanisms;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -37,8 +34,6 @@ public class OdometrySubsystem extends SubsystemBase {
   private final PhotonPoseEstimator photonPoseEstimatorBackLeft;
   private final PhotonPoseEstimator photonPoseEstimatorBackRight;
 
-  private List<EstimatedRobotPose> estimatedPoses = new ArrayList<EstimatedRobotPose>();
-
   
   public OdometrySubsystem() {
     fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
@@ -59,28 +54,23 @@ public class OdometrySubsystem extends SubsystemBase {
     photonPoseEstimatorBackRight = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, backRightPosition);
   }
 
-  @Override
-  public void periodic() {
-    Optional<EstimatedRobotPose> photonEstimatedPoseFrontLeft = photonPoseEstimatorFrontLeft.update(frontLeft.getLatestResult());
-    Optional<EstimatedRobotPose> photonEstimatedPoseFrontRight = photonPoseEstimatorFrontRight.update(frontRight.getLatestResult());
-    Optional<EstimatedRobotPose> photonEstimatedPoseBackLeft = photonPoseEstimatorBackLeft.update(backLeft.getLatestResult());
-    Optional<EstimatedRobotPose> photonEstimatedPoseBackRight = photonPoseEstimatorBackRight.update(backRight.getLatestResult());
-
-    if (photonEstimatedPoseFrontLeft.isPresent()) {
-      estimatedPoses.add(photonEstimatedPoseFrontLeft.get());
-    }
-    if (photonEstimatedPoseFrontRight.isPresent()) {
-      estimatedPoses.add(photonEstimatedPoseFrontRight.get());
-    }
-    if (photonEstimatedPoseBackLeft.isPresent()) {
-      estimatedPoses.add(photonEstimatedPoseBackLeft.get());
-    }
-    if (photonEstimatedPoseBackRight.isPresent()) {
-      estimatedPoses.add(photonEstimatedPoseBackRight.get());
-    }
+  public Optional<EstimatedRobotPose> getFrontLeftPose() {
+    return photonPoseEstimatorFrontLeft.update(frontLeft.getLatestResult());
   }
 
-  public List<EstimatedRobotPose> getEstimatedRobotPoses() {
-    return estimatedPoses;
+  public Optional<EstimatedRobotPose> getFrontRightPose() {
+    return photonPoseEstimatorFrontRight.update(frontRight.getLatestResult());
+  }
+
+  public Optional<EstimatedRobotPose> getBackLeftPose() {
+    return photonPoseEstimatorBackLeft.update(backLeft.getLatestResult());
+  }
+
+  public Optional<EstimatedRobotPose> getBackRightPose() {
+    return photonPoseEstimatorBackRight.update(backRight.getLatestResult());
+  }
+
+  @Override
+  public void periodic() {
   }
 }

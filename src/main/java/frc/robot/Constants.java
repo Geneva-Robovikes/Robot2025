@@ -62,10 +62,10 @@ public final class Constants {
     public static final String kBackLeft = "backl";
     public static final String kBackRight = "backr";
 
-    public static final Transform3d kFrontLeftPosition = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
-    public static final Transform3d kFrontRightPosition = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
-    public static final Transform3d kBackLeftPosition = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
-    public static final Transform3d kBackRightPosition = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
+    public static final Transform3d kFrontLeftPosition = new Transform3d(new Translation3d(Units.inchesToMeters(10.5), Units.inchesToMeters(10.5), 0), new Rotation3d(0,0,Units.degreesToRadians(40)));
+    public static final Transform3d kFrontRightPosition = new Transform3d(new Translation3d(Units.inchesToMeters(10.5), -Units.inchesToMeters(10.5), 0), new Rotation3d(0,0,Units.degreesToRadians(-40)));
+    public static final Transform3d kBackLeftPosition = new Transform3d(new Translation3d(-Units.inchesToMeters(10.5), Units.inchesToMeters(10.5), 0), new Rotation3d(0,0,Units.degreesToRadians(130)));
+    public static final Transform3d kBackRightPosition = new Transform3d(new Translation3d(-Units.inchesToMeters(10.5), -Units.inchesToMeters(10.5), 0), new Rotation3d(0,0,Units.degreesToRadians(-130)));
 
     public static final Vector<N3> kVisionStdDev = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(10));
   }
@@ -77,15 +77,15 @@ public final class Constants {
     public static final double kElevatorMotorDeadzone = .1;
     public static final double kElevatorMotorMaximumSpeed = 1;
 
-    public static final double kIntakePivotMotorDownPosition = 11.5;
-    public static final double kIntakePivotMotorUpPosition = 0;
+    public static final double kIntakePivotMotorDownPosition = 0;
+    public static final double kIntakePivotMotorUpPosition = -15;
     public static final double kIntakeL1MotorUpPosition = 3.9;
 
-    public static final double kClawDownPosition = -3.8;
-    public static final double kClawL2Position = -.6;
+    public static final double kClawDownPosition = .37;
+    public static final double kClawL2Position = 3.75;
     public static final double kClawL1Position = -1.48;
 
-    public static final double kMinElevatorPosForIntakeUp = -2.1;
+    public static final double kMinElevatorPosForIntakeUp = 3.7;
 
     public static final int kMaxClawMotorCurrent = 0;
 
@@ -93,13 +93,15 @@ public final class Constants {
       K_L0,
       K_L1,
       K_L2,
-      K_L3
+      K_L3,
+      K_EXIT
     }
 
     public static enum INTAKE_POSITION {
       K_GND,
       K_STW,
-      K_L1
+      K_L1,
+      K_EXIt
     }
   }
 }

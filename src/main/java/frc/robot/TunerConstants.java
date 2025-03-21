@@ -21,11 +21,11 @@ public final class TunerConstants {
     public static final double kDriveFeedForwardkV = 2.2751;
     public static final double kDriveFeedForwardkA = 0.10389;
 
-    public static final double kIntakePIDpValue = 0.2;
+    public static final double kIntakePIDpValue = 0.3;
     public static final double kIntakePIDiValue = 0;
     public static final double kIntakePIDdValue = 0;
 
-    public static final double kElevatorPIDpValue = .2;
+    public static final double kElevatorPIDpValue = .065;
     public static final double kElevatorPIDiValue = 0;
     public static final double kElevatorPIDdValue = 0;
 

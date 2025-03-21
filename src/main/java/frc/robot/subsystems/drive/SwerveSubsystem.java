@@ -6,11 +6,10 @@ package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.Volts;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
 
-import com.ctre.phoenix6.Utils;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -41,10 +40,10 @@ import frc.robot.subsystems.mechanisms.OdometrySubsystem;
 
 public class SwerveSubsystem extends SubsystemBase {
   /* Initialize swerve modules */
-  private final SwerveModule frontLeft = new SwerveModule(1, 3, false, true, 2, "Front Right");
-  private final SwerveModule backLeft = new SwerveModule(4, 6, false, true, 5, "Back Right");
-  private final SwerveModule backRight = new SwerveModule(7, 9, false, true, 8, "Back Left");
-  private final SwerveModule frontRight = new SwerveModule(10, 12, false, true, 11, "Back Right");
+  private final SwerveModule frontLeft = new SwerveModule(1, 3, false, true, 2, "Front Left");
+  private final SwerveModule backLeft = new SwerveModule(4, 6, false, true, 5, "Back Left");
+  private final SwerveModule backRight = new SwerveModule(7, 9, false, true, 8, "Back Right");
+  private final SwerveModule frontRight = new SwerveModule(10, 12, false, true, 11, "Front Right");
   
   private final ADIS16448_IMU gyro = new ADIS16448_IMU();
 
@@ -132,10 +131,25 @@ public class SwerveSubsystem extends SubsystemBase {
       backLeft.getPosition(), backRight.getPosition()
     });
 
-    List<EstimatedRobotPose> estimatedPoses = odometrySubsystem.getEstimatedRobotPoses();
+    Optional<EstimatedRobotPose> frontLeft = odometrySubsystem.getFrontLeftPose();
+    Optional<EstimatedRobotPose> frontRight = odometrySubsystem.getFrontRightPose();
+    Optional<EstimatedRobotPose> backLeft = odometrySubsystem.getBackLeftPose();
+    Optional<EstimatedRobotPose> backRight = odometrySubsystem.getBackRightPose();
 
-    for (int x = 0; x < estimatedPoses.size(); x++) {
-      swervePoseEstimator.addVisionMeasurement(estimatedPoses.get(x).estimatedPose.toPose2d(), Utils.fpgaToCurrentTime(estimatedPoses.get(x).timestampSeconds));
+    if (frontLeft.isPresent()) {
+      swervePoseEstimator.addVisionMeasurement(frontLeft.get().estimatedPose.toPose2d(), frontLeft.get().timestampSeconds);
+    }
+
+    if (frontRight.isPresent()) {
+      swervePoseEstimator.addVisionMeasurement(frontRight.get().estimatedPose.toPose2d(), frontRight.get().timestampSeconds);
+    }
+
+    if (backLeft.isPresent()) {
+      swervePoseEstimator.addVisionMeasurement(backLeft.get().estimatedPose.toPose2d(), backLeft.get().timestampSeconds);
+    }
+
+    if (backRight.isPresent()) {
+      swervePoseEstimator.addVisionMeasurement(backRight.get().estimatedPose.toPose2d(), backRight.get().timestampSeconds);
     }
 
     field.setRobotPose(swervePoseEstimator.getEstimatedPosition());

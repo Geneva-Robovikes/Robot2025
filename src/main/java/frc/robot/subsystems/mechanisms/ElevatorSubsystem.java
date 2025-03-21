@@ -39,10 +39,12 @@ public class ElevatorSubsystem extends SubsystemBase {
     this.position = position;
   }
 
-  private void setVoltages(double voltage) {
-    elevatorMotor.setVoltage(voltage);
-    neoVortexOne.setVoltage(voltage);
-    neoVortexTwo.setVoltage(voltage);
+  private void setSpeed(double voltage) {
+    SmartDashboard.putNumber("Requested Speed:", voltage);
+  
+    elevatorMotor.set(voltage);
+    neoVortexOne.set(voltage);
+    neoVortexTwo.set(voltage);
   }
 
   private double getPosition() {
@@ -52,50 +54,44 @@ public class ElevatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     if (position == ELEVATOR_POSITION.K_L0) {
-      setVoltages(
-        elevatorPidController.calculate(
-        getPosition(), 
-        Constants.MechanismConstants.kClawDownPosition));
+      double pid = elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawDownPosition);
+      setSpeed(pid);
 
-      SmartDashboard.putNumber("Elevator PID:", elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawDownPosition));
+      SmartDashboard.putNumber("Elevator PID L0:", elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawDownPosition));
       SmartDashboard.putBoolean("Elevator L0", true);
     } 
     else if (position == ELEVATOR_POSITION.K_L1) {
-      setVoltages(
-        elevatorPidController.calculate(
-        getPosition(), 
-        Constants.MechanismConstants.kClawL1Position));
+      double pid = elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL1Position);
+      setSpeed(pid);
 
-      SmartDashboard.putNumber("Elevator PID:", elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL1Position));
+      SmartDashboard.putNumber("Elevator PID L1:", elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL1Position));
       SmartDashboard.putBoolean("Elevator L1", true);
     }
     else if (position == ELEVATOR_POSITION.K_L2) {
-      setVoltages(
-        elevatorPidController.calculate(
-        getPosition(), 
-        Constants.MechanismConstants.kClawL2Position));
+      double pid = elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL2Position);
+      setSpeed(pid);
 
-      SmartDashboard.putNumber("Elevator PID:", elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL2Position));
+      SmartDashboard.putNumber("Elevator PID L2:", elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL2Position));
       SmartDashboard.putBoolean("Elevator L2", true);
     }
     else if (position == ELEVATOR_POSITION.K_L3) {
-      setVoltages(
+      setSpeed(
         elevatorPidController.calculate(
         getPosition(), 
         Constants.MechanismConstants.kClawL2Position));
 
-      SmartDashboard.putNumber("Elevator PID:", elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL2Position));
+      SmartDashboard.putNumber("Elevator PID L3:", elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL2Position));
       SmartDashboard.putBoolean("Elevator L3", true);
-    } 
-    else {
-      setVoltages(0);
+    } else if (position == ELEVATOR_POSITION.K_EXIT) {
+          
+      setSpeed(0);
 
       SmartDashboard.putBoolean("Elevator L0:", false);
       SmartDashboard.putBoolean("Elevator L1:", false);
       SmartDashboard.putBoolean("Elevator L2:", false);
       SmartDashboard.putBoolean("Elevator L3:", false);
-    }
 
-    SmartDashboard.putNumber("Elevator Encoder Position: ", getPosition());
+      SmartDashboard.putNumber("Elevator Encoder Position: ", getPosition());
+    }
   }
 }

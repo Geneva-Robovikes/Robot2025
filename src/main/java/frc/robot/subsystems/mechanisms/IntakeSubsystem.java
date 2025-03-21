@@ -7,6 +7,7 @@ package frc.robot.subsystems.mechanisms;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,7 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
     TunerConstants.kIntakePIDiValue,
     TunerConstants.kIntakePIDdValue);
 
-  private INTAKE_POSITION position = INTAKE_POSITION.K_STW;
+  private INTAKE_POSITION position = INTAKE_POSITION.K_GND;
 
   public IntakeSubsystem() {
     intakePivotMotor.setNeutralMode(NeutralModeValue.Brake);
@@ -63,19 +64,20 @@ public class IntakeSubsystem extends SubsystemBase {
     } 
     else if (position == INTAKE_POSITION.K_GND) {
       setVoltage(
-        intakePidController.calculate(
+        MathUtil.clamp(intakePidController.calculate(
         getPosition(), 
-        Constants.MechanismConstants.kIntakePivotMotorDownPosition));
+        Constants.MechanismConstants.kIntakePivotMotorDownPosition), -.5, .5));
 
         SmartDashboard.putNumber("Intake PID:", intakePidController.calculate(getPosition(), Constants.MechanismConstants.kIntakePivotMotorDownPosition));
         SmartDashboard.putBoolean("Intake Ground", true);
     }
-    else {
+    else if (position == INTAKE_POSITION.K_EXIt) {
       setVoltage(0);
 
       SmartDashboard.putBoolean("Intake Stowed", false);
       SmartDashboard.putBoolean("Intake Ground", false);
     }
 
+    SmartDashboard.putNumber("Intake Position:", getPosition());
   }
 }

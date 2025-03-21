@@ -18,7 +18,6 @@ import frc.robot.commands.claw.ClawIntakeCommand;
 import frc.robot.commands.claw.ClawOuttakeCommand;
 import frc.robot.commands.claw.ClawHoldCommand;
 import frc.robot.commands.drive.SwerveJoystickCommand;
-import frc.robot.commands.drive.SwerveToPoseCommand;
 import frc.robot.subsystems.util.LED;
 import frc.robot.subsystems.mechanisms.IntakeSubsystem;
 import frc.robot.subsystems.mechanisms.ElevatorSubsystem;
@@ -26,15 +25,9 @@ import frc.robot.subsystems.mechanisms.ClawSubsystem;
 import frc.robot.subsystems.drive.SwerveSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -48,8 +41,8 @@ public class RobotContainer {
   /* Controllers */
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  private final CommandXboxController m_auxillaryController =
-      new CommandXboxController(1);
+  //private final CommandXboxController m_auxillaryController =
+      //new CommandXboxController(1);
 
       
   /* Util */
@@ -71,8 +64,6 @@ public class RobotContainer {
   private final ClawHoldCommand clawHoldCommand = new ClawHoldCommand(clawSubsystem);
   private final IntakeOutCommand intakeOutCommand = new IntakeOutCommand(intakeSubsystem);
   private final LEDCommand ledCommand = new LEDCommand(ledController);
-
-  /* Presets */
 
   /* Auto */
   private final SendableChooser<Command> autoChooser;
@@ -99,30 +90,22 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.a().whileTrue(clawOutCommand);
-    m_driverController.b().whileTrue(intakeOutCommand);
-    m_driverController.x().whileTrue(new SwerveToPoseCommand(new Pose2d(3.189, 3.839, new Rotation2d()), swerveSubsystem));
-
-    m_driverController.leftTrigger().whileTrue(
-      new SequentialCommandGroup(
-        new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L0),
-        new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_GND))).onFalse(
-          new SequentialCommandGroup(
-            new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L2),
-            new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_STW),
-            new ClawHoldCommand(clawSubsystem))
-        );
+    m_driverController.a().whileTrue(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L2)).onFalse(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_EXIT));
+    m_driverController.b().whileTrue(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L0)).onFalse(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_EXIT));
+    m_driverController.x().whileTrue(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_STW)).onFalse(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_EXIt));
+    m_driverController.y().whileTrue(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_GND)).onFalse(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_EXIt));
 
 
+    /* 
     m_auxillaryController.a().whileTrue(new IntakeInCommand(intakeSubsystem));
     m_auxillaryController.b().whileTrue(new IntakeOutCommand(intakeSubsystem));
     m_auxillaryController.x().whileTrue(new ClawIntakeCommand(clawSubsystem));
     m_auxillaryController.y().whileTrue(new ClawOuttakeCommand(clawSubsystem));
 
     m_auxillaryController.leftTrigger().whileTrue(elevatorCommand);
-    m_auxillaryController.rightTrigger().whileTrue(elevatorCommand);
+    m_auxillaryController.rightTrigger().whileTrue(elevatorCommand); 
 
-    m_auxillaryController.rightBumper().whileTrue(new ClawHoldCommand(clawSubsystem));
+    m_auxillaryController.rightBumper().whileTrue(new ClawHoldCommand(clawSubsystem)); */
 
     /* SysId bindings; leave these commented unless you are running SysId tuning */
     /* SWERVE DRIVE
