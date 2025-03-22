@@ -4,16 +4,18 @@
   "holonomicMode": true,
   "pathFolders": [
     "Coral to Reef",
+    "Start to Reef",
     "Other",
-    "Reef to Coral"
+    "Reef to Coral",
+    "Reef to Human"
   ],
   "autoFolders": [],
-  "defaultMaxVel": 4.5,
-  "defaultMaxAccel": 1.0,
+  "defaultMaxVel": 4.35,
+  "defaultMaxAccel": 3.6,
   "defaultMaxAngVel": 360.0,
   "defaultMaxAngAccel": 360.0,
   "defaultNominalVoltage": 12.0,
-  "robotMass": 22.18,
+  "robotMass": 22.0,
   "robotMOI": 6.883,
   "robotTrackwidth": 0.546,
   "driveWheelRadius": 0.0508,

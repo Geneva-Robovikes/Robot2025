@@ -24,7 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
     TunerConstants.kIntakePIDiValue,
     TunerConstants.kIntakePIDdValue);
 
-  private INTAKE_POSITION position = INTAKE_POSITION.K_GND;
+  private INTAKE_POSITION position = INTAKE_POSITION.K_EXIt;
 
   public IntakeSubsystem() {
     intakePivotMotor.setNeutralMode(NeutralModeValue.Brake);
@@ -70,6 +70,16 @@ public class IntakeSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("Intake PID:", intakePidController.calculate(getPosition(), Constants.MechanismConstants.kIntakePivotMotorDownPosition));
         SmartDashboard.putBoolean("Intake Ground", true);
+    } else if (position == INTAKE_POSITION.K_L1) {
+      setVoltage(
+        intakePidController.calculate(
+        getPosition(), 
+        Constants.MechanismConstants.kIntakeL1MotorUpPosition));
+    } else if (position == INTAKE_POSITION.K_L1A) {
+      setVoltage(
+        intakePidController.calculate(
+        getPosition(), 
+        Constants.MechanismConstants.kIntakeL1AutoMotorUpPosition));
     }
     else if (position == INTAKE_POSITION.K_EXIt) {
       setVoltage(0);

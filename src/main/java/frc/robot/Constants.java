@@ -79,7 +79,8 @@ public final class Constants {
 
     public static final double kIntakePivotMotorDownPosition = 0;
     public static final double kIntakePivotMotorUpPosition = -15;
-    public static final double kIntakeL1MotorUpPosition = 3.9;
+    public static final double kIntakeL1MotorUpPosition = -11.52;
+    public static final double kIntakeL1AutoMotorUpPosition = -8.33;
 
     public static final double kClawDownPosition = .37;
     public static final double kClawL2Position = 3.75;
@@ -100,6 +101,7 @@ public final class Constants {
     public static enum INTAKE_POSITION {
       K_GND,
       K_STW,
+      K_L1A,
       K_L1,
       K_EXIt
     }

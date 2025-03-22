@@ -13,19 +13,13 @@
         {
           "type": "named",
           "data": {
-            "name": "clawToL2"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "name": "intakeL1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "clawOut"
+            "name": "intakeOut"
           }
         }
       ]

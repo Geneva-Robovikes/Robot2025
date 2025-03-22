@@ -25,7 +25,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     TunerConstants.kElevatorPIDiValue,
     TunerConstants.kElevatorPIDdValue);
 
-  private ELEVATOR_POSITION position = ELEVATOR_POSITION.K_L0;
+  private ELEVATOR_POSITION position = ELEVATOR_POSITION.K_EXIT;
 
   public ElevatorSubsystem() {}
 

@@ -4,6 +4,7 @@
 
 package frc.robot.commands.intake;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.mechanisms.IntakeSubsystem;
 
@@ -19,12 +20,13 @@ public class IntakeOutCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.setIntakeMotorSpeed(.35);
+    intakeSubsystem.setIntakeMotorSpeed(1);
   }
 
   // Called once the command ends or is interrupted.

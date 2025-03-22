@@ -8,10 +8,13 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.MechanismConstants.ELEVATOR_POSITION;
 import frc.robot.Constants.MechanismConstants.INTAKE_POSITION;
 import frc.robot.commands.LEDCommand;
-import frc.robot.commands.intake.IntakeOutCommand;
 import frc.robot.commands.intake.IntakeStateCommand;
+import frc.robot.commands.auto.AutoIntakeInCommand;
+import frc.robot.commands.auto.AutoIntakeOutCommand;
+import frc.robot.commands.auto.AutoIntakeStateCommand;
 import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.commands.intake.IntakeJoystickCommand;
+import frc.robot.commands.intake.IntakeOutCommand;
 import frc.robot.commands.elevator.ElevatorCommand;
 import frc.robot.commands.elevator.ElevatorStateCommand;
 import frc.robot.commands.claw.ClawIntakeCommand;
@@ -25,6 +28,8 @@ import frc.robot.subsystems.mechanisms.ClawSubsystem;
 import frc.robot.subsystems.drive.SwerveSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -62,6 +67,8 @@ public class RobotContainer {
   private final ClawOuttakeCommand clawOutCommand = new ClawOuttakeCommand(clawSubsystem);
   private final ElevatorCommand elevatorCommand = new ElevatorCommand(elevatorSubsystem);
   private final ClawHoldCommand clawHoldCommand = new ClawHoldCommand(clawSubsystem);
+  private final AutoIntakeOutCommand autoIntakeOutCommand = new AutoIntakeOutCommand(intakeSubsystem);
+  private final AutoIntakeInCommand autoIntakeInCommand = new AutoIntakeInCommand(intakeSubsystem);
   private final IntakeOutCommand intakeOutCommand = new IntakeOutCommand(intakeSubsystem);
   private final LEDCommand ledCommand = new LEDCommand(ledController);
 
@@ -71,6 +78,16 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    
+    NamedCommands.registerCommand("intakeOut", autoIntakeOutCommand);
+    NamedCommands.registerCommand("intakeOut_1", new AutoIntakeOutCommand(intakeSubsystem));
+    NamedCommands.registerCommand("intakeIn", autoIntakeInCommand);
+    NamedCommands.registerCommand("intakeIn_1", new AutoIntakeInCommand(intakeSubsystem));
+    NamedCommands.registerCommand("intakeL1", new AutoIntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_L1A));
+    NamedCommands.registerCommand("intakeL1_1", new AutoIntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_L1A));
+    NamedCommands.registerCommand("intakeStow", new AutoIntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_STW));
+    NamedCommands.registerCommand("intakeStow_1", new AutoIntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_STW));
+
     autoChooser = AutoBuilder.buildAutoChooser();
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -94,6 +111,12 @@ public class RobotContainer {
     m_driverController.b().whileTrue(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L0)).onFalse(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_EXIT));
     m_driverController.x().whileTrue(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_STW)).onFalse(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_EXIt));
     m_driverController.y().whileTrue(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_GND)).onFalse(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_EXIt));
+
+    m_driverController.povUp().whileTrue(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_L1));
+
+    m_driverController.rightTrigger().whileTrue(intakeInCommand);
+
+    m_driverController.rightBumper().whileTrue(intakeOutCommand);
 
 
     /* 

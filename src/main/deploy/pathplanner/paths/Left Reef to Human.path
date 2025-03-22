@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.8025,
-        "y": 2.8842499999999998
+        "x": 3.9682500000000003,
+        "y": 5.18525
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0517499999999997,
-        "y": 3.0499999999999994
+        "x": 2.9950922412903145,
+        "y": 5.440286039479489
       },
       "isLocked": false,
-      "linkedName": "Right Reef"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.23825,
-        "y": 4.0055
+        "x": 0.7117500000000001,
+        "y": 6.716
       },
       "prevControl": {
-        "x": 2.6032500000000005,
-        "y": 3.3229999999999995
+        "x": 2.0686484284265956,
+        "y": 5.694888861066003
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,8 +30,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.46007604562737475,
-      "rotationDegrees": 180.0
+      "waypointRelativePos": 0.06393700787401506,
+      "rotationDegrees": 145.0
     }
   ],
   "constraintZones": [],
@@ -46,14 +46,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 180.0
+    "velocity": 0.0,
+    "rotation": 130.0
   },
   "reversed": false,
-  "folder": "Reef to Coral",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 60.94539590092283
+    "rotation": -59.99999999999999
   },
   "useDefaultConstraints": true
 }

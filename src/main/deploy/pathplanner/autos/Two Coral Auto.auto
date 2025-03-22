@@ -11,39 +11,51 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Back Reef to Coral 1"
+            "name": "intakeL1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeOut"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeStow"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Coral 1 to Right Reef"
+            "pathName": "Back Reef to Human"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeIn"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Reef to Coral 2"
+            "pathName": "Human to Left Reef"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Coral 2 to Reef"
+            "name": "intakeL1_1"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Reef to Coral 3"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Coral 3 to Left Reef"
+            "name": "intakeOut_1"
           }
         }
       ]
