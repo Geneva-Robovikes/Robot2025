@@ -15,7 +15,7 @@ public class IntakeJoystickCommand extends Command {
 
   double axis;
   /** Creates a new IntakeJoystickCommand. */
-  public IntakeJoystickCommand(IntakeSubsystem intakeSubsystem) {
+  public IntakeJoystickCommand(IntakeSubsystem intakeSubsystem, CommandXboxController controller) {
     this.controller = controller;
 
     this.intakeSubsystem = intakeSubsystem;

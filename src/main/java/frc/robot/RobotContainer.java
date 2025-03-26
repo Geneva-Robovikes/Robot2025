@@ -68,7 +68,6 @@ public class RobotContainer {
   /* Commands */
   private final IntakeInCommand intakeInCommand = new IntakeInCommand(intakeSubsystem);
   private final ClawIntakeCommand clawIntakeCommand = new ClawIntakeCommand(clawSubsystem);
-  private final IntakeJoystickCommand intakeJoystickCommand = new IntakeJoystickCommand(intakeSubsystem);
   private final ClawOuttakeCommand clawOutCommand = new ClawOuttakeCommand(clawSubsystem);
   private final ElevatorCommand elevatorCommand = new ElevatorCommand(elevatorSubsystem);
   private final ClawHoldCommand clawHoldCommand = new ClawHoldCommand(clawSubsystem);
@@ -112,14 +111,19 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.rightTrigger().whileTrue(new ParallelCommandGroup(
-      new ClawIntakeCommand(clawSubsystem),
-      new IntakeInCommand(intakeSubsystem)
+    m_driverController.rightTrigger().whileTrue(new SequentialCommandGroup(
+      new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_GND),
+      new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L0),
+      new ParallelCommandGroup(new IntakeInCommand(intakeSubsystem), new ClawIntakeCommand(clawSubsystem))
+    )).onFalse(new SequentialCommandGroup(
+      new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L2),
+      new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_STW)
     ));
+
+    //      new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L0),
 
     m_driverController.leftTrigger().whileTrue(new SequentialCommandGroup(
       new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_GND), 
-      new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L0),
       intakeInCommand)).onFalse(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_L1));
 
     m_driverController.povDown().whileTrue(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L0)).onFalse(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_EXIT));
@@ -166,7 +170,6 @@ public class RobotContainer {
 
   public Command getTeleopCommand() {
     return new SwerveJoystickCommand(swerveSubsystem, m_driverController);
-    return new IntakeJoystickCommand(intakeSubsystem, m_auxillaryController);
   }
 
   public Command getAutonomousCommand() {

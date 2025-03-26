@@ -47,7 +47,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
 
-  private void setVoltage(double voltage) {
+  public void setVoltage(double voltage) {
     intakePivotMotor.setVoltage(voltage);
   }
 

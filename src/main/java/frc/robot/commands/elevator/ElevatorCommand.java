@@ -59,7 +59,7 @@ public class ElevatorCommand extends Command {
 
     combinedTriggerAxis *= 12;
 
-    elevatorSubsystem.setSpeed(combinedTriggerAxis);
+    elevatorSubsytem.setSpeed(combinedTriggerAxis);
   }
 
   // Called once the command ends or is interrupted.

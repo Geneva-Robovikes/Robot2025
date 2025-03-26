@@ -53,7 +53,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     neoVortexTwo.set(voltage);
   }
 
-  private void setSpeed(double voltage) {
+  public void setSpeed(double voltage) {
     SmartDashboard.putNumber("Requested Speed:", voltage);
   
     elevatorMotor.set(voltage);
