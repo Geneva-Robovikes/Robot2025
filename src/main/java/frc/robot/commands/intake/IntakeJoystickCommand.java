@@ -16,7 +16,8 @@ public class IntakeJoystickCommand extends Command {
   double axis;
   /** Creates a new IntakeJoystickCommand. */
   public IntakeJoystickCommand(IntakeSubsystem intakeSubsystem) {
-    controller = new CommandXboxController(1);
+    this.controller = controller;
+
     this.intakeSubsystem = intakeSubsystem;
 
     addRequirements(intakeSubsystem);
@@ -31,8 +32,10 @@ public class IntakeJoystickCommand extends Command {
   @Override
   public void execute() {
     axis = controller.getLeftY();
+    axis *= 12;
+    axis *= .5;
 
-    intakeSubsystem.setIntakePivotMotorSpeed(axis);
+    intakeSubsystem.setVoltage(axis);
   }
 
   // Called once the command ends or is interrupted.
