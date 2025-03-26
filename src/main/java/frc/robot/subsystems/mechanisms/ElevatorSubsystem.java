@@ -68,11 +68,11 @@ public class ElevatorSubsystem extends SubsystemBase {
   public boolean atSetpoint(ELEVATOR_POSITION goal) {
     switch(goal) {
       case K_L0:
-        return elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawDownPosition) > 0.2;
+        return elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawDownPosition) < 0.2;
       case K_L1:
-        return elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL1Position) > 0.2;
+        return elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL1Position) < 0.2;
       case K_L2:
-        return elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL2Position) > 0.2;
+        return elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL2Position) < 0.2;
       default:
         return false;
     }

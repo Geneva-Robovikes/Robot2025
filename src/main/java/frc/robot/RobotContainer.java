@@ -14,6 +14,7 @@ import frc.robot.commands.auto.AutoIntakeOutCommand;
 import frc.robot.commands.auto.AutoIntakeStateCommand;
 import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.commands.intake.IntakeJoystickCommand;
+import frc.robot.commands.intake.IntakeMoveCommand;
 import frc.robot.commands.intake.IntakeOutCommand;
 import frc.robot.commands.elevator.ElevatorCommand;
 import frc.robot.commands.elevator.ElevatorStateCommand;
@@ -131,8 +132,10 @@ public class RobotContainer {
     m_driverController.povRight().whileTrue(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_GND));
     m_driverController.povLeft().whileTrue(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_STW));
 
+    m_driverController.a().whileTrue(clawIntakeCommand);
     m_driverController.b().whileTrue(clawOutCommand);
     m_driverController.x().whileTrue(intakeOutCommand);
+    m_driverController.y().whileTrue(new IntakeMoveCommand(intakeSubsystem));
 
     m_driverController.start().whileTrue(new ResetHeadingCommand(swerveSubsystem));
 
