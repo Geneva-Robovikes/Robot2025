@@ -83,7 +83,7 @@ public final class Constants {
     public static final double kIntakeL1AutoMotorUpPosition = -8.33;
 
     public static final double kClawDownPosition = .37;
-    public static final double kClawL2Position = 2.91;
+    public static final double kClawL2Position = 3.8;
     public static final double kClawL3Position = 4.6;
     public static final double kClawL1Position = -1.48;
 

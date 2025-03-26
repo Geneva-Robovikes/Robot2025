@@ -34,6 +34,6 @@ public class IntakeStateCommand extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return intakeSubsystem.getFinished();
   }
 }

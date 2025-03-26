@@ -34,6 +34,6 @@ public class ElevatorStateCommand extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return elevatorSubsystem.atSetpoint(position);
   }
 }

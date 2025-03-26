@@ -51,6 +51,10 @@ public class IntakeSubsystem extends SubsystemBase {
     intakePivotMotor.setVoltage(voltage);
   }
 
+  public boolean getFinished() {
+    return intakePidController.calculate(getPosition(), Constants.MechanismConstants.kIntakePivotMotorDownPosition) < 0.16;
+  }
+
   @Override
   public void periodic() {
     if (position == INTAKE_POSITION.K_STW) {

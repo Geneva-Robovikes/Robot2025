@@ -36,6 +36,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -118,10 +119,16 @@ public class RobotContainer {
 
     m_driverController.leftTrigger().whileTrue(new SequentialCommandGroup(
       new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_GND), 
+      new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L0),
       intakeInCommand)).onFalse(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_L1));
 
     m_driverController.povDown().whileTrue(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L0)).onFalse(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_EXIT));
     m_driverController.povUp().whileTrue(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L2)).onFalse(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_EXIT));
+    m_driverController.povRight().whileTrue(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_GND));
+    m_driverController.povLeft().whileTrue(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_STW));
+
+    m_driverController.b().whileTrue(clawOutCommand);
+    m_driverController.x().whileTrue(intakeOutCommand);
 
     m_driverController.start().whileTrue(new ResetHeadingCommand(swerveSubsystem));
 
