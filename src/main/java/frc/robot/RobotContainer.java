@@ -135,8 +135,6 @@ public class RobotContainer {
     m_auxillaryController.leftTrigger().whileTrue(elevatorCommand);
     m_auxillaryController.rightTrigger().whileTrue(elevatorCommand); 
 
-    m_auxillaryController.rightBumper().whileTrue(new ClawHoldCommand(clawSubsystem));
-
     /* SysId bindings; leave these commented unless you are running SysId tuning */
     /* SWERVE DRIVE
     m_driverController.povUp().whileTrue(swerveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
@@ -161,6 +159,7 @@ public class RobotContainer {
 
   public Command getTeleopCommand() {
     return new SwerveJoystickCommand(swerveSubsystem, m_driverController);
+    return new IntakeJoystickCommand(intakeSubsystem, m_auxillaryController);
   }
 
   public Command getAutonomousCommand() {
