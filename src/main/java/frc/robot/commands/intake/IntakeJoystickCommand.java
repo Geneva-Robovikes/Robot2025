@@ -4,19 +4,19 @@
 
 package frc.robot.commands.intake;
 
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.mechanisms.IntakeSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeJoystickCommand extends Command {
   IntakeSubsystem intakeSubsystem;
-  XboxController controller;
+  CommandXboxController controller;
 
   double axis;
   /** Creates a new IntakeJoystickCommand. */
   public IntakeJoystickCommand(IntakeSubsystem intakeSubsystem) {
-    controller = new XboxController(1);
+    controller = new CommandXboxController(1);
     this.intakeSubsystem = intakeSubsystem;
 
     addRequirements(intakeSubsystem);

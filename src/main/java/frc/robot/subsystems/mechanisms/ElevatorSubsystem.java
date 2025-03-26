@@ -8,7 +8,11 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -25,6 +29,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     TunerConstants.kElevatorPIDiValue,
     TunerConstants.kElevatorPIDdValue);
 
+  private final ElevatorFeedforward feedforward = new ElevatorFeedforward(0, 0, 0, 0);
+
+  private final TrapezoidProfile profile = new TrapezoidProfile(new Constraints(.5, .1));
+
   private ELEVATOR_POSITION position = ELEVATOR_POSITION.K_EXIT;
 
   public ElevatorSubsystem() {}
@@ -37,6 +45,12 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public void setPosition(ELEVATOR_POSITION position) {
     this.position = position;
+  }
+
+  public void setVoltage(double voltage) {
+    elevatorMotor.set(voltage);
+    neoVortexOne.set(voltage);
+    neoVortexTwo.set(voltage);
   }
 
   private void setSpeed(double voltage) {
@@ -78,7 +92,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       setSpeed(
         elevatorPidController.calculate(
         getPosition(), 
-        Constants.MechanismConstants.kClawL2Position));
+        Constants.MechanismConstants.kClawL3Position));
 
       SmartDashboard.putNumber("Elevator PID L3:", elevatorPidController.calculate(getPosition(), Constants.MechanismConstants.kClawL2Position));
       SmartDashboard.putBoolean("Elevator L3", true);
