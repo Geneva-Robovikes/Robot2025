@@ -67,10 +67,10 @@ public class IntakeSubsystem extends SubsystemBase {
       SmartDashboard.putBoolean("Intake Stowed", true);
     } 
     else if (position == INTAKE_POSITION.K_GND) {
-      setVoltage(
-        MathUtil.clamp(intakePidController.calculate(
+      setVoltage(MathUtil.clamp(
+        intakePidController.calculate(
         getPosition(), 
-        Constants.MechanismConstants.kIntakePivotMotorDownPosition), -.7, .7));
+        Constants.MechanismConstants.kIntakePivotMotorDownPosition), -.98, .98));
 
         SmartDashboard.putNumber("Intake PID:", intakePidController.calculate(getPosition(), Constants.MechanismConstants.kIntakePivotMotorDownPosition));
         SmartDashboard.putBoolean("Intake Ground", true);

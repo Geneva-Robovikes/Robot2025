@@ -78,12 +78,12 @@ public final class Constants {
     public static final double kElevatorMotorMaximumSpeed = .5;
 
     public static final double kIntakePivotMotorDownPosition = 0;
-    public static final double kIntakePivotMotorUpPosition = -17;
+    public static final double kIntakePivotMotorUpPosition = -15;
     public static final double kIntakeL1MotorUpPosition = -11.52;
     public static final double kIntakeL1AutoMotorUpPosition = -8.33;
 
     public static final double kClawDownPosition = .37;
-    public static final double kClawL2Position = 3.8;
+    public static final double kClawL2Position = 3.85;
     public static final double kClawL3Position = 4.6;
     public static final double kClawL1Position = -1.48;
 
