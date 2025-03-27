@@ -4,6 +4,7 @@
 
 package frc.robot.commands.intake;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.mechanisms.IntakeSubsystem;
@@ -11,12 +12,14 @@ import frc.robot.subsystems.mechanisms.IntakeSubsystem;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeJoystickCommand extends Command {
   IntakeSubsystem intakeSubsystem;
-  CommandXboxController controller;
+  // CommandXboxController controller;
+  XboxController controller2;
 
   double axis;
   /** Creates a new IntakeJoystickCommand. */
   public IntakeJoystickCommand(IntakeSubsystem intakeSubsystem) {
-    controller = new CommandXboxController(Constants.OperatorConstants.kAuxiliaryControllerPort);
+    // controller = new CommandXboxController(Constants.OperatorConstants.kAuxiliaryControllerPort);
+    controller2 = new XboxController(Constants.OperatorConstants.kAuxiliaryControllerPort);
 
     this.intakeSubsystem = intakeSubsystem;
 
@@ -31,7 +34,7 @@ public class IntakeJoystickCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    axis = controller.getLeftY();
+    axis = controller2.getLeftY();
     axis *= 12;
     axis *= .5;
 
