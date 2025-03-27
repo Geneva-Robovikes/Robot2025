@@ -4,6 +4,7 @@
 
 package frc.robot.commands.intake;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -13,11 +14,15 @@ import frc.robot.subsystems.mechanisms.IntakeSubsystem;
 public class IntakeJoystickCommand extends Command {
   IntakeSubsystem intakeSubsystem;
   CommandXboxController controller;
+  // XboxController controller2;
 
   double axis;
   /** Creates a new IntakeJoystickCommand. */
-  public IntakeJoystickCommand(IntakeSubsystem intakeSubsystem) {
-    controller = new CommandXboxController(Constants.OperatorConstants.kAuxiliaryControllerPort);
+  public IntakeJoystickCommand(IntakeSubsystem intakeSubsystem, CommandXboxController controller) {
+    // controller = new CommandXboxController(Constants.OperatorConstants.kAuxiliaryControllerPort);
+    // controller2 = new XboxController(Constants.OperatorConstants.kAuxiliaryControllerPort);
+    // this.axis = axis;
+    this.controller = controller;
 
     this.intakeSubsystem = intakeSubsystem;
 
@@ -33,6 +38,7 @@ public class IntakeJoystickCommand extends Command {
   @Override
   public void execute() {
     axis = controller.getLeftY();
+    // axis = controller2.getLeftY();
     axis *= 12;
     axis *= .5;
 
