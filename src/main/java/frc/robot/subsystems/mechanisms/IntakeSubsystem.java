@@ -70,7 +70,7 @@ public class IntakeSubsystem extends SubsystemBase {
       setVoltage(
         MathUtil.clamp(intakePidController.calculate(
         getPosition(), 
-        Constants.MechanismConstants.kIntakePivotMotorDownPosition), -.5, .5));
+        Constants.MechanismConstants.kIntakePivotMotorDownPosition), -.7, .7));
 
         SmartDashboard.putNumber("Intake PID:", intakePidController.calculate(getPosition(), Constants.MechanismConstants.kIntakePivotMotorDownPosition));
         SmartDashboard.putBoolean("Intake Ground", true);
