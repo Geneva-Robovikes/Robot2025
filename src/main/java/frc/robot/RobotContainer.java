@@ -13,6 +13,7 @@ import frc.robot.commands.auto.AutoIntakeInCommand;
 import frc.robot.commands.auto.AutoIntakeOutCommand;
 import frc.robot.commands.auto.AutoIntakeStateCommand;
 import frc.robot.commands.intake.IntakeInCommand;
+import frc.robot.commands.intake.IntakeInSlowCommand;
 import frc.robot.commands.intake.IntakeJoystickCommand;
 import frc.robot.commands.intake.IntakeMoveCommand;
 import frc.robot.commands.intake.IntakeOutCommand;
@@ -92,6 +93,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("intakeL1_1", new AutoIntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_L1A));
     NamedCommands.registerCommand("intakeStow", new AutoIntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_STW));
     NamedCommands.registerCommand("intakeStow_1", new AutoIntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_STW));
+    NamedCommands.registerCommand("elevatorUp", new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L2));
 
     autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -125,7 +127,7 @@ public class RobotContainer {
 
     m_driverController.leftTrigger().whileTrue(new SequentialCommandGroup(
       new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_GND), 
-      intakeInCommand)).onFalse(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_L1));
+      new IntakeInSlowCommand(intakeSubsystem))).onFalse(new IntakeStateCommand(intakeSubsystem, INTAKE_POSITION.K_L1));
 
     m_driverController.povDown().whileTrue(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L0)).onFalse(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_EXIT));
     m_driverController.povUp().whileTrue(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_L2)).onFalse(new ElevatorStateCommand(elevatorSubsystem, ELEVATOR_POSITION.K_EXIT));
@@ -146,7 +148,7 @@ public class RobotContainer {
     m_auxillaryController.x().whileTrue(new ClawIntakeCommand(clawSubsystem));
     m_auxillaryController.y().whileTrue(new ClawOuttakeCommand(clawSubsystem));
 
-    m_auxillaryController.rightBumper().whileTrue(new IntakeJoystickCommand(intakeSubsystem, m_auxillaryController.getLeftY));
+    m_auxillaryController.rightBumper().whileTrue(new IntakeJoystickCommand(intakeSubsystem, m_auxillaryController));
     m_auxillaryController.leftTrigger().whileTrue(elevatorCommand);
     m_auxillaryController.rightTrigger().whileTrue(elevatorCommand); 
 

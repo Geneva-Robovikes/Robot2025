@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "elevatorUp"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Start to Left Up Reef"
