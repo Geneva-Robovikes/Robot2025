@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Start to Back Reef"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "elevatorUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeL1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeOut"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Back Reef to Push"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Push to Leave"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
